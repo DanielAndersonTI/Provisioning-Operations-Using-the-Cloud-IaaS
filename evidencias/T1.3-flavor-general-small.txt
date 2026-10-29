@@ -1,0 +1,22 @@
+$ openstack flavor show general.small 2>&1
+# host=osboxes user=osboxes utc=2026-10-29T03:04:57Z
+
++----------------------------+-----------------------------------------------+
+| Field                      | Value                                         |
++----------------------------+-----------------------------------------------+
+| OS-FLV-DISABLED:disabled   | False                                         |
+| OS-FLV-EXT-DATA:ephemeral  | 0                                             |
+| access_project_ids         | None                                          |
+| description                | None                                          |
+| disk                       | 20                                            |
+| id                         | 7441c7d9-2648-4a33-907e-4d28c2270da3          |
+| name                       | general.small                                 |
+| os-flavor-access:is_public | True                                          |
+| properties                 | aggregate_instance_extra_specs:type='general' |
+| ram                        | 2048                                          |
+| rxtx_factor                | 1.0                                           |
+| swap                       |                                               |
+| vcpus                      | 1                                             |
++----------------------------+-----------------------------------------------+
+
+[exit 0] 2026-10-29T03:05:01Z

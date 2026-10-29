@@ -1,0 +1,16 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'UUID=$(sudo blkid -s UUID -o value /dev/vdb); sudo cp /etc/fstab /etc/fstab.bak; { echo "LABEL=cloudimg-rootfs / ext4 discard,commit=30,errors=remount-ro 0 1"; echo "LABEL=BOOT /boot ext4 defaults 0 2"; echo "LABEL=UEFI /boot/efi vfat umask=0077 0 1"; echo "# volume de logs da Atividade 3 (montado por UUID)"; echo "UUID=$UUID /mnt/atividade3-logs ext4 defaults,nofail 0 2"; } | sudo tee /etc/fstab; echo; cat /etc/fstab'
+# host=osboxes user=osboxes utc=2026-10-29T03:28:57Z
+
+LABEL=cloudimg-rootfs / ext4 discard,commit=30,errors=remount-ro 0 1
+LABEL=BOOT /boot ext4 defaults 0 2
+LABEL=UEFI /boot/efi vfat umask=0077 0 1
+# volume de logs da Atividade 3 (montado por UUID)
+UUID=1de1bd6e-b421-49ca-abeb-976698e2abd1 /mnt/atividade3-logs ext4 defaults,nofail 0 2
+
+LABEL=cloudimg-rootfs / ext4 discard,commit=30,errors=remount-ro 0 1
+LABEL=BOOT /boot ext4 defaults 0 2
+LABEL=UEFI /boot/efi vfat umask=0077 0 1
+# volume de logs da Atividade 3 (montado por UUID)
+UUID=1de1bd6e-b421-49ca-abeb-976698e2abd1 /mnt/atividade3-logs ext4 defaults,nofail 0 2
+
+[exit 0] 2026-10-29T03:28:58Z

@@ -1,0 +1,6 @@
+$ openstack server show vm-daniel-ranya -f value -c addresses
+# host=osboxes user=osboxes utc=2026-10-29T03:10:00Z
+
+{'provider': ['10.5.9.15']}
+
+[exit 0] 2026-10-29T03:10:04Z

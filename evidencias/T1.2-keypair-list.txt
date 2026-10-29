@@ -1,0 +1,6 @@
+$ openstack keypair list
+# host=osboxes user=osboxes utc=2026-10-29T03:04:45Z
+
+
+
+[exit 0] 2026-10-29T03:04:48Z

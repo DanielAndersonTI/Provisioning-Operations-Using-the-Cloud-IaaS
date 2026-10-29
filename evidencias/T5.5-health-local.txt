@@ -1,0 +1,13 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo ss -ltnp | grep -E ":800[012]" ; echo; a3-smoke'
+# host=osboxes user=osboxes utc=2026-10-29T03:16:15Z
+
+LISTEN 0      5            0.0.0.0:8000      0.0.0.0:*    users:(("python3",pid=1913,fd=3))                     
+LISTEN 0      5            0.0.0.0:8001      0.0.0.0:*    users:(("python3",pid=1915,fd=3))                     
+LISTEN 0      5            0.0.0.0:8002      0.0.0.0:*    users:(("python3",pid=1914,fd=3))                     
+
+PERFIL   PORTA  HEALTH  WORK      TEMPO_S   TAMANHO  RESPOSTA
+cpu      8000   200     200      0.046844        10  {"profile": "cpu", "duration_seconds": 0.045562, "result": {"sha256": "67fd7594c85ac40ff41
+memory   8001   200     200      0.032536        32  {"profile": "memory", "duration_seconds": 0.031391, "result": {"allocated_mib": 32, "check
+io       8002   200     200      0.017725      1024  {"profile": "io", "duration_seconds": 0.01669, "result": {"bytes_read": 1048576, "bytes_wr
+
+[exit 0] 2026-10-29T03:16:16Z

@@ -1,0 +1,29 @@
+$ openstack loadbalancer healthmonitor create --name hm-app-io-daniel-ranya --delay 5 --timeout 4 --max-retries 3 --type HTTP --url-path /health --expected-codes 200 pool-app-io-daniel-ranya
+# host=osboxes user=osboxes utc=2026-10-29T04:14:49Z (tentativa 1)
+
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| project_id          | 2c593796f29e4b829b1b523775e2fa26     |
+| name                | hm-app-io-daniel-ranya               |
+| admin_state_up      | True                                 |
+| pools               | 44fac7a8-07bc-4267-9c28-85d18477e614 |
+| created_at          | 2026-10-29T04:14:55                  |
+| provisioning_status | PENDING_CREATE                       |
+| updated_at          | None                                 |
+| delay               | 5                                    |
+| expected_codes      | 200                                  |
+| max_retries         | 3                                    |
+| http_method         | GET                                  |
+| timeout             | 4                                    |
+| max_retries_down    | 3                                    |
+| url_path            | /health                              |
+| type                | HTTP                                 |
+| id                  | 3178cffa-1f87-4c4f-8320-b50bdf891759 |
+| operating_status    | OFFLINE                              |
+| http_version        | None                                 |
+| domain_name         | None                                 |
+| tags                |                                      |
++---------------------+--------------------------------------+
+
+[exit 0] 2026-10-29T04:14:57Z

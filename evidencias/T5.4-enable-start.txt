@@ -1,0 +1,14 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo systemctl daemon-reload; sudo systemctl enable --now app-cpu app-memory app-io; sleep 3; systemctl is-enabled app-cpu app-memory app-io; systemctl is-active app-cpu app-memory app-io'
+# host=osboxes user=osboxes utc=2026-10-29T03:16:02Z
+
+Created symlink /etc/systemd/system/multi-user.target.wants/app-cpu.service → /etc/systemd/system/app-cpu.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/app-memory.service → /etc/systemd/system/app-memory.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/app-io.service → /etc/systemd/system/app-io.service.
+enabled
+enabled
+enabled
+active
+active
+active
+
+[exit 0] 2026-10-29T03:16:06Z

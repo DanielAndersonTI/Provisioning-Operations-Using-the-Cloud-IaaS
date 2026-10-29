@@ -1,0 +1,17 @@
+$ for p in 8100:10:cpu 8101:32:memory 8102:1024:io; do port=$(echo $p | cut -d: -f1); size=$(echo $p | cut -d: -f2); echo "--- $port /work?size=$size"; curl -sS -m 60 -w '\nHTTP %{http_code} em %{time_total}s\n' "http://150.165.85.77:$port/work?size=$size" | cut -c1-160; echo; done
+# host=osboxes user=osboxes utc=2026-10-29T04:16:38Z
+
+--- 8100 /work?size=10
+{"profile": "cpu", "duration_seconds": 0.046734, "result": {"sha256": "67fd7594c85ac40ff41f1fbe848974712a15849ca433cd6874ba614b47ebe1b6", "iterations": 10}}
+HTTP 200 em 0.099564s
+
+--- 8101 /work?size=32
+{"profile": "memory", "duration_seconds": 0.07018, "result": {"allocated_mib": 32, "checksum": 1016720}}
+HTTP 200 em 0.399301s
+
+--- 8102 /work?size=1024
+{"profile": "io", "duration_seconds": 0.018454, "result": {"bytes_read": 1048576, "bytes_written": 1048576}}
+HTTP 200 em 0.169068s
+
+
+[exit 0] 2026-10-29T04:16:39Z

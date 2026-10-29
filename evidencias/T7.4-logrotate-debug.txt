@@ -1,0 +1,20 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo logrotate -d /etc/logrotate.d/atividade3 2>&1 | tail -15'
+# host=osboxes user=osboxes utc=2026-10-29T03:50:37Z
+
+
+rotating pattern: /mnt/atividade3-logs/*/app.log  after 1 days (7 rotations)
+empty log files are not rotated, log files >= 10485760 are rotated earlier, old logs are removed
+considering log /mnt/atividade3-logs/cpu/app.log
+  Now: 2026-10-29 03:50
+  Last rotated at 2026-10-29 03:50
+  log does not need rotating (log has already been rotated)
+considering log /mnt/atividade3-logs/io/app.log
+  Now: 2026-10-29 03:50
+  Last rotated at 2026-10-29 03:50
+  log does not need rotating (log has already been rotated)
+considering log /mnt/atividade3-logs/memory/app.log
+  Now: 2026-10-29 03:50
+  Last rotated at 2026-10-29 03:50
+  log does not need rotating (log has already been rotated)
+
+[exit 0] 2026-10-29T03:50:38Z

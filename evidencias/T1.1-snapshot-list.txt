@@ -1,0 +1,20 @@
+$ openstack image list --property image_type=snapshot 2>/dev/null || openstack image list --long | grep -i snapshot; true
+# host=osboxes user=osboxes utc=2026-10-29T03:04:10Z
+
++--------------------------------------+------------------------------+--------+
+| ID                                   | Name                         | Status |
++--------------------------------------+------------------------------+--------+
+| ba571f05-b02f-4549-86a6-5b495a944a03 | gabriel_yuri_vm_poi_4        | active |
+| 4cce44a1-73ee-45a1-8a9a-c5aa7fce4c14 | grupo14-snapshot             | active |
+| 32f72098-4567-4f1e-b70e-e74c35cbab84 | poi-aula                     | active |
+| 6a8bf9e6-160b-4907-8df6-35974bab6e7e | poi-dougsilva-snapshot       | active |
+| fcfa5a46-a54c-4689-aab4-d1eafbb6ca52 | snapshot-Rafael_VM_POI       | active |
+| ec51dfbe-041b-44ac-aa2a-e5a075faccab | snapshot-arthur-pedro-poi    | active |
+| 5bf2ef7d-21d1-492b-9575-7ae1212d5fb4 | snapshot-lucas-vm-poi        | active |
+| 61f9c68b-3c8c-45d5-b12c-3fad6e022bcf | snapshot-thyago-app          | active |
+| 73b4d615-214e-45ca-8ba9-b8ede5a8641e | snapshot-vm-grupo1           | active |
+| c7a7fab3-9bb8-45c7-af1a-514227a92faa | snapshot-vm-jardel           | active |
+| 8aa3bd2f-15de-4aa9-ad4c-64c21c6aea55 | snapshot_gabriel_yuri_vm_poi | active |
++--------------------------------------+------------------------------+--------+
+
+[exit 0] 2026-10-29T03:04:15Z

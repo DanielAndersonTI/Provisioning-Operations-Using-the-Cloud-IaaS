@@ -1,0 +1,10 @@
+$ getent hosts cloud.lsd.ufcg.edu.br; echo; curl -sS -o /dev/null -w 'dashboard  -> HTTP %{http_code} em %{time_total}s\n' -m 20 https://cloud.lsd.ufcg.edu.br/ ; curl -sS -o /dev/null -w 'keystone   -> HTTP %{http_code} em %{time_total}s\n' -m 20 https://cloud.lsd.ufcg.edu.br:5000/v3 ; curl -sS -o /dev/null -w 'octavia    -> HTTP %{http_code} em %{time_total}s\n' -m 20 https://cloud.lsd.ufcg.edu.br:9876/ ; true
+# host=osboxes user=osboxes utc=2026-10-29T03:02:31Z
+
+150.165.85.2    cloud6.lsd.ufcg.edu.br cloud.lsd.ufcg.edu.br
+
+dashboard  -> HTTP 302 em 0.457578s
+keystone   -> HTTP 200 em 0.853797s
+octavia    -> HTTP 200 em 0.321016s
+
+[exit 0] 2026-10-29T03:02:33Z

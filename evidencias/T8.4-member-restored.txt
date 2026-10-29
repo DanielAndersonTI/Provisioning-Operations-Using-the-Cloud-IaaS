@@ -1,0 +1,12 @@
+$ openstack loadbalancer member list pool-app-cpu-daniel-ranya -c name -c operating_status; echo; curl -sS -m 10 -w ' HTTP %{http_code} em %{time_total}s\n' http://150.165.85.77:8100/health
+# host=osboxes user=osboxes utc=2026-10-29T04:18:32Z
+
++-----------------+------------------+
+| name            | operating_status |
++-----------------+------------------+
+| vm-daniel-ranya | ONLINE           |
++-----------------+------------------+
+
+{"status": "ok", "profile": "cpu"} HTTP 200 em 0.063096s
+
+[exit 0] 2026-10-29T04:18:40Z

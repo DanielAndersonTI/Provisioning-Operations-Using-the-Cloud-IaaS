@@ -1,0 +1,27 @@
+$ openstack security group rule create --protocol tcp --dst-port 22 --remote-ip 10.5.8.0/22 sg-daniel-ranya 2>&1
+# host=osboxes user=osboxes utc=2026-10-29T03:08:55Z
+
++-------------------------+--------------------------------------+
+| Field                   | Value                                |
++-------------------------+--------------------------------------+
+| created_at              | 2026-10-29T03:09:02Z                 |
+| description             |                                      |
+| direction               | ingress                              |
+| ether_type              | IPv4                                 |
+| id                      | e0075ce8-daa7-423b-9710-dcfc72f6fe52 |
+| name                    | None                                 |
+| port_range_max          | 22                                   |
+| port_range_min          | 22                                   |
+| project_id              | 2c593796f29e4b829b1b523775e2fa26     |
+| protocol                | tcp                                  |
+| remote_address_group_id | None                                 |
+| remote_group_id         | None                                 |
+| remote_ip_prefix        | 10.5.8.0/22                          |
+| revision_number         | 0                                    |
+| security_group_id       | d60a7836-d518-48c3-ba7b-ebd0085ed208 |
+| tags                    | []                                   |
+| tenant_id               | 2c593796f29e4b829b1b523775e2fa26     |
+| updated_at              | 2026-10-29T03:09:02Z                 |
++-------------------------+--------------------------------------+
+
+[exit 0] 2026-10-29T03:09:02Z

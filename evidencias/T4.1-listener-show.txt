@@ -1,0 +1,39 @@
+$ openstack loadbalancer listener show ssh-daniel-ranya
+# host=osboxes user=osboxes utc=2026-10-29T03:12:38Z
+
++-----------------------------+--------------------------------------+
+| Field                       | Value                                |
++-----------------------------+--------------------------------------+
+| admin_state_up              | True                                 |
+| connection_limit            | -1                                   |
+| created_at                  | 2026-10-29T03:10:59                  |
+| default_pool_id             | 6ca0c871-1cfa-4866-865f-357facb44608 |
+| default_tls_container_ref   | None                                 |
+| description                 |                                      |
+| id                          | baeba4af-2976-4ca9-ba2c-6c51bff598ae |
+| insert_headers              | None                                 |
+| l7policies                  |                                      |
+| loadbalancers               | 57c2b14a-b746-4f34-8719-d0627e409609 |
+| name                        | ssh-daniel-ranya                     |
+| operating_status            | ONLINE                               |
+| project_id                  | 2c593796f29e4b829b1b523775e2fa26     |
+| protocol                    | TCP                                  |
+| protocol_port               | 2222                                 |
+| provisioning_status         | ACTIVE                               |
+| sni_container_refs          | []                                   |
+| timeout_client_data         | 50000                                |
+| timeout_member_connect      | 5000                                 |
+| timeout_member_data         | 50000                                |
+| timeout_tcp_inspect         | 0                                    |
+| updated_at                  | 2026-10-29T03:11:40                  |
+| client_ca_tls_container_ref | None                                 |
+| client_authentication       | NONE                                 |
+| client_crl_container_ref    | None                                 |
+| allowed_cidrs               | None                                 |
+| tls_ciphers                 | None                                 |
+| tls_versions                | None                                 |
+| alpn_protocols              | None                                 |
+| tags                        |                                      |
++-----------------------------+--------------------------------------+
+
+[exit 0] 2026-10-29T03:12:42Z

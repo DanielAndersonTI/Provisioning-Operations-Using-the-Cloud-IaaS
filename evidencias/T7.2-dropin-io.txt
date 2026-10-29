@@ -1,0 +1,9 @@
+$ cat /home/osboxes/atividade3/payload/logs/dropin/io.conf | ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo install -d /etc/systemd/system/app-io.service.d; sudo tee /etc/systemd/system/app-io.service.d/volume-logs.conf >/dev/null; cat /etc/systemd/system/app-io.service.d/volume-logs.conf'
+# host=osboxes user=osboxes utc=2026-10-29T03:50:26Z
+
+[Service]
+StandardOutput=append:/mnt/atividade3-logs/io/app.log
+StandardError=append:/mnt/atividade3-logs/io/app.log
+ReadWritePaths=/var/log/atividade3/io /mnt/atividade3-logs/io
+
+[exit 0] 2026-10-29T03:50:27Z

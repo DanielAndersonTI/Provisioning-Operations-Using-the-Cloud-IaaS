@@ -1,0 +1,47 @@
+$ cat /home/osboxes/atividade3/payload/a3-smoke | ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo tee /usr/local/bin/a3-smoke >/dev/null; sudo chmod 0755 /usr/local/bin/a3-smoke; sudo cat /usr/local/bin/a3-smoke'
+# host=osboxes user=osboxes utc=2026-10-29T03:16:01Z
+
+#!/usr/bin/env bash
+# Verificacao rapida das tres aplicacoes.
+#
+# Uso:
+#   a3-smoke                 checa 127.0.0.1 nas portas internas
+#   A3_HOST=150.165.85.77 A3_BASE=8100 a3-smoke   checa pela VIP
+#
+# Sai com 0 apenas se todos os perfis responderem 200 em /health e /work.
+
+set -uo pipefail
+HOST="${A3_HOST:-127.0.0.1}"
+
+port_of() {
+    case "$1" in
+        cpu)    echo "${A3_CPU_PORT:-8000}" ;;
+        memory) echo "${A3_MEMORY_PORT:-8001}" ;;
+        io)     echo "${A3_IO_PORT:-8002}" ;;
+    esac
+}
+
+size_of() {
+    case "$1" in
+        cpu)    echo 10 ;;
+        memory) echo 32 ;;
+        io)     echo 1024 ;;
+    esac
+}
+
+rc=0
+printf '%-8s %-6s %-7s %-7s %9s %9s  %s\n' PERFIL PORTA HEALTH WORK TEMPO_S TAMANHO RESPOSTA
+for profile in cpu memory io; do
+    port="$(port_of "$profile")"
+    health="$(curl -sS -m 10 -o /dev/null -w '%{http_code}' "http://$HOST:$port/health" 2>/dev/null || echo 000)"
+    size="$(size_of "$profile")"
+    response="$(curl -sS -m 60 -w '\n%{http_code} %{time_total}' "http://$HOST:$port/work?size=$size" 2>/dev/null || printf '\n000 -')"
+    code="$(printf '%s' "$response" | tail -1 | awk '{print $1}')"
+    time_s="$(printf '%s' "$response" | tail -1 | awk '{print $2}')"
+    body="$(printf '%s' "$response" | head -1 | cut -c1-90)"
+    [ "$health" = "200" ] && [ "$code" = "200" ] || rc=1
+    printf '%-8s %-6s %-7s %-7s %9s %9s  %s\n' "$profile" "$port" "$health" "$code" "${time_s:--}" "$size" "$body"
+done
+exit "$rc"
+
+[exit 0] 2026-10-29T03:16:02Z

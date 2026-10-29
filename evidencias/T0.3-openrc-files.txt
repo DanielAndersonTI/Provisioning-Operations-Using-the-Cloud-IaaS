@@ -1,0 +1,8 @@
+$ ls -la $HOME/*openrc*.sh 2>/dev/null; ls -la /etc/openstack 2>/dev/null; ls -la $HOME/.config/openstack 2>/dev/null; echo; find $HOME -maxdepth 2 -name '*openrc*' -o -maxdepth 2 -name 'clouds.yaml' 2>/dev/null | head -20; true
+# host=osboxes user=osboxes utc=2026-10-29T03:02:37Z
+
+-rw-rw-r-- 1 osboxes osboxes 2092 Sep  5  2023 /home/osboxes/openrc.sh
+
+/home/osboxes/openrc.sh
+
+[exit 0] 2026-10-29T03:02:37Z

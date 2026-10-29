@@ -1,0 +1,18 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'cloud-init status 2>/dev/null | head -3; echo; hostnamectl 2>/dev/null | head -3; echo; python3 -V 2>&1; echo; nproc; free -m | head -2; echo; df -h / | tail -1'
+# host=osboxes user=osboxes utc=2026-10-29T03:15:38Z
+
+status: done
+
+ Static hostname: vm-daniel-ranya
+       Icon name: computer-vm
+         Chassis: vm 🖴
+
+Python 3.12.3
+
+1
+               total        used        free      shared  buff/cache   available
+Mem:            1968         312        1450           3         355        1655
+
+/dev/vda1        19G  1.7G   17G   9% /
+
+[exit 0] 2026-10-29T03:15:39Z

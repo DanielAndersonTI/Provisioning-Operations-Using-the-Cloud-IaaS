@@ -1,0 +1,7 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'date -u +%FT%TZ | sudo tee /mnt/atividade3-logs/marca-antes-do-reboot.txt; sudo cat /mnt/atividade3-logs/marca-antes-do-reboot.txt'
+# host=osboxes user=osboxes utc=2026-10-29T03:36:56Z
+
+2026-10-29T03:36:57Z
+2026-10-29T03:36:57Z
+
+[exit 0] 2026-10-29T03:36:57Z

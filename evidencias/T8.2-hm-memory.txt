@@ -1,0 +1,6 @@
+$ openstack loadbalancer healthmonitor create --name hm-app-memory-daniel-ranya --delay 5 --timeout 4 --max-retries 3 --type HTTP --url-path /health --expected-codes 200 pool-app-memory-daniel-ranya
+# host=osboxes user=osboxes utc=2026-10-29T04:07:16Z (tentativa 10)
+
+This pool already has a health monitor (HTTP 409) (Request-ID: req-6aca394f-f4db-40f1-a229-599d08e6f434)
+
+[exit 1] 2026-10-29T04:07:27Z

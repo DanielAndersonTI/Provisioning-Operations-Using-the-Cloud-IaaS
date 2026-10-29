@@ -1,0 +1,28 @@
+$ openstack volume create --size 1 --description 'Logs das aplicacoes - Atividade 3' vol-daniel-ranya-logs
+# host=osboxes user=osboxes utc=2026-10-29T03:27:31Z
+
++---------------------+------------------------------------------------------------------+
+| Field               | Value                                                            |
++---------------------+------------------------------------------------------------------+
+| attachments         | []                                                               |
+| availability_zone   | nova                                                             |
+| bootable            | false                                                            |
+| consistencygroup_id | None                                                             |
+| created_at          | 2026-10-29T03:27:39.189618                                       |
+| description         | Logs das aplicacoes - Atividade 3                                |
+| encrypted           | False                                                            |
+| id                  | 2271182d-ac0c-4dd9-bcf7-cc535379f532                             |
+| multiattach         | False                                                            |
+| name                | vol-daniel-ranya-logs                                            |
+| properties          |                                                                  |
+| replication_status  | None                                                             |
+| size                | 1                                                                |
+| snapshot_id         | None                                                             |
+| source_volid        | None                                                             |
+| status              | creating                                                         |
+| type                | __DEFAULT__                                                      |
+| updated_at          | None                                                             |
+| user_id             | 513f6d047f5484db0cbe6249197b982190710711f5e7bbbb875795808525d030 |
++---------------------+------------------------------------------------------------------+
+
+[exit 0] 2026-10-29T03:27:39Z

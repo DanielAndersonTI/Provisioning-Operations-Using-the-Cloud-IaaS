@@ -1,0 +1,96 @@
+$ openstack loadbalancer stats poi-atividades
+# host=osboxes user=osboxes utc=2026-10-29T03:06:30Z
+
+openstack: 'loadbalancer stats poi-atividades' is not an openstack command. See 'openstack --help'.
+Did you mean one of these?
+  loadbalancer amphora configure
+  loadbalancer amphora delete
+  loadbalancer amphora failover
+  loadbalancer amphora list
+  loadbalancer amphora show
+  loadbalancer amphora stats show
+  loadbalancer availabilityzone create
+  loadbalancer availabilityzone delete
+  loadbalancer availabilityzone list
+  loadbalancer availabilityzone set
+  loadbalancer availabilityzone show
+  loadbalancer availabilityzone unset
+  loadbalancer availabilityzoneprofile create
+  loadbalancer availabilityzoneprofile delete
+  loadbalancer availabilityzoneprofile list
+  loadbalancer availabilityzoneprofile set
+  loadbalancer availabilityzoneprofile show
+  loadbalancer create
+  loadbalancer delete
+  loadbalancer failover
+  loadbalancer flavor create
+  loadbalancer flavor delete
+  loadbalancer flavor list
+  loadbalancer flavor set
+  loadbalancer flavor show
+  loadbalancer flavor unset
+  loadbalancer flavorprofile create
+  loadbalancer flavorprofile delete
+  loadbalancer flavorprofile list
+  loadbalancer flavorprofile set
+  loadbalancer flavorprofile show
+  loadbalancer healthmonitor create
+  loadbalancer healthmonitor delete
+  loadbalancer healthmonitor list
+  loadbalancer healthmonitor set
+  loadbalancer healthmonitor show
+  loadbalancer healthmonitor unset
+  loadbalancer l7policy create
+  loadbalancer l7policy delete
+  loadbalancer l7policy list
+  loadbalancer l7policy set
+  loadbalancer l7policy show
+  loadbalancer l7policy unset
+  loadbalancer l7rule create
+  loadbalancer l7rule delete
+  loadbalancer l7rule list
+  loadbalancer l7rule set
+  loadbalancer l7rule show
+  loadbalancer l7rule unset
+  loadbalancer list
+  loadbalancer listener create
+  loadbalancer listener delete
+  loadbalancer listener list
+  loadbalancer listener set
+  loadbalancer listener show
+  loadbalancer listener stats show
+  loadbalancer listener unset
+  loadbalancer member create
+  loadbalancer member delete
+  loadbalancer member list
+  loadbalancer member set
+  loadbalancer member show
+  loadbalancer member unset
+  loadbalancer pool create
+  loadbalancer pool delete
+  loadbalancer pool list
+  loadbalancer pool set
+  loadbalancer pool show
+  loadbalancer pool unset
+  loadbalancer provider capability list
+  loadbalancer provider list
+  loadbalancer quota defaults show
+  loadbalancer quota list
+  loadbalancer quota reset
+  loadbalancer quota set
+  loadbalancer quota show
+  loadbalancer quota unset
+  loadbalancer set
+  loadbalancer show
+  loadbalancer stats show
+  loadbalancer status show
+  loadbalancer unset
+  container create
+  container delete
+  container list
+  container save
+  container set
+  container show
+  container unset
+
+[exit 2] 2026-10-29T03:06:33Z

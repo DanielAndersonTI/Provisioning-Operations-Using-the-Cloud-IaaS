@@ -1,0 +1,7 @@
+$ openstack token issue -f value -c project_id -c expires 2>&1
+# host=osboxes user=osboxes utc=2026-10-29T03:03:05Z
+
+2026-10-30T03:03:12+0000
+2c593796f29e4b829b1b523775e2fa26
+
+[exit 0] 2026-10-29T03:03:12Z

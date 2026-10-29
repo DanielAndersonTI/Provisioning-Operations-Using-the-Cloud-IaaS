@@ -1,0 +1,14 @@
+$ sha256sum /home/osboxes/atividade3/apps/server.py /home/osboxes/atividade3/apps/cpu/server.py /home/osboxes/atividade3/apps/memory/server.py /home/osboxes/atividade3/apps/io/server.py; echo; ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sha256sum /opt/atividade3/apps/server.py /opt/atividade3/apps/cpu/server.py /opt/atividade3/apps/memory/server.py /opt/atividade3/apps/io/server.py'
+# host=osboxes user=osboxes utc=2026-10-29T03:15:56Z
+
+bc5e5b1c42a8b53b8907009bc5d1ed9f32ed84bcff628d5a7ea97ceaae83042c  /home/osboxes/atividade3/apps/server.py
+a1cf580a6e296c4802c1d8829946eba70469d9e3df33f760e7a55dd1ac9e689e  /home/osboxes/atividade3/apps/cpu/server.py
+3d0904c7b777dc1a98998716be284036dae1326c5e42541d2da69930600af0f8  /home/osboxes/atividade3/apps/memory/server.py
+20a2e5d3dd0fe85933683eadce189ae13722c5df7e1d3fab10d5ee1e991df217  /home/osboxes/atividade3/apps/io/server.py
+
+bc5e5b1c42a8b53b8907009bc5d1ed9f32ed84bcff628d5a7ea97ceaae83042c  /opt/atividade3/apps/server.py
+a1cf580a6e296c4802c1d8829946eba70469d9e3df33f760e7a55dd1ac9e689e  /opt/atividade3/apps/cpu/server.py
+3d0904c7b777dc1a98998716be284036dae1326c5e42541d2da69930600af0f8  /opt/atividade3/apps/memory/server.py
+20a2e5d3dd0fe85933683eadce189ae13722c5df7e1d3fab10d5ee1e991df217  /opt/atividade3/apps/io/server.py
+
+[exit 0] 2026-10-29T03:15:56Z

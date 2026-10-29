@@ -1,0 +1,11 @@
+$ openstack server show vm-daniel-ranya -c name -c status
+# host=osboxes user=osboxes utc=2026-10-29T05:17:18Z
+
++--------+-----------------+
+| Field  | Value           |
++--------+-----------------+
+| name   | vm-daniel-ranya |
+| status | ACTIVE          |
++--------+-----------------+
+
+[exit 0] 2026-10-29T05:17:23Z

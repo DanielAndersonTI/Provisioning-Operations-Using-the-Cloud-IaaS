@@ -1,0 +1,28 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo sh -c "ls -l /var/log/atividade3/*/"; echo; sudo tail -n 2 /var/log/atividade3/cpu/app.log /var/log/atividade3/memory/app.log /var/log/atividade3/io/app.log'
+# host=osboxes user=osboxes utc=2026-10-29T05:11:47Z
+
+/var/log/atividade3/cpu/:
+total 4
+-rw-r--r-- 1 root root 210 Oct 29 03:37 app.log
+
+/var/log/atividade3/io/:
+total 4
+-rw-r--r-- 1 root root 207 Oct 29 03:37 app.log
+
+/var/log/atividade3/memory/:
+total 4
+-rw-r--r-- 1 root root 216 Oct 29 03:37 app.log
+
+==> /var/log/atividade3/cpu/app.log <==
+cpu application listening on port 8000 (max 32 concurrent work units)
+cpu application listening on port 8000 (max 32 concurrent work units)
+
+==> /var/log/atividade3/memory/app.log <==
+memory application listening on port 8001 (max 4 concurrent work units)
+memory application listening on port 8001 (max 4 concurrent work units)
+
+==> /var/log/atividade3/io/app.log <==
+io application listening on port 8002 (max 16 concurrent work units)
+io application listening on port 8002 (max 16 concurrent work units)
+
+[exit 0] 2026-10-29T05:11:48Z

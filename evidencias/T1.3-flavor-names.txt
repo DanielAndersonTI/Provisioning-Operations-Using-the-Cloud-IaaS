@@ -1,0 +1,10 @@
+$ openstack flavor list -f value -c Name | sort
+# host=osboxes user=osboxes utc=2026-10-29T03:05:01Z
+
+general.large
+general.medium
+general.small
+general.xlarge
+general.xlarge.okd
+
+[exit 0] 2026-10-29T03:05:04Z

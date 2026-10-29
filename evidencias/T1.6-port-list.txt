@@ -1,0 +1,6 @@
+$ openstack port list --server poi-atividades 2>/dev/null; openstack port list -c ID -c 'Fixed IP Addresses' -c 'Floating IP Addresses' -c Status | grep -E '10\.5\.8\.242|150\.165\.85\.77' ; true
+# host=osboxes user=osboxes utc=2026-10-29T03:06:37Z
+
+| 7351e4d4-ba2c-4922-a582-e63d3c00410e | ip_address='10.5.8.242', subnet_id='17de9c72-e5dc-4da0-ae0a-013f7e42400e'  |                       | DOWN   |
+
+[exit 0] 2026-10-29T03:06:44Z

@@ -1,0 +1,6 @@
+$ openstack loadbalancer pool create --name pool-ssh-daniel-ranya --lb-algorithm ROUND_ROBIN --listener ssh-daniel-ranya --protocol TCP --wait 2>&1
+# host=osboxes user=osboxes utc=2026-10-29T03:12:17Z
+
+This listener already has a default pool (HTTP 409) (Request-ID: req-2cbc0914-da47-436e-86c4-ce2d82588819)
+
+[exit 1] 2026-10-29T03:12:22Z

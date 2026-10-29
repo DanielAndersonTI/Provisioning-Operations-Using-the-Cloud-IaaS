@@ -1,0 +1,12 @@
+$ echo 'chave privada:'; ls -l /home/osboxes/.ssh/atividade3-daniel-ranya; echo; echo 'chave publica:'; ls -l /home/osboxes/.ssh/atividade3-daniel-ranya.pub; echo; ssh-keygen -lf /home/osboxes/.ssh/atividade3-daniel-ranya.pub
+# host=osboxes user=osboxes utc=2026-10-29T03:08:36Z
+
+chave privada:
+-rw------- 1 osboxes osboxes 1676 Oct 29 03:08 /home/osboxes/.ssh/atividade3-daniel-ranya
+
+chave publica:
+-rw------- 1 osboxes osboxes 381 Oct 29 03:08 /home/osboxes/.ssh/atividade3-daniel-ranya.pub
+
+2048 SHA256:wtHrA6TDO3pWhlcwIwdZDyNUjd7cAVOO+70TqJGQLVE no comment (RSA)
+
+[exit 0] 2026-10-29T03:08:36Z

@@ -1,0 +1,42 @@
+$ openstack quota show
+# host=osboxes user=osboxes utc=2026-10-29T03:04:48Z
+
++-----------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field                 | Value                                                                                                                                                                                   |
++-----------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| backup-gigabytes      | 0                                                                                                                                                                                       |
+| backups               | 0                                                                                                                                                                                       |
+| cores                 | 64                                                                                                                                                                                      |
+| fixed-ips             | -1                                                                                                                                                                                      |
+| floating-ips          | 15                                                                                                                                                                                      |
+| gigabytes             | 700                                                                                                                                                                                     |
+| gigabytes___DEFAULT__ | -1                                                                                                                                                                                      |
+| groups                | 2                                                                                                                                                                                       |
+| injected-file-size    | 10240                                                                                                                                                                                   |
+| injected-files        | 5                                                                                                                                                                                       |
+| injected-path-size    | 255                                                                                                                                                                                     |
+| instances             | 45                                                                                                                                                                                      |
+| key-pairs             | 100                                                                                                                                                                                     |
+| location              | Munch({'cloud': '', 'region_name': 'RegionOne', 'zone': None, 'project': Munch({'id': '2c593796f29e4b829b1b523775e2fa26', 'name': None, 'domain_id': 'default', 'domain_name': None})}) |
+| networks              | 2                                                                                                                                                                                       |
+| per-volume-gigabytes  | 20                                                                                                                                                                                      |
+| ports                 | 50                                                                                                                                                                                      |
+| project               | 2c593796f29e4b829b1b523775e2fa26                                                                                                                                                        |
+| project_name          | Provisionamento                                                                                                                                                                         |
+| properties            | 128                                                                                                                                                                                     |
+| ram                   | 131072                                                                                                                                                                                  |
+| rbac_policies         | 10                                                                                                                                                                                      |
+| routers               | 1                                                                                                                                                                                       |
+| secgroup-rules        | 250                                                                                                                                                                                     |
+| secgroups             | 50                                                                                                                                                                                      |
+| server-group-members  | 10                                                                                                                                                                                      |
+| server-groups         | 10                                                                                                                                                                                      |
+| snapshots             | 10                                                                                                                                                                                      |
+| snapshots___DEFAULT__ | -1                                                                                                                                                                                      |
+| subnet_pools          | 0                                                                                                                                                                                       |
+| subnets               | 2                                                                                                                                                                                       |
+| volumes               | 35                                                                                                                                                                                      |
+| volumes___DEFAULT__   | -1                                                                                                                                                                                      |
++-----------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+[exit 0] 2026-10-29T03:04:57Z

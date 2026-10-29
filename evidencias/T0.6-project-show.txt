@@ -1,0 +1,18 @@
+$ openstack project show ${OS_PROJECT_ID:-$OS_PROJECT_NAME} 2>&1
+# host=osboxes user=osboxes utc=2026-10-29T03:03:12Z
+
++-------------+-----------------------------------------------+
+| Field       | Value                                         |
++-------------+-----------------------------------------------+
+| description | Responsavel(is): fabio@computacao.ufcg.edu.br |
+| domain_id   | 583c2dadbbd4419bb941fec33d8bca7e              |
+| enabled     | True                                          |
+| id          | 2c593796f29e4b829b1b523775e2fa26              |
+| is_domain   | False                                         |
+| name        | Provisionamento                               |
+| options     | {}                                            |
+| parent_id   | 583c2dadbbd4419bb941fec33d8bca7e              |
+| tags        | []                                            |
++-------------+-----------------------------------------------+
+
+[exit 0] 2026-10-29T03:03:19Z

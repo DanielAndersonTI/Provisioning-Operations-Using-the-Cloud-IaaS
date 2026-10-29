@@ -1,0 +1,5 @@
+$ export DEBIAN_FRONTEND=noninteractive; sudo_run apt-get -o DPkg::Lock::Timeout=180 update -qq && sudo_run apt-get -o DPkg::Lock::Timeout=180 install -y -qq jq curl tmux imagemagick fonts-dejavu-core python3-pip python3-psutil python3-openstackclient 2>&1 | tail -10
+# host=osboxes user=osboxes utc=2026-10-29T03:02:40Z
+
+
+[exit 0] 2026-10-29T03:02:56Z

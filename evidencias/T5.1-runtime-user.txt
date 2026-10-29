@@ -1,0 +1,13 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'getent passwd appsvc; echo; sudo ls -ld /opt/atividade3 /opt/atividade3/apps /var/log/atividade3 /var/log/atividade3/cpu /var/log/atividade3/memory /var/log/atividade3/io'
+# host=osboxes user=osboxes utc=2026-10-29T05:11:45Z
+
+appsvc:x:999:988::/home/appsvc:/usr/sbin/nologin
+
+drwxr-xr-x 3 root   root   4096 Oct 29 03:15 /opt/atividade3
+drwxrwxr-x 5 ubuntu ubuntu 4096 Oct 29 03:15 /opt/atividade3/apps
+drwxr-x--- 5 appsvc appsvc 4096 Oct 29 03:15 /var/log/atividade3
+drwxr-x--- 2 appsvc appsvc 4096 Oct 29 03:16 /var/log/atividade3/cpu
+drwxr-x--- 2 appsvc appsvc 4096 Oct 29 03:16 /var/log/atividade3/io
+drwxr-x--- 2 appsvc appsvc 4096 Oct 29 03:16 /var/log/atividade3/memory
+
+[exit 0] 2026-10-29T05:11:47Z

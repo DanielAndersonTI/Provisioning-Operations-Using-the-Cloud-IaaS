@@ -1,0 +1,17 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo systemctl daemon-reload; sudo systemctl restart app-cpu app-memory app-io; sleep 3; systemctl is-active app-cpu app-memory app-io; echo; systemctl show -p StandardOutput -p StandardError app-cpu app-memory app-io'
+# host=osboxes user=osboxes utc=2026-10-29T03:50:27Z
+
+active
+active
+active
+
+StandardOutput=append
+StandardError=append
+
+StandardOutput=append
+StandardError=append
+
+StandardOutput=append
+StandardError=append
+
+[exit 0] 2026-10-29T03:50:31Z

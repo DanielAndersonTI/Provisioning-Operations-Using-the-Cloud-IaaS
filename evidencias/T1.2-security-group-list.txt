@@ -1,0 +1,19 @@
+$ openstack security group list
+# host=osboxes user=osboxes utc=2026-10-29T03:04:26Z
+
++--------------------------------------+---------------------+----------------------------------------------------------+----------------------------------+------+
+| ID                                   | Name                | Description                                              | Project                          | Tags |
++--------------------------------------+---------------------+----------------------------------------------------------+----------------------------------+------+
+| 14d98a41-4e70-49ee-b929-1f570056209e | worker-node-poi     | worker-node-poi                                          | 2c593796f29e4b829b1b523775e2fa26 | []   |
+| 1c951efc-ba45-42b9-af44-0ac3c2c1d8ee | grupo14-sg          | Acesso SSH a VM do grupo14                               | 2c593796f29e4b829b1b523775e2fa26 | []   |
+| 3ba5c18b-e710-4d22-8757-c11c308a634f | default             | Default security group                                   | 2c593796f29e4b829b1b523775e2fa26 | []   |
+| 4db1dbb6-86d8-4d64-b436-c668b6e9058e | ssh                 |                                                          | 2c593796f29e4b829b1b523775e2fa26 | []   |
+| 7281a3c8-0038-42b1-818c-ebcdc3770620 | master-node-poi     | master-node-poi                                          | 2c593796f29e4b829b1b523775e2fa26 | []   |
+| 8f39a0a7-b6d1-4b68-9efc-57bb6dcab35f | ssh-access          | acesso porf ssh                                          | 2c593796f29e4b829b1b523775e2fa26 | []   |
+| aa9e50d3-1514-406b-8f87-799c4706a704 | sg-grupo-8          | Security group da VM do grupo 8 - POI                    | 2c593796f29e4b829b1b523775e2fa26 | []   |
+| b709a06c-d7ab-46a1-9f33-8686cea6b39c | sg-grupo1           | Security group da VM do Grupo 1 - POI                    | 2c593796f29e4b829b1b523775e2fa26 | []   |
+| c6104f4f-d875-41c0-8c7d-b220d32bc912 | sg-grupo-4          | Security group da VM do grupo 4 - POI                    | 2c593796f29e4b829b1b523775e2fa26 | []   |
+| d4b0d842-ea81-456e-ae5e-b07ac165d6c2 | sg-arthur-pedro-poi | Security group da VM de Arthur e Pedro - Atividade 3 POI | 2c593796f29e4b829b1b523775e2fa26 | []   |
++--------------------------------------+---------------------+----------------------------------------------------------+----------------------------------+------+
+
+[exit 0] 2026-10-29T03:04:29Z

@@ -1,0 +1,32 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo logrotate -f -v /etc/logrotate.d/atividade3 2>&1 | tail -12; echo; sudo ls -l /mnt/atividade3-logs/cpu /mnt/atividade3-logs/memory /mnt/atividade3-logs/io'
+# host=osboxes user=osboxes utc=2026-10-29T03:50:38Z
+
+old log /mnt/atividade3-logs/memory/app.log.5.gz does not exist
+renaming /mnt/atividade3-logs/memory/app.log.4.gz to /mnt/atividade3-logs/memory/app.log.5.gz (rotatecount 7, logstart 1, i 4), 
+old log /mnt/atividade3-logs/memory/app.log.4.gz does not exist
+renaming /mnt/atividade3-logs/memory/app.log.3.gz to /mnt/atividade3-logs/memory/app.log.4.gz (rotatecount 7, logstart 1, i 3), 
+old log /mnt/atividade3-logs/memory/app.log.3.gz does not exist
+renaming /mnt/atividade3-logs/memory/app.log.2.gz to /mnt/atividade3-logs/memory/app.log.3.gz (rotatecount 7, logstart 1, i 2), 
+old log /mnt/atividade3-logs/memory/app.log.2.gz does not exist
+renaming /mnt/atividade3-logs/memory/app.log.1.gz to /mnt/atividade3-logs/memory/app.log.2.gz (rotatecount 7, logstart 1, i 1), 
+old log /mnt/atividade3-logs/memory/app.log.1.gz does not exist
+log /mnt/atividade3-logs/memory/app.log.8.gz doesn't exist -- won't try to dispose of it
+copying /mnt/atividade3-logs/memory/app.log to /mnt/atividade3-logs/memory/app.log.1
+truncating /mnt/atividade3-logs/memory/app.log
+
+/mnt/atividade3-logs/cpu:
+total 4
+-rw-r--r-- 1 root root   0 Oct 29 03:50 app.log
+-rw-r--r-- 1 root root 140 Oct 29 03:50 app.log.1
+
+/mnt/atividade3-logs/io:
+total 4
+-rw-r--r-- 1 root root   0 Oct 29 03:50 app.log
+-rw-r--r-- 1 root root 138 Oct 29 03:50 app.log.1
+
+/mnt/atividade3-logs/memory:
+total 4
+-rw-r--r-- 1 root root   0 Oct 29 03:50 app.log
+-rw-r--r-- 1 root root 144 Oct 29 03:50 app.log.1
+
+[exit 0] 2026-10-29T03:50:39Z

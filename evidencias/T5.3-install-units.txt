@@ -1,0 +1,8 @@
+$ tar czf - -C /home/osboxes/atividade3/payload/units . | ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo tar xzf - -C /etc/systemd/system; sudo chmod 0644 /etc/systemd/system/app-cpu.service /etc/systemd/system/app-memory.service /etc/systemd/system/app-io.service; ls -l /etc/systemd/system/app-*.service'
+# host=osboxes user=osboxes utc=2026-10-29T03:15:56Z
+
+-rw-r--r-- 1 ubuntu ubuntu 747 Oct 29 03:15 /etc/systemd/system/app-cpu.service
+-rw-r--r-- 1 ubuntu ubuntu 742 Oct 29 03:15 /etc/systemd/system/app-io.service
+-rw-r--r-- 1 ubuntu ubuntu 762 Oct 29 03:15 /etc/systemd/system/app-memory.service
+
+[exit 0] 2026-10-29T03:15:57Z

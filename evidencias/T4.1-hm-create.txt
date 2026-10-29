@@ -1,0 +1,6 @@
+$ openstack loadbalancer healthmonitor create --name hm-ssh-daniel-ranya --delay 5 --timeout 4 --max-retries 3 --type TCP pool-ssh-daniel-ranya --wait 2>&1
+# host=osboxes user=osboxes utc=2026-10-29T03:12:23Z
+
+This pool already has a health monitor (HTTP 409) (Request-ID: req-c0a9bccf-98f1-4822-a99a-46131673c86e)
+
+[exit 1] 2026-10-29T03:12:27Z

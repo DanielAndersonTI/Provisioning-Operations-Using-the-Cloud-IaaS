@@ -1,0 +1,12 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo install -d -o root -g root -m 0755 /mnt/atividade3-logs; sudo mount LABEL=a3logs /mnt/atividade3-logs; findmnt /mnt/atividade3-logs; echo; df -h /mnt/atividade3-logs; echo; sudo sh -c "echo volume-ok > /mnt/atividade3-logs/teste.txt"; sudo cat /mnt/atividade3-logs/teste.txt'
+# host=osboxes user=osboxes utc=2026-10-29T03:28:51Z
+
+TARGET               SOURCE   FSTYPE OPTIONS
+/mnt/atividade3-logs /dev/vdb ext4   rw,relatime
+
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vdb        974M   24K  948M   1% /mnt/atividade3-logs
+
+volume-ok
+
+[exit 0] 2026-10-29T03:28:52Z

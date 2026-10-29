@@ -1,0 +1,6 @@
+$ openstack loadbalancer listener create --name ssh-daniel-ranya --protocol TCP --protocol-port 2222 poi-atividades --wait 2>&1
+# host=osboxes user=osboxes utc=2026-10-29T03:12:12Z
+
+Another Listener on this Load Balancer is already using protocol TCP and protocol_port 2222 (HTTP 409) (Request-ID: req-287fcc50-8e39-400f-b043-7db4bc7f33ea)
+
+[exit 1] 2026-10-29T03:12:16Z

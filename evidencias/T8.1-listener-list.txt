@@ -1,0 +1,24 @@
+$ openstack loadbalancer listener list -c name -c protocol -c protocol_port
+# host=osboxes user=osboxes utc=2026-10-29T04:12:38Z
+
++------------------------------+----------+---------------+
+| name                         | protocol | protocol_port |
++------------------------------+----------+---------------+
+|                              | HTTP     |         10080 |
+| listener-ssh-arthur-pedro    | TCP      |         22022 |
+| ssh-grupo1                   | TCP      |          2201 |
+| app-grupo1                   | HTTP     |          8001 |
+| listener-cpu-arthur-pedro    | HTTP     |         18001 |
+| listener-memory-arthur-pedro | HTTP     |         18002 |
+| listener-io-arthur-pedro     | HTTP     |         18003 |
+| ssh-grupo14                  | TCP      |          2214 |
+| app-cpu-grupo14              | TCP      |         14001 |
+| app-memory-grupo14           | TCP      |         14002 |
+| app-io-grupo14               | TCP      |         14003 |
+| ssh-grupo-8                  | TCP      |            22 |
+| ssh-daniel-ranya             | TCP      |          2222 |
+| app-cpu-daniel-ranya         | HTTP     |          8100 |
+| app-memory-daniel-ranya      | HTTP     |          8101 |
++------------------------------+----------+---------------+
+
+[exit 0] 2026-10-29T04:12:44Z

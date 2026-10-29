@@ -1,0 +1,51 @@
+$ openstack loadbalancer show poi-atividades
+# host=osboxes user=osboxes utc=2026-10-29T03:06:19Z
+
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| admin_state_up      | True                                 |
+| availability_zone   | None                                 |
+| created_at          | 2026-10-23T20:17:03                  |
+| description         |                                      |
+| flavor_id           | None                                 |
+| id                  | 57c2b14a-b746-4f34-8719-d0627e409609 |
+| listeners           | 0431f43c-9d2b-40ed-b4da-bc210cddeb07 |
+|                     | 04f34b54-a963-43ca-adf8-5f4b6a1c52be |
+|                     | 30552201-68b6-4a76-a155-77428ffe428b |
+|                     | 33c1231b-ec28-4fe7-bde4-e018762aeeb7 |
+|                     | 386f6cdf-9dae-4e4c-b0fd-0a64bea91125 |
+|                     | 4402b1de-d8d0-491d-99eb-1df9f0783cf5 |
+|                     | 4b4b61d4-81af-46a6-a0fb-b8fee82d5493 |
+|                     | 5295847f-781d-4fde-a055-bedc72053b05 |
+|                     | 6c5cba08-78e5-4360-a9a6-de6701aa3e23 |
+|                     | cd29298e-9a56-4c5f-800e-2747bc8e42f4 |
+|                     | db364b85-4776-4c3b-a446-cfc75b34d6e9 |
+|                     | e2bba6c0-2797-400c-838c-5ef81aa0deaf |
+| name                | poi-atividades                       |
+| operating_status    | ONLINE                               |
+| pools               | 044beb2b-3d69-4db4-ab76-0e5ef789a275 |
+|                     | 07ee17d2-1382-44e2-914c-a971b3755008 |
+|                     | 08ea5359-6a7d-4720-b057-a5d328d58752 |
+|                     | 2a9f5bf7-a0cd-4203-b58a-d98a90c35024 |
+|                     | 2d635055-c13e-45c1-b9f3-3b0681fbbb5f |
+|                     | 3bef6124-9af3-4955-a008-c999fcf51c92 |
+|                     | 48c674d4-dc2c-4589-8ea1-7faef39f3da4 |
+|                     | 8f0a66ee-58e3-430e-bc33-517da148f549 |
+|                     | bc075db5-3aea-482b-911e-e1439c74b2fd |
+|                     | c35b149a-3002-4136-aeaf-30696da03f71 |
+|                     | f066db26-7733-418c-be4d-397a36eaeb74 |
+|                     | f2ea6bbe-c3dc-4cff-9da0-2e7c259601fd |
+| project_id          | 2c593796f29e4b829b1b523775e2fa26     |
+| provider            | amphora                              |
+| provisioning_status | ACTIVE                               |
+| updated_at          | 2026-10-29T02:05:21                  |
+| vip_address         | 10.5.8.242                           |
+| vip_network_id      | 8e9133dd-0907-42f2-866d-c7ad2af7eb9c |
+| vip_port_id         | 7351e4d4-ba2c-4922-a582-e63d3c00410e |
+| vip_qos_policy_id   | None                                 |
+| vip_subnet_id       | 17de9c72-e5dc-4da0-ae0a-013f7e42400e |
+| tags                |                                      |
++---------------------+--------------------------------------+
+
+[exit 0] 2026-10-29T03:06:23Z

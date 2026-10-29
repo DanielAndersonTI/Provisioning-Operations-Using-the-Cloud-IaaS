@@ -1,0 +1,18 @@
+# Credenciais e chaves — nunca versionar
+*.pem
+*.key
+clouds.yaml
+*openrc*.sh
+session.env
+vdi.env
+.env
+
+# Estado local da automação
+__pycache__/
+*.pyc
+.venv/
+
+# Sistema
+Thumbs.db
+desktop.ini
+.vscode/

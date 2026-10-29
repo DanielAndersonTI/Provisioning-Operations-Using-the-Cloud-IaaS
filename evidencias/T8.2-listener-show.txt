@@ -1,0 +1,59 @@
+$ openstack loadbalancer listener list -c name -c protocol -c protocol_port -f table; echo; openstack loadbalancer pool list -c name -c provisioning_status -c operating_status; echo; openstack loadbalancer healthmonitor list -c name -c type -c url_path -c operating_status
+# host=osboxes user=osboxes utc=2026-10-29T03:52:35Z
+
++------------------------------+----------+---------------+
+| name                         | protocol | protocol_port |
++------------------------------+----------+---------------+
+|                              | HTTP     |         10080 |
+| listener-ssh-arthur-pedro    | TCP      |         22022 |
+| ssh-grupo1                   | TCP      |          2201 |
+| app-grupo1                   | HTTP     |          8001 |
+| listener-cpu-arthur-pedro    | HTTP     |         18001 |
+| listener-memory-arthur-pedro | HTTP     |         18002 |
+| listener-io-arthur-pedro     | HTTP     |         18003 |
+| ssh-grupo14                  | TCP      |          2214 |
+| app-cpu-grupo14              | TCP      |         14001 |
+| app-memory-grupo14           | TCP      |         14002 |
+| app-io-grupo14               | TCP      |         14003 |
+| ssh-grupo-8                  | TCP      |            22 |
+| ssh-daniel-ranya             | TCP      |          2222 |
+| app-cpu-daniel-ranya         | HTTP     |          8100 |
+| app-memory-daniel-ranya      | HTTP     |          8101 |
++------------------------------+----------+---------------+
+
++------------------------------+---------------------+
+| name                         | provisioning_status |
++------------------------------+---------------------+
+|                              | ACTIVE              |
+| pool-ssh-arthur-pedro        | ACTIVE              |
+| pool-ssh-grupo1              | ACTIVE              |
+| pool-app-grupo1              | ACTIVE              |
+| pool-cpu-arthur-pedro        | ACTIVE              |
+| pool-memory-arthur-pedro     | ACTIVE              |
+| pool-io-arthur-pedro         | ACTIVE              |
+| pool-ssh-grupo14             | ACTIVE              |
+| pool-cpu-grupo14             | ACTIVE              |
+| pool-memory-grupo14          | ACTIVE              |
+| pool-io-grupo14              | ACTIVE              |
+| pool-ssh-grupo-8             | ACTIVE              |
+| pool-ssh-daniel-ranya        | ACTIVE              |
+| pool-app-cpu-daniel-ranya    | ACTIVE              |
+| pool-app-memory-daniel-ranya | ACTIVE              |
++------------------------------+---------------------+
+
++----------------------------+------+
+| name                       | type |
++----------------------------+------+
+|                            | HTTP |
+| hm-ssh-grupo1              | TCP  |
+| hm-app-grupo1              | HTTP |
+| hm-ssh-grupo14             | TCP  |
+| hm-cpu-grupo14             | HTTP |
+| hm-memory-grupo14          | HTTP |
+| hm-io-grupo14              | HTTP |
+| hm-ssh-daniel-ranya        | TCP  |
+| hm-app-cpu-daniel-ranya    | HTTP |
+| hm-app-memory-daniel-ranya | HTTP |
++----------------------------+------+
+
+[exit 0] 2026-10-29T03:52:46Z

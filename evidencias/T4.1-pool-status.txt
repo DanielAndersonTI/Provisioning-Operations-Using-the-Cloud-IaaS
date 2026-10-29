@@ -1,0 +1,17 @@
+$ openstack loadbalancer pool show pool-ssh-daniel-ranya -c name -c operating_status -c provisioning_status; openstack loadbalancer member list pool-ssh-daniel-ranya
+# host=osboxes user=osboxes utc=2026-10-29T03:12:42Z
+
++---------------------+-----------------------+
+| Field               | Value                 |
++---------------------+-----------------------+
+| name                | pool-ssh-daniel-ranya |
+| operating_status    | ONLINE                |
+| provisioning_status | ACTIVE                |
++---------------------+-----------------------+
++--------------------------------------+-----------------+----------------------------------+---------------------+-----------+---------------+------------------+--------+
+| id                                   | name            | project_id                       | provisioning_status | address   | protocol_port | operating_status | weight |
++--------------------------------------+-----------------+----------------------------------+---------------------+-----------+---------------+------------------+--------+
+| a14c8230-7b4a-4b93-a661-c85045eac7bb | vm-daniel-ranya | 2c593796f29e4b829b1b523775e2fa26 | ACTIVE              | 10.5.9.15 |            22 | ONLINE           |      1 |
++--------------------------------------+-----------------+----------------------------------+---------------------+-----------+---------------+------------------+--------+
+
+[exit 0] 2026-10-29T03:12:52Z

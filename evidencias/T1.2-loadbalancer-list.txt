@@ -1,0 +1,14 @@
+$ openstack loadbalancer list
+# host=osboxes user=osboxes utc=2026-10-29T03:04:33Z
+
+openstack: 'loadbalancer list' is not an openstack command. See 'openstack --help'.
+Did you mean one of these?
+  container create
+  container delete
+  container list
+  container save
+  container set
+  container show
+  container unset
+
+[exit 2] 2026-10-29T03:04:36Z

@@ -1,0 +1,343 @@
+$ openstack loadbalancer status show poi-atividades
+# host=osboxes user=osboxes utc=2026-10-29T03:06:33Z
+
+{
+    "loadbalancer": {
+        "id": "57c2b14a-b746-4f34-8719-d0627e409609",
+        "name": "poi-atividades",
+        "operating_status": "ONLINE",
+        "provisioning_status": "ACTIVE",
+        "listeners": [
+            {
+                "id": "0431f43c-9d2b-40ed-b4da-bc210cddeb07",
+                "name": "listener-memory-arthur-pedro",
+                "operating_status": "ONLINE",
+                "provisioning_status": "ACTIVE",
+                "pools": [
+                    {
+                        "id": "2a9f5bf7-a0cd-4203-b58a-d98a90c35024",
+                        "name": "pool-memory-arthur-pedro",
+                        "provisioning_status": "ACTIVE",
+                        "operating_status": "ONLINE",
+                        "members": [
+                            {
+                                "id": "a3606ba9-924f-40b5-ae09-79ff445402fd",
+                                "name": "membro-memory-arthur-pedro",
+                                "operating_status": "NO_MONITOR",
+                                "provisioning_status": "ACTIVE",
+                                "address": "10.5.9.10",
+                                "protocol_port": 8002
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "04f34b54-a963-43ca-adf8-5f4b6a1c52be",
+                "name": "app-grupo1",
+                "operating_status": "ONLINE",
+                "provisioning_status": "ACTIVE",
+                "pools": [
+                    {
+                        "id": "8f0a66ee-58e3-430e-bc33-517da148f549",
+                        "name": "pool-app-grupo1",
+                        "provisioning_status": "ACTIVE",
+                        "operating_status": "ONLINE",
+                        "health_monitor": {
+                            "id": "186d7b39-466b-4f02-afdd-de6bce3dfee5",
+                            "name": "hm-app-grupo1",
+                            "type": "HTTP",
+                            "provisioning_status": "ACTIVE",
+                            "operating_status": "ONLINE"
+                        },
+                        "members": [
+                            {
+                                "id": "939a4662-6e97-4d33-b6d2-a4fab6c8a1fd",
+                                "name": "vm-grupo1-app",
+                                "operating_status": "ONLINE",
+                                "provisioning_status": "ACTIVE",
+                                "address": "10.5.9.156",
+                                "protocol_port": 3000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "30552201-68b6-4a76-a155-77428ffe428b",
+                "name": "ssh-grupo-8",
+                "operating_status": "ONLINE",
+                "provisioning_status": "ACTIVE",
+                "pools": [
+                    {
+                        "id": "044beb2b-3d69-4db4-ab76-0e5ef789a275",
+                        "name": "pool-ssh-grupo-8",
+                        "provisioning_status": "ACTIVE",
+                        "operating_status": "ONLINE",
+                        "members": [
+                            {
+                                "id": "933edd74-28d0-4e73-88fa-63e1cbf680c0",
+                                "name": "vm-grupo-8",
+                                "operating_status": "NO_MONITOR",
+                                "provisioning_status": "ACTIVE",
+                                "address": "10.5.9.169",
+                                "protocol_port": 22
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "33c1231b-ec28-4fe7-bde4-e018762aeeb7",
+                "name": "ssh-grupo1",
+                "operating_status": "ONLINE",
+                "provisioning_status": "ACTIVE",
+                "pools": [
+                    {
+                        "id": "2d635055-c13e-45c1-b9f3-3b0681fbbb5f",
+                        "name": "pool-ssh-grupo1",
+                        "provisioning_status": "ACTIVE",
+                        "operating_status": "ONLINE",
+                        "health_monitor": {
+                            "id": "3fc6e48b-c868-4d69-bff6-3abefac166a6",
+                            "name": "hm-ssh-grupo1",
+                            "type": "TCP",
+                            "provisioning_status": "ACTIVE",
+                            "operating_status": "ONLINE"
+                        },
+                        "members": [
+                            {
+                                "id": "007ff396-2571-457b-a317-27ee78a57a5a",
+                                "name": "vm-grupo1-ssh",
+                                "operating_status": "ONLINE",
+                                "provisioning_status": "ACTIVE",
+                                "address": "10.5.9.156",
+                                "protocol_port": 22
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "386f6cdf-9dae-4e4c-b0fd-0a64bea91125",
+                "name": "app-memory-grupo14",
+                "operating_status": "ONLINE",
+                "provisioning_status": "ACTIVE",
+                "pools": [
+                    {
+                        "id": "08ea5359-6a7d-4720-b057-a5d328d58752",
+                        "name": "pool-memory-grupo14",
+                        "provisioning_status": "ACTIVE",
+                        "operating_status": "ONLINE",
+                        "health_monitor": {
+                            "id": "012a6ea9-f534-441c-b859-c6c10a33fd35",
+                            "name": "hm-memory-grupo14",
+                            "type": "HTTP",
+                            "provisioning_status": "ACTIVE",
+                            "operating_status": "ONLINE"
+                        },
+                        "members": [
+                            {
+                                "id": "ab8e3638-8cbc-4c60-b2b0-c91c1b67eb50",
+                                "name": "vm-grupo14",
+                                "operating_status": "ONLINE",
+                                "provisioning_status": "ACTIVE",
+                                "address": "10.5.10.184",
+                                "protocol_port": 8002
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "4402b1de-d8d0-491d-99eb-1df9f0783cf5",
+                "name": "ssh-grupo14",
+                "operating_status": "ONLINE",
+                "provisioning_status": "ACTIVE",
+                "pools": [
+                    {
+                        "id": "07ee17d2-1382-44e2-914c-a971b3755008",
+                        "name": "pool-ssh-grupo14",
+                        "provisioning_status": "ACTIVE",
+                        "operating_status": "ONLINE",
+                        "health_monitor": {
+                            "id": "d4199d84-5daf-47c9-9ab7-64b134bf6bdb",
+                            "name": "hm-ssh-grupo14",
+                            "type": "TCP",
+                            "provisioning_status": "ACTIVE",
+                            "operating_status": "ONLINE"
+                        },
+                        "members": [
+                            {
+                                "id": "183e9006-9fe6-4a31-8ca8-e1685bfa1e90",
+                                "name": "vm-grupo14",
+                                "operating_status": "ONLINE",
+                                "provisioning_status": "ACTIVE",
+                                "address": "10.5.10.184",
+                                "protocol_port": 22
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "4b4b61d4-81af-46a6-a0fb-b8fee82d5493",
+                "name": "listener-ssh-arthur-pedro",
+                "operating_status": "ONLINE",
+                "provisioning_status": "ACTIVE",
+                "pools": [
+                    {
+                        "id": "f066db26-7733-418c-be4d-397a36eaeb74",
+                        "name": "pool-ssh-arthur-pedro",
+                        "provisioning_status": "ACTIVE",
+                        "operating_status": "ONLINE",
+                        "members": [
+                            {
+                                "id": "0f1ff044-b6fc-435a-a442-a4ae690b81b1",
+                                "name": "membro-ssh-arthur-pedro",
+                                "operating_status": "NO_MONITOR",
+                                "provisioning_status": "ACTIVE",
+                                "address": "10.5.9.10",
+                                "protocol_port": 22
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "5295847f-781d-4fde-a055-bedc72053b05",
+                "name": "",
+                "operating_status": "ONLINE",
+                "provisioning_status": "ACTIVE",
+                "pools": [
+                    {
+                        "id": "3bef6124-9af3-4955-a008-c999fcf51c92",
+                        "name": "",
+                        "provisioning_status": "ACTIVE",
+                        "operating_status": "ONLINE",
+                        "health_monitor": {
+                            "id": "3ce4a497-bc99-4bd7-998e-538a093ea415",
+                            "name": "",
+                            "type": "HTTP",
+                            "provisioning_status": "ACTIVE",
+                            "operating_status": "ONLINE"
+                        },
+                        "members": []
+                    }
+                ]
+            },
+            {
+                "id": "6c5cba08-78e5-4360-a9a6-de6701aa3e23",
+                "name": "listener-io-arthur-pedro",
+                "operating_status": "ONLINE",
+                "provisioning_status": "ACTIVE",
+                "pools": [
+                    {
+                        "id": "c35b149a-3002-4136-aeaf-30696da03f71",
+                        "name": "pool-io-arthur-pedro",
+                        "provisioning_status": "ACTIVE",
+                        "operating_status": "ONLINE",
+                        "members": [
+                            {
+                                "id": "ba5cb6fd-4195-46f6-86fa-5856bde6ef8f",
+                                "name": "membro-io-arthur-pedro",
+                                "operating_status": "NO_MONITOR",
+                                "provisioning_status": "ACTIVE",
+                                "address": "10.5.9.10",
+                                "protocol_port": 8003
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "cd29298e-9a56-4c5f-800e-2747bc8e42f4",
+                "name": "listener-cpu-arthur-pedro",
+                "operating_status": "ONLINE",
+                "provisioning_status": "ACTIVE",
+                "pools": [
+                    {
+                        "id": "48c674d4-dc2c-4589-8ea1-7faef39f3da4",
+                        "name": "pool-cpu-arthur-pedro",
+                        "provisioning_status": "ACTIVE",
+                        "operating_status": "ONLINE",
+                        "members": [
+                            {
+                                "id": "5c2b679f-9c06-4bf4-98de-59ce7fb6aca8",
+                                "name": "membro-cpu-arthur-pedro",
+                                "operating_status": "NO_MONITOR",
+                                "provisioning_status": "ACTIVE",
+                                "address": "10.5.9.10",
+                                "protocol_port": 8001
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "db364b85-4776-4c3b-a446-cfc75b34d6e9",
+                "name": "app-io-grupo14",
+                "operating_status": "ONLINE",
+                "provisioning_status": "ACTIVE",
+                "pools": [
+                    {
+                        "id": "bc075db5-3aea-482b-911e-e1439c74b2fd",
+                        "name": "pool-io-grupo14",
+                        "provisioning_status": "ACTIVE",
+                        "operating_status": "ONLINE",
+                        "health_monitor": {
+                            "id": "ce2ec163-46e0-49d7-ae9b-fa00555d7e7a",
+                            "name": "hm-io-grupo14",
+                            "type": "HTTP",
+                            "provisioning_status": "ACTIVE",
+                            "operating_status": "ONLINE"
+                        },
+                        "members": [
+                            {
+                                "id": "2d78264f-60f8-4fc1-b236-f946b70f41b8",
+                                "name": "vm-grupo14",
+                                "operating_status": "ONLINE",
+                                "provisioning_status": "ACTIVE",
+                                "address": "10.5.10.184",
+                                "protocol_port": 8003
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "e2bba6c0-2797-400c-838c-5ef81aa0deaf",
+                "name": "app-cpu-grupo14",
+                "operating_status": "ONLINE",
+                "provisioning_status": "ACTIVE",
+                "pools": [
+                    {
+                        "id": "f2ea6bbe-c3dc-4cff-9da0-2e7c259601fd",
+                        "name": "pool-cpu-grupo14",
+                        "provisioning_status": "ACTIVE",
+                        "operating_status": "ONLINE",
+                        "health_monitor": {
+                            "id": "af90d5d8-06eb-45a9-9d20-a2095ed4c549",
+                            "name": "hm-cpu-grupo14",
+                            "type": "HTTP",
+                            "provisioning_status": "ACTIVE",
+                            "operating_status": "ONLINE"
+                        },
+                        "members": [
+                            {
+                                "id": "989716d5-5855-470d-8628-1f6ccf45247c",
+                                "name": "vm-grupo14",
+                                "operating_status": "ONLINE",
+                                "provisioning_status": "ACTIVE",
+                                "address": "10.5.10.184",
+                                "protocol_port": 8001
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+[exit 0] 2026-10-29T03:06:37Z

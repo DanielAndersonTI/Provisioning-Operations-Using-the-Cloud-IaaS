@@ -1,0 +1,27 @@
+$ hostnamectl; echo; uname -a; echo; whoami; id; echo; nproc; free -m | head -2; echo; df -h / | tail -1
+# host=osboxes user=osboxes utc=2026-10-29T03:02:25Z
+
+ Static hostname: osboxes
+       Icon name: computer-vm
+         Chassis: vm
+      Machine ID: d65d2c9bb0c644bb897a44eb78fa79c1
+         Boot ID: 88f499070c364754a0f0842595726b26
+  Virtualization: oracle
+Operating System: Ubuntu 22.04 LTS
+          Kernel: Linux 5.15.0-25-generic
+    Architecture: x86-64
+ Hardware Vendor: innotek GmbH
+  Hardware Model: VirtualBox
+
+Linux osboxes 5.15.0-25-generic #25-Ubuntu SMP Wed Mar 30 15:54:22 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+
+osboxes
+uid=1000(osboxes) gid=1000(osboxes) groups=1000(osboxes),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),110(lxd)
+
+2
+               total        used        free      shared  buff/cache   available
+Mem:            1977         285          73           0        1618        1508
+
+/dev/sda2       232G  9.6G  210G   5% /
+
+[exit 0] 2026-10-29T03:02:25Z

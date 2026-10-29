@@ -1,0 +1,23 @@
+$ python3 scripts/load_test.py --url http://150.165.85.77:8100/work?size=10 --concurrency 1 --duration 45
+# host=osboxes user=osboxes utc=2026-10-29T05:31:03Z
+
+aplicacao        : cpu-c1
+url              : http://150.165.85.77:8100/work?size=10
+concorrencia     : 1 cliente(s)
+janela medida    : 45.0 s (mais aquecimento descartado)
+
+requisicoes      : 413
+sucessos         : 413
+erros            : 0 
+taxa de erro     : 0.0
+vazao (rps)      : 9.1698 (sucesso) / 9.1698 (total)
+latencia media   : 109.039 ms
+latencia p50/p95 : 109.772 / 116.918 ms
+latencia p99/max : 124.478 / 130.469 ms
+
+amostras do monitor: 252 (intervalo de 0,5 s)
+cpu da VM        : media  43.2%  pico  66.0%
+memoria da VM    : media  17.8%  pico  18.4%
+swap em uso      : media   0.0 MiB pico   0.0 MiB
+
+[exit 0] 2026-10-29T05:31:03Z

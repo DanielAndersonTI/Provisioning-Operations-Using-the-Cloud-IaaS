@@ -1,0 +1,11 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo umount /mnt/atividade3-logs 2>/dev/null; sudo mount -a; findmnt /mnt/atividade3-logs; echo; sudo cat /mnt/atividade3-logs/teste.txt; echo; sudo systemctl daemon-reload; systemctl list-units --type=mount --all | grep -i atividade || true'
+# host=osboxes user=osboxes utc=2026-10-29T03:36:50Z
+
+TARGET               SOURCE   FSTYPE OPTIONS
+/mnt/atividade3-logs /dev/vdb ext4   rw,relatime
+
+volume-ok
+
+  mnt-atividade3\x2dlogs.mount                                               loaded    active   mounted /mnt/atividade3-logs
+
+[exit 0] 2026-10-29T03:36:53Z

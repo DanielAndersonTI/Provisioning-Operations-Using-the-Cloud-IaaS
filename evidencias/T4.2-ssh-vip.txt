@@ -1,0 +1,11 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=15 -o BatchMode=yes ubuntu@150.165.85.77 'hostname; uname -a; head -2 /etc/os-release'
+# host=osboxes utc=2026-10-29T03:12:52Z
+
+tentativa 1...
+Warning: Permanently added '[150.165.85.77]:2222' (ED25519) to the list of known hosts.
+vm-daniel-ranya
+Linux vm-daniel-ranya 6.8.0-87-generic #88-Ubuntu SMP PREEMPT_DYNAMIC Sat Oct 11 09:28:41 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+PRETTY_NAME="Ubuntu 24.04.3 LTS"
+NAME="Ubuntu"
+
+[exit 0] 2026-10-29T03:12:53Z

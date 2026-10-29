@@ -1,0 +1,12 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'systemctl list-timers logrotate.timer --no-pager; echo; systemctl is-enabled logrotate.timer'
+# host=osboxes user=osboxes utc=2026-10-29T03:50:40Z
+
+NEXT                        LEFT LAST                        PASSED UNIT            ACTIVATES
+Fri 2026-10-30 00:00:00 UTC  20h Thu 2026-10-29 03:10:14 UTC      - logrotate.timer logrotate.service
+
+1 timers listed.
+Pass --all to see loaded but inactive timers, too.
+
+enabled
+
+[exit 0] 2026-10-29T03:50:40Z

@@ -1,0 +1,21 @@
+$ openstack loadbalancer listener list
+# host=osboxes user=osboxes utc=2026-10-29T03:06:23Z
+
++--------------------------------------+--------------------------------------+------------------------------+----------------------------------+----------+---------------+----------------+
+| id                                   | default_pool_id                      | name                         | project_id                       | protocol | protocol_port | admin_state_up |
++--------------------------------------+--------------------------------------+------------------------------+----------------------------------+----------+---------------+----------------+
+| 5295847f-781d-4fde-a055-bedc72053b05 | 3bef6124-9af3-4955-a008-c999fcf51c92 |                              | 2c593796f29e4b829b1b523775e2fa26 | HTTP     |         10080 | True           |
+| 4b4b61d4-81af-46a6-a0fb-b8fee82d5493 | f066db26-7733-418c-be4d-397a36eaeb74 | listener-ssh-arthur-pedro    | 2c593796f29e4b829b1b523775e2fa26 | TCP      |         22022 | True           |
+| 33c1231b-ec28-4fe7-bde4-e018762aeeb7 | 2d635055-c13e-45c1-b9f3-3b0681fbbb5f | ssh-grupo1                   | 2c593796f29e4b829b1b523775e2fa26 | TCP      |          2201 | True           |
+| 04f34b54-a963-43ca-adf8-5f4b6a1c52be | 8f0a66ee-58e3-430e-bc33-517da148f549 | app-grupo1                   | 2c593796f29e4b829b1b523775e2fa26 | HTTP     |          8001 | True           |
+| cd29298e-9a56-4c5f-800e-2747bc8e42f4 | 48c674d4-dc2c-4589-8ea1-7faef39f3da4 | listener-cpu-arthur-pedro    | 2c593796f29e4b829b1b523775e2fa26 | HTTP     |         18001 | True           |
+| 0431f43c-9d2b-40ed-b4da-bc210cddeb07 | 2a9f5bf7-a0cd-4203-b58a-d98a90c35024 | listener-memory-arthur-pedro | 2c593796f29e4b829b1b523775e2fa26 | HTTP     |         18002 | True           |
+| 6c5cba08-78e5-4360-a9a6-de6701aa3e23 | c35b149a-3002-4136-aeaf-30696da03f71 | listener-io-arthur-pedro     | 2c593796f29e4b829b1b523775e2fa26 | HTTP     |         18003 | True           |
+| 4402b1de-d8d0-491d-99eb-1df9f0783cf5 | 07ee17d2-1382-44e2-914c-a971b3755008 | ssh-grupo14                  | 2c593796f29e4b829b1b523775e2fa26 | TCP      |          2214 | True           |
+| e2bba6c0-2797-400c-838c-5ef81aa0deaf | f2ea6bbe-c3dc-4cff-9da0-2e7c259601fd | app-cpu-grupo14              | 2c593796f29e4b829b1b523775e2fa26 | TCP      |         14001 | True           |
+| 386f6cdf-9dae-4e4c-b0fd-0a64bea91125 | 08ea5359-6a7d-4720-b057-a5d328d58752 | app-memory-grupo14           | 2c593796f29e4b829b1b523775e2fa26 | TCP      |         14002 | True           |
+| db364b85-4776-4c3b-a446-cfc75b34d6e9 | bc075db5-3aea-482b-911e-e1439c74b2fd | app-io-grupo14               | 2c593796f29e4b829b1b523775e2fa26 | TCP      |         14003 | True           |
+| 30552201-68b6-4a76-a155-77428ffe428b | 044beb2b-3d69-4db4-ab76-0e5ef789a275 | ssh-grupo-8                  | 2c593796f29e4b829b1b523775e2fa26 | TCP      |            22 | True           |
++--------------------------------------+--------------------------------------+------------------------------+----------------------------------+----------+---------------+----------------+
+
+[exit 0] 2026-10-29T03:06:27Z

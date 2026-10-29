@@ -1,0 +1,12 @@
+$ openstack loadbalancer member list pool-app-cpu-daniel-ranya -c name -c operating_status; echo; curl -sS -m 10 -o /dev/null -w 'GET /health pela VIP -> HTTP %{http_code}\n' http://150.165.85.77:8100/health || true
+# host=osboxes user=osboxes utc=2026-10-29T04:17:30Z
+
++-----------------+------------------+
+| name            | operating_status |
++-----------------+------------------+
+| vm-daniel-ranya | ERROR            |
++-----------------+------------------+
+
+GET /health pela VIP -> HTTP 503
+
+[exit 0] 2026-10-29T04:17:41Z

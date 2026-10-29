@@ -1,0 +1,15 @@
+$ cat /home/osboxes/atividade3/payload/logs/logrotate/atividade3 | ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo tee /etc/logrotate.d/atividade3 >/dev/null; sudo chmod 0644 /etc/logrotate.d/atividade3; cat /etc/logrotate.d/atividade3'
+# host=osboxes user=osboxes utc=2026-10-29T03:50:36Z
+
+/mnt/atividade3-logs/*/app.log {
+    daily
+    rotate 7
+    maxsize 10M
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}
+
+[exit 0] 2026-10-29T03:50:37Z

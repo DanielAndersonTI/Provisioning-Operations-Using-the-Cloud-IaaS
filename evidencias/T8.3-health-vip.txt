@@ -1,0 +1,8 @@
+$ for p in 8100:CPU 8101:MEMORY 8102:IO; do port=${p%%:*}; name=${p##*:}; printf '%-7s %s ' "$name" "$port"; curl -sS -m 10 -w ' HTTP %{http_code} em %{time_total}s\n' http://150.165.85.77:$port/health; done
+# host=osboxes user=osboxes utc=2026-10-29T04:16:38Z
+
+CPU     8100 {"status": "ok", "profile": "cpu"} HTTP 200 em 0.057258s
+MEMORY  8101 {"status": "ok", "profile": "memory"} HTTP 200 em 0.045941s
+IO      8102 {"status": "ok", "profile": "io"} HTTP 200 em 0.046100s
+
+[exit 0] 2026-10-29T04:16:38Z

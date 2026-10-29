@@ -1,0 +1,112 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'systemctl cat app-cpu app-memory app-io'
+# host=osboxes user=osboxes utc=2026-10-29T05:50:58Z
+
+# /etc/systemd/system/app-cpu.service
+[Unit]
+Description=Atividade 3 - aplicacao cpu (porta 8000)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=appsvc
+Group=appsvc
+WorkingDirectory=/opt/atividade3/apps
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /opt/atividade3/apps/cpu/server.py --port 8000
+Restart=on-failure
+RestartSec=2
+TimeoutStopSec=5
+StandardOutput=append:/var/log/atividade3/cpu/app.log
+StandardError=append:/var/log/atividade3/cpu/app.log
+
+# Endurecimento. A aplicacao precisa apenas de rede, de CPU e do proprio /tmp
+# privado; nada em /opt e reescrito em tempo de execucao.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=full
+ReadWritePaths=/var/log/atividade3/cpu
+
+[Install]
+WantedBy=multi-user.target
+
+# /etc/systemd/system/app-cpu.service.d/volume-logs.conf
+[Service]
+StandardOutput=append:/mnt/atividade3-logs/cpu/app.log
+StandardError=append:/mnt/atividade3-logs/cpu/app.log
+ReadWritePaths=/var/log/atividade3/cpu /mnt/atividade3-logs/cpu
+
+# /etc/systemd/system/app-memory.service
+[Unit]
+Description=Atividade 3 - aplicacao memory (porta 8001)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=appsvc
+Group=appsvc
+WorkingDirectory=/opt/atividade3/apps
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /opt/atividade3/apps/memory/server.py --port 8001
+Restart=on-failure
+RestartSec=2
+TimeoutStopSec=5
+StandardOutput=append:/var/log/atividade3/memory/app.log
+StandardError=append:/var/log/atividade3/memory/app.log
+
+# Endurecimento. A aplicacao precisa apenas de rede, de CPU e do proprio /tmp
+# privado; nada em /opt e reescrito em tempo de execucao.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=full
+ReadWritePaths=/var/log/atividade3/memory
+
+[Install]
+WantedBy=multi-user.target
+
+# /etc/systemd/system/app-memory.service.d/volume-logs.conf
+[Service]
+StandardOutput=append:/mnt/atividade3-logs/memory/app.log
+StandardError=append:/mnt/atividade3-logs/memory/app.log
+ReadWritePaths=/var/log/atividade3/memory /mnt/atividade3-logs/memory
+
+# /etc/systemd/system/app-io.service
+[Unit]
+Description=Atividade 3 - aplicacao io (porta 8002)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=appsvc
+Group=appsvc
+WorkingDirectory=/opt/atividade3/apps
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /opt/atividade3/apps/io/server.py --port 8002
+Restart=on-failure
+RestartSec=2
+TimeoutStopSec=5
+StandardOutput=append:/var/log/atividade3/io/app.log
+StandardError=append:/var/log/atividade3/io/app.log
+
+# Endurecimento. A aplicacao precisa apenas de rede, de CPU e do proprio /tmp
+# privado; nada em /opt e reescrito em tempo de execucao.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=full
+ReadWritePaths=/var/log/atividade3/io
+
+[Install]
+WantedBy=multi-user.target
+
+# /etc/systemd/system/app-io.service.d/volume-logs.conf
+[Service]
+StandardOutput=append:/mnt/atividade3-logs/io/app.log
+StandardError=append:/mnt/atividade3-logs/io/app.log
+ReadWritePaths=/var/log/atividade3/io /mnt/atividade3-logs/io
+
+[exit 0] 2026-10-29T05:50:59Z

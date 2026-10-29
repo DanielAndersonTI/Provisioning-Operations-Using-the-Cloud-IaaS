@@ -1,0 +1,23 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'uptime -p; echo; findmnt /mnt/atividade3-logs; echo; ls -l /mnt/atividade3-logs; echo; sudo cat /mnt/atividade3-logs/marca-antes-do-reboot.txt; echo; df -h /mnt/atividade3-logs; echo; systemctl is-active app-cpu app-memory app-io'
+# host=osboxes user=osboxes utc=2026-10-29T03:37:50Z
+
+up 0 minutes
+
+TARGET               SOURCE   FSTYPE OPTIONS
+/mnt/atividade3-logs /dev/vdb ext4   rw,relatime
+
+total 24
+drwx------ 2 root root 16384 Oct 29 03:28 lost+found
+-rw-r--r-- 1 root root    21 Oct 29 03:36 marca-antes-do-reboot.txt
+-rw-r--r-- 1 root root    10 Oct 29 03:28 teste.txt
+
+2026-10-29T03:36:57Z
+
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vdb        974M   32K  948M   1% /mnt/atividade3-logs
+
+active
+active
+active
+
+[exit 0] 2026-10-29T03:37:50Z

@@ -1,0 +1,21 @@
+$ openstack loadbalancer pool list
+# host=osboxes user=osboxes utc=2026-10-29T03:06:27Z
+
++--------------------------------------+--------------------------+----------------------------------+---------------------+----------+--------------+----------------+
+| id                                   | name                     | project_id                       | provisioning_status | protocol | lb_algorithm | admin_state_up |
++--------------------------------------+--------------------------+----------------------------------+---------------------+----------+--------------+----------------+
+| 3bef6124-9af3-4955-a008-c999fcf51c92 |                          | 2c593796f29e4b829b1b523775e2fa26 | ACTIVE              | HTTP     | ROUND_ROBIN  | True           |
+| f066db26-7733-418c-be4d-397a36eaeb74 | pool-ssh-arthur-pedro    | 2c593796f29e4b829b1b523775e2fa26 | ACTIVE              | TCP      | ROUND_ROBIN  | True           |
+| 2d635055-c13e-45c1-b9f3-3b0681fbbb5f | pool-ssh-grupo1          | 2c593796f29e4b829b1b523775e2fa26 | ACTIVE              | TCP      | ROUND_ROBIN  | True           |
+| 8f0a66ee-58e3-430e-bc33-517da148f549 | pool-app-grupo1          | 2c593796f29e4b829b1b523775e2fa26 | ACTIVE              | HTTP     | ROUND_ROBIN  | True           |
+| 48c674d4-dc2c-4589-8ea1-7faef39f3da4 | pool-cpu-arthur-pedro    | 2c593796f29e4b829b1b523775e2fa26 | ACTIVE              | HTTP     | ROUND_ROBIN  | True           |
+| 2a9f5bf7-a0cd-4203-b58a-d98a90c35024 | pool-memory-arthur-pedro | 2c593796f29e4b829b1b523775e2fa26 | ACTIVE              | HTTP     | ROUND_ROBIN  | True           |
+| c35b149a-3002-4136-aeaf-30696da03f71 | pool-io-arthur-pedro     | 2c593796f29e4b829b1b523775e2fa26 | ACTIVE              | HTTP     | ROUND_ROBIN  | True           |
+| 07ee17d2-1382-44e2-914c-a971b3755008 | pool-ssh-grupo14         | 2c593796f29e4b829b1b523775e2fa26 | ACTIVE              | TCP      | ROUND_ROBIN  | True           |
+| f2ea6bbe-c3dc-4cff-9da0-2e7c259601fd | pool-cpu-grupo14         | 2c593796f29e4b829b1b523775e2fa26 | ACTIVE              | TCP      | ROUND_ROBIN  | True           |
+| 08ea5359-6a7d-4720-b057-a5d328d58752 | pool-memory-grupo14      | 2c593796f29e4b829b1b523775e2fa26 | ACTIVE              | TCP      | ROUND_ROBIN  | True           |
+| bc075db5-3aea-482b-911e-e1439c74b2fd | pool-io-grupo14          | 2c593796f29e4b829b1b523775e2fa26 | ACTIVE              | TCP      | ROUND_ROBIN  | True           |
+| 044beb2b-3d69-4db4-ab76-0e5ef789a275 | pool-ssh-grupo-8         | 2c593796f29e4b829b1b523775e2fa26 | ACTIVE              | TCP      | ROUND_ROBIN  | True           |
++--------------------------------------+--------------------------+----------------------------------+---------------------+----------+--------------+----------------+
+
+[exit 0] 2026-10-29T03:06:30Z

@@ -1,0 +1,7 @@
+$ cat scripts/monitor.py | ssh ... 'sudo tee /opt/atividade3/scripts/monitor.py'
+# host=osboxes user=osboxes utc=2026-10-29T05:29:58Z
+
+sintaxe ok
+119 /opt/atividade3/scripts/monitor.py
+
+[exit 0] 2026-10-29T05:29:58Z

@@ -1,0 +1,7 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo systemctl stop app-cpu; systemctl is-active app-cpu; echo "aplicacao parada; o monitor deve marcar o membro como indisponivel"'
+# host=osboxes user=osboxes utc=2026-10-29T04:16:45Z
+
+inactive
+aplicacao parada; o monitor deve marcar o membro como indisponivel
+
+[exit 0] 2026-10-29T04:16:45Z

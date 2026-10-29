@@ -1,0 +1,17 @@
+$ openstack server list --all-projects 2>/dev/null || openstack server list
+# host=osboxes user=osboxes utc=2026-10-29T03:03:50Z
+
++--------------------------------------+---------------------+--------+----------------------+--------------------------+----------------+
+| ID                                   | Name                | Status | Networks             | Image                    | Flavor         |
++--------------------------------------+---------------------+--------+----------------------+--------------------------+----------------+
+| a27a23a5-b84f-4f1e-8097-bb1dfb4ec43b | vm-grupo-8          | ACTIVE | provider=10.5.9.169  | ubuntu-24.04             | general.small  |
+| 7a9bec71-7c6f-4c8d-af9b-90f8ab18883d | vm-grupo-4          | ACTIVE | provider=10.5.10.161 | ubuntu-24.04             | general.small  |
+| ce2f802f-7bd1-4ff0-9760-b54356396f50 | grupo14-vm          | ACTIVE | provider=10.5.10.184 | ubuntu-24.04             | general.small  |
+| 9eb3dcd9-3023-45a3-9396-11318c65370b | vm-grupo1           | ACTIVE | provider=10.5.9.156  | ubuntu-24.04             | general.small  |
+| 3813a680-be44-4444-8a97-a8131fc081f9 | vm-arthur-pedro-poi | ACTIVE | provider=10.5.9.10   | ubuntu-24.04             | general.small  |
+| 34dc4f6b-b061-4889-8629-3736d562a52b | worker-2            | ACTIVE | provider=10.5.8.111  | N/A (booted from volume) | general.large  |
+| 72fd6063-0235-45a3-8515-5ac98682ccbf | worker-1            | ACTIVE | provider=10.5.8.79   | N/A (booted from volume) | general.large  |
+| 27736a14-3c91-43a0-bd28-9110852b3161 | control-plane       | ACTIVE | provider=10.5.9.37   | N/A (booted from volume) | general.medium |
++--------------------------------------+---------------------+--------+----------------------+--------------------------+----------------+
+
+[exit 0] 2026-10-29T03:03:59Z

@@ -1,0 +1,6 @@
+$ openstack loadbalancer member create --name vm-daniel-ranya --subnet-id 17de9c72-e5dc-4da0-ae0a-013f7e42400e --address 10.5.9.15 --protocol-port 22 pool-ssh-daniel-ranya --wait 2>&1
+# host=osboxes user=osboxes utc=2026-10-29T03:12:29Z
+
+Another member on this pool is already using ip 10.5.9.15 on protocol_port 22 (HTTP 409) (Request-ID: req-79e8da79-dbbd-4fee-888e-a96162819273)
+
+[exit 1] 2026-10-29T03:12:35Z

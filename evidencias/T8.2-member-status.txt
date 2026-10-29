@@ -1,0 +1,23 @@
+$ for pool in pool-app-cpu-daniel-ranya pool-app-memory-daniel-ranya pool-app-io-daniel-ranya; do echo "== $pool"; openstack loadbalancer member list $pool -c name -c address -c protocol_port -c operating_status; done
+# host=osboxes user=osboxes utc=2026-10-29T04:16:09Z
+
+== pool-app-cpu-daniel-ranya
++-----------------+-----------+---------------+------------------+
+| name            | address   | protocol_port | operating_status |
++-----------------+-----------+---------------+------------------+
+| vm-daniel-ranya | 10.5.9.15 |          8000 | ONLINE           |
++-----------------+-----------+---------------+------------------+
+== pool-app-memory-daniel-ranya
++-----------------+-----------+---------------+------------------+
+| name            | address   | protocol_port | operating_status |
++-----------------+-----------+---------------+------------------+
+| vm-daniel-ranya | 10.5.9.15 |          8001 | ONLINE           |
++-----------------+-----------+---------------+------------------+
+== pool-app-io-daniel-ranya
++-----------------+-----------+---------------+------------------+
+| name            | address   | protocol_port | operating_status |
++-----------------+-----------+---------------+------------------+
+| vm-daniel-ranya | 10.5.9.15 |          8002 | ONLINE           |
++-----------------+-----------+---------------+------------------+
+
+[exit 0] 2026-10-29T04:16:37Z

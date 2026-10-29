@@ -1,0 +1,10 @@
+$ tar czf - -C /home/osboxes/atividade3 apps | ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo tar xzf - -C /opt/atividade3; find /opt/atividade3/apps -type f | sort; du -sh /opt/atividade3/apps'
+# host=osboxes user=osboxes utc=2026-10-29T03:15:52Z
+
+/opt/atividade3/apps/cpu/server.py
+/opt/atividade3/apps/io/server.py
+/opt/atividade3/apps/memory/server.py
+/opt/atividade3/apps/server.py
+40K	/opt/atividade3/apps
+
+[exit 0] 2026-10-29T03:15:53Z

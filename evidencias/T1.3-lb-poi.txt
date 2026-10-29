@@ -1,0 +1,14 @@
+$ openstack loadbalancer show poi-atividades 2>&1
+# host=osboxes user=osboxes utc=2026-10-29T03:05:05Z
+
+openstack: 'loadbalancer show poi-atividades' is not an openstack command. See 'openstack --help'.
+Did you mean one of these?
+  container create
+  container delete
+  container list
+  container save
+  container set
+  container show
+  container unset
+
+[exit 2] 2026-10-29T03:05:07Z

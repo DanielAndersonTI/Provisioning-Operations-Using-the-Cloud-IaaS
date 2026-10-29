@@ -1,0 +1,14 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINT; echo; sudo blkid /dev/vdb 2>/dev/null || echo "sem sistema de arquivos"'
+# host=osboxes user=osboxes utc=2026-10-29T03:28:22Z
+
+NAME     SIZE TYPE FSTYPE LABEL           MOUNTPOINT
+vda       20G disk                        
+├─vda1    19G part ext4   cloudimg-rootfs /
+├─vda14    4M part                        
+├─vda15  106M part vfat   UEFI            /boot/efi
+└─vda16  913M part ext4   BOOT            /boot
+vdb        1G disk                        
+
+sem sistema de arquivos
+
+[exit 0] 2026-10-29T03:28:23Z

@@ -1,0 +1,35 @@
+$ openstack server show vm-daniel-ranya
+# host=osboxes user=osboxes utc=2026-10-29T03:09:53Z
+
++-----------------------------+------------------------------------------------------------------+
+| Field                       | Value                                                            |
++-----------------------------+------------------------------------------------------------------+
+| OS-DCF:diskConfig           | MANUAL                                                           |
+| OS-EXT-AZ:availability_zone | nova                                                             |
+| OS-EXT-STS:power_state      | Running                                                          |
+| OS-EXT-STS:task_state       | None                                                             |
+| OS-EXT-STS:vm_state         | active                                                           |
+| OS-SRV-USG:launched_at      | 2026-10-29T03:09:52.000000                                       |
+| OS-SRV-USG:terminated_at    | None                                                             |
+| accessIPv4                  |                                                                  |
+| accessIPv6                  |                                                                  |
+| addresses                   | provider=10.5.9.15                                               |
+| config_drive                |                                                                  |
+| created                     | 2026-10-29T03:09:47Z                                             |
+| flavor                      | general.small (7441c7d9-2648-4a33-907e-4d28c2270da3)             |
+| hostId                      | 42d966274828bbf50b430c681ee3a021a8a87e013a535b5f5271c0f5         |
+| id                          | bdc0447e-fb71-48c8-9ce2-04a8c5e20ee0                             |
+| image                       | ubuntu-24.04 (8ac7c385-d5d2-488a-82a4-4e1b57ffa6b1)              |
+| key_name                    | atividade3-daniel-ranya                                          |
+| name                        | vm-daniel-ranya                                                  |
+| progress                    | 0                                                                |
+| project_id                  | 2c593796f29e4b829b1b523775e2fa26                                 |
+| properties                  |                                                                  |
+| security_groups             | name='sg-daniel-ranya'                                           |
+| status                      | ACTIVE                                                           |
+| updated                     | 2026-10-29T03:09:52Z                                             |
+| user_id                     | 513f6d047f5484db0cbe6249197b982190710711f5e7bbbb875795808525d030 |
+| volumes_attached            |                                                                  |
++-----------------------------+------------------------------------------------------------------+
+
+[exit 0] 2026-10-29T03:10:00Z

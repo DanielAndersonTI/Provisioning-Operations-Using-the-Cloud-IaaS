@@ -1,0 +1,33 @@
+$ openstack loadbalancer pool create --name pool-app-io-daniel-ranya --lb-algorithm ROUND_ROBIN --listener app-io-daniel-ranya --protocol HTTP
+# host=osboxes user=osboxes utc=2026-10-29T04:14:29Z (tentativa 1)
+
++----------------------+--------------------------------------+
+| Field                | Value                                |
++----------------------+--------------------------------------+
+| admin_state_up       | True                                 |
+| created_at           | 2026-10-29T04:14:38                  |
+| description          |                                      |
+| healthmonitor_id     |                                      |
+| id                   | 44fac7a8-07bc-4267-9c28-85d18477e614 |
+| lb_algorithm         | ROUND_ROBIN                          |
+| listeners            | 5f1bff2d-2e1e-40c6-8a37-445515fccb92 |
+| loadbalancers        | 57c2b14a-b746-4f34-8719-d0627e409609 |
+| members              |                                      |
+| name                 | pool-app-io-daniel-ranya             |
+| operating_status     | OFFLINE                              |
+| project_id           | 2c593796f29e4b829b1b523775e2fa26     |
+| protocol             | HTTP                                 |
+| provisioning_status  | PENDING_CREATE                       |
+| session_persistence  | None                                 |
+| updated_at           | None                                 |
+| tls_container_ref    | None                                 |
+| ca_tls_container_ref | None                                 |
+| crl_container_ref    | None                                 |
+| tls_enabled          | False                                |
+| tls_ciphers          | None                                 |
+| tls_versions         | None                                 |
+| tags                 |                                      |
+| alpn_protocols       | None                                 |
++----------------------+--------------------------------------+
+
+[exit 0] 2026-10-29T04:14:39Z

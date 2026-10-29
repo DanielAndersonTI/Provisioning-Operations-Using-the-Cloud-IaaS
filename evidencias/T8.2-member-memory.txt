@@ -1,0 +1,25 @@
+$ openstack loadbalancer member create --name vm-daniel-ranya --subnet-id 17de9c72-e5dc-4da0-ae0a-013f7e42400e --address 10.5.9.15 --protocol-port 8001 pool-app-memory-daniel-ranya
+# host=osboxes user=osboxes utc=2026-10-29T03:51:57Z
+
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| address             | 10.5.9.15                            |
+| admin_state_up      | True                                 |
+| created_at          | 2026-10-29T03:52:05                  |
+| id                  | ab390e70-5488-484b-9052-d6a8a2a367dd |
+| name                | vm-daniel-ranya                      |
+| operating_status    | OFFLINE                              |
+| project_id          | 2c593796f29e4b829b1b523775e2fa26     |
+| protocol_port       | 8001                                 |
+| provisioning_status | PENDING_CREATE                       |
+| subnet_id           | 17de9c72-e5dc-4da0-ae0a-013f7e42400e |
+| updated_at          | None                                 |
+| weight              | 1                                    |
+| monitor_port        | None                                 |
+| monitor_address     | None                                 |
+| backup              | False                                |
+| tags                |                                      |
++---------------------+--------------------------------------+
+
+[exit 0] 2026-10-29T03:52:07Z

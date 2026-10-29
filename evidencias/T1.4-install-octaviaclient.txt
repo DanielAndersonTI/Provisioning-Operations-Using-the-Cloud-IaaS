@@ -1,0 +1,11 @@
+$ export DEBIAN_FRONTEND=noninteractive; sudo_run apt-get -o DPkg::Lock::Timeout=180 install -y -qq python3-octaviaclient 2>&1 | tail -5; openstack loadbalancer --help >/dev/null 2>&1 && echo 'plugin ok' || echo 'plugin ausente'
+# host=osboxes user=osboxes utc=2026-10-29T03:05:43Z
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+plugin ok
+
+[exit 0] 2026-10-29T03:06:12Z

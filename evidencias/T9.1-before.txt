@@ -1,0 +1,12 @@
+$ openstack server show vm-daniel-ranya -c name -c status -c addresses -c flavor -c image -f yaml
+# host=osboxes user=osboxes utc=2026-10-29T05:16:52Z
+
+addresses:
+  provider:
+  - 10.5.9.15
+flavor: general.small (7441c7d9-2648-4a33-907e-4d28c2270da3)
+image: ubuntu-24.04 (8ac7c385-d5d2-488a-82a4-4e1b57ffa6b1)
+name: vm-daniel-ranya
+status: ACTIVE
+
+[exit 0] 2026-10-29T05:16:58Z

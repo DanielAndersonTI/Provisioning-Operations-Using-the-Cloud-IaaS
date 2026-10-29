@@ -1,0 +1,15 @@
+$ dpkg-query -W -f='${Package} ${Version}\n' python3-openstackclient python3-octaviaclient python3-psutil curl jq imagemagick tmux 2>/dev/null; echo; openstack --version; for i in 1 2 3; do openstack loadbalancer list >/dev/null 2>&1 && { echo 'plugin octavia: ok'; break; }; echo "tentativa $i falhou"; sleep 5; done
+# host=osboxes user=osboxes utc=2026-10-29T05:50:50Z
+
+curl 7.81.0-1ubuntu1.30
+imagemagick 8:6.9.11.60+dfsg-1.3ubuntu0.22.04.5
+jq 1.6-2.1ubuntu3.2
+python3-octaviaclient 2.5.0-0ubuntu1
+python3-openstackclient 5.8.0-0ubuntu1.1
+python3-psutil 5.9.0-1build1
+tmux 3.2a-4ubuntu0.3
+
+openstack 5.8.0
+plugin octavia: ok
+
+[exit 0] 2026-10-29T05:50:57Z
