@@ -2,6 +2,8 @@ summary.csv                9 linhas
 summary-size.csv          27 linhas
 summary-saturation.csv     6 linhas
 summary-medium.csv        12 linhas
+summary-misto.csv          3 linhas
+summary-vagas.csv          6 linhas
 
 cenario    rep conc    req     ok  erro      rps   med_ms   p95_ms   cpu%   ram%
 --------------------------------------------------------------------------------

@@ -107,3 +107,18 @@ com a CLI do OpenStack, e as fases automatizadas estão em
 | T14.10 | Snapshot do volume | `T14.10-*` | concluída |
 | T14.11 | Reanexo, montagem, serviços e escrita no volume | `T14.11-*` | concluída |
 | T14.12 | Estado final dos recursos | `T14.12-final-state` | concluída |
+
+## Vagas, mistura de tamanhos e reconciliação
+
+| Task | Descrição | Evidência | Status |
+| --- | --- | --- | --- |
+| T15.1 | Cópia manual da aplicação fora do balanceador | `T15.1-manual-server` | concluída |
+| T15.2 | Matriz de vagas: 1/4/32 (CPU) e 4/8/16 (IO), três repetições | `T15.2-*`, `results/summary-vagas.csv` | concluída |
+| T15.3 | Serviços e portas originais intactos ao fim da fase | `T15.3-services-intact` | concluída |
+| T16 | Mistura de tamanhos de requisição, quatro clientes | `T16-*`, `results/summary-misto.csv` | concluída |
+| T17.1 | Segunda medição do bloco de tamanho (CPU e IO) | `T17-*` | concluída |
+| T17.2 | Conferência pelo teto de plausibilidade do p95 | `T17.2-check-cells-*` | concluída |
+| T17.3 | Consolidação final da reconciliação | `T17.3-summary` | concluída |
+| T18 | Repetições de três células citadas no relatório | `T18-*` | concluída |
+| T19.1 | Segunda medição do tamanho padrão do perfil de memória | `T19-*` | concluída |
+| T19.2 | Conferência das células de memória contra o teto | `T19.2-check-cells` | concluída |

@@ -13,6 +13,7 @@ Figuras:
     flavor.png          general.small contra general.medium, um painel por perfil
     serie-temporal.png  CPU e memoria amostra a amostra em um cenario de cada perfil
     volume.png          ocupacao do disco do volume por tamanho de trabalho (perfil IO)
+    vagas.png           vazao e recusas em funcao do numero de vagas do servidor
 
 As cores sao as tres primeiras da paleta categorica validada (azul, laranja,
 agua), que passam o teste de daltonismo para todos os pares. Cada figura tem no
@@ -22,6 +23,7 @@ maximo tres series por eixo e nenhuma usa dois eixos y.
 import argparse
 import csv
 import re
+import statistics
 from collections import defaultdict
 from pathlib import Path
 
@@ -196,18 +198,30 @@ def figura_tamanho(linhas, destino):
             cor = CORES_POR_CONCORRENCIA.get(conc, TINTA_2)
             ax.plot(tamanhos, valores, color=cor, linewidth=2, marker="o",
                     markersize=8, label=f"{conc} cliente" + ("s" if conc > 1 else ""))
-            ax.annotate(f"{valores[-1]:.0f}", (tamanhos[-1], valores[-1]),
-                        textcoords="offset points", xytext=(8, 0), va="center",
-                        fontsize=9, color=cor)
+            # Rotulo direto so na serie de cima: no painel de IO as tres pontas
+            # (1,8 / 2,2 / 2,4 rps) caem quase no mesmo pixel e os numeros se
+            # sobrepoem. A legenda e a tabela do relatorio dao os demais.
+            if conc == concorrencias[-1]:
+                ax.annotate(f"{valores[-1]:.0f}", (tamanhos[-1], valores[-1]),
+                            textcoords="offset points", xytext=(8, 0), va="center",
+                            fontsize=9, color=cor)
         ax.set_xticks(tamanhos)
         ax.set_xticklabels([str(t) for t in tamanhos])
         ax.set_title(titulo, loc="left", fontsize=11, pad=8)
         ax.set_xlabel("tamanho do trabalho pedido")
         eixo_y_grid(ax)
-        ax.legend(frameon=False, loc="upper left", fontsize=9)
+    # Uma legenda so, na faixa do titulo: repetida em cada painel ela cobre as
+    # primeiras marcas das series de 2 e de 4 clientes.
+    maior = max(float(ponto["success_throughput_rps"])
+                for por_conc in dados.values() for por_tam in por_conc.values()
+                for ponto in por_tam.values())
+    eixos[0].set_ylim(0, maior * 1.04)
     eixos[0].set_ylabel("requisições por segundo (2xx)")
+    maos, rotulos = eixos[0].get_legend_handles_labels()
+    fig.legend(maos, rotulos, frameon=False, ncol=3, fontsize=9,
+               loc="upper right", bbox_to_anchor=(1.0, 0.99))
     fig.suptitle("Efeito do tamanho do pedido na vazão", x=0.01, ha="left", fontsize=13)
-    fig.tight_layout(rect=(0, 0, 1, 0.94))
+    fig.tight_layout(rect=(0, 0, 1, 0.90))
     fig.savefig(destino, dpi=160)
     plt.close(fig)
 
@@ -324,24 +338,43 @@ def figura_volume(linhas, destino):
     So as execucoes da matriz de tamanho entram: sao as unicas com iostat coletado
     lado a lado. O dispositivo vdb e o volume Cinder; o vda e o disco raiz e serve
     de contraste.
+
+    A reconciliacao refez o bloco de IO, entao a maioria das celulas existe so
+    como `-r2`. Quando ha mais de uma medicao da mesma celula, vale a media das
+    repeticoes, como no resumo - a execucao original sai da conta.
     """
-    padrao = re.compile(r"^size-io-s(\d+)-c(\d+)$")
-    dados = defaultdict(lambda: defaultdict(float))
+    padrao = re.compile(r"^size-io-s(\d+)-c(\d+)(?:-r(\d+))?$")
+    medidas = defaultdict(lambda: defaultdict(list))
     for linha in linhas:
         if linha["device"] != "vdb":
             continue
         achado = padrao.match(linha["run_id"])
         if not achado:
             continue
-        dados[int(achado.group(1))][int(achado.group(2))] = float(linha["util_mean"])
+        medidas[(int(achado.group(1)), int(achado.group(2)))][
+            int(achado.group(3) or 0)
+        ].append(float(linha["util_mean"]))
+    dados = defaultdict(dict)
+    for (tamanho, concorrencia), por_rep in medidas.items():
+        grupo = [v for rep, vals in sorted(por_rep.items()) if rep > 0 for v in vals]
+        grupo = grupo or [v for vals in por_rep.values() for v in vals]
+        dados[tamanho][concorrencia] = statistics.mean(grupo)
 
     if not dados:
         return
 
     fig, ax = plt.subplots(figsize=(7.2, 4))
     # Os rotulos diretos se sobrepoem quando dois tamanhos terminam com a mesma
-    # ocupacao, entao cada serie recebe um deslocamento vertical fixo.
-    deslocamentos = [(8, 0), (8, 13), (8, -13)]
+    # ocupacao, entao cada serie recebe um deslocamento vertical fixo - escolhido
+    # pela ordem dos valores no fim, nao pela ordem da legenda: 1024 e 4096 KiB
+    # terminam a poucos pontos de distancia e trocariam de lugar.
+    pontas = sorted((pontos[max(pontos)], tamanho) for tamanho, pontos in dados.items())
+    deslocamento = {}
+    for posicao, (_, tamanho) in enumerate(pontas):
+        if len(pontas) == 3:
+            deslocamento[tamanho] = (8, (-13, 0, 13)[posicao])
+        else:
+            deslocamento[tamanho] = (8, 0)
     for posicao, tamanho in enumerate(sorted(dados)):
         cor = (AZUL, LARANJA, AGUA)[posicao % 3]
         pontos = dados[tamanho]
@@ -350,7 +383,7 @@ def figura_volume(linhas, destino):
         ax.plot(concs, valores, color=cor, linewidth=2, marker="o", markersize=8,
                 label=f"{tamanho} KiB por pedido")
         ax.annotate(f"{valores[-1]:.0f}%", (concs[-1], valores[-1]),
-                    textcoords="offset points", xytext=deslocamentos[posicao % 3],
+                    textcoords="offset points", xytext=deslocamento[tamanho],
                     va="center", fontsize=9, color=cor)
     ax.set_xlabel("clientes concorrentes")
     ax.set_ylabel("ocupação do disco do volume (%util)")
@@ -361,6 +394,72 @@ def figura_volume(linhas, destino):
     ax.set_title("O disco do volume sob carga do perfil IO-bound",
                  loc="left", fontsize=13, pad=10)
     fig.tight_layout()
+    fig.savefig(destino, dpi=160)
+    plt.close(fig)
+
+
+def figura_vagas(linhas, destino):
+    """Vazao e recusas em funcao do numero de vagas do servidor.
+
+    `linhas` vem de summary-vagas.csv: a mesma carga (oito clientes no perfil
+    CPU, dezesseis no IO) contra uma copia da aplicacao com --max-concurrency
+    diferente, rodando junto com o cliente dentro da VM. A latencia nao entra na
+    figura porque as recusas 503 voltam na hora e puxam a media para baixo: um
+    servidor com poucas vagas parece mais rapido justamente quando recusa mais.
+    O que a figura mostra e o outro lado, a vazao que ele consegue entregar.
+    """
+    padrao = re.compile(r"^vagas-(cpu|io)-w(\d+)-c(\d+)$")
+    vazao = defaultdict(dict)
+    recusas = defaultdict(dict)
+    for linha in linhas:
+        achado = padrao.match(linha["scenario"])
+        if not achado:
+            continue
+        perfil, vagas = achado.group(1), int(achado.group(2))
+        vazao[perfil][vagas] = float(linha["success_throughput_rps"])
+        recusas[perfil][vagas] = int(linha["app_rejected"])
+
+    if not vazao:
+        return
+
+    fig, eixos = plt.subplots(1, 2, figsize=(11, 4))
+    for perfil in ("cpu", "io"):
+        if not vazao[perfil]:
+            continue
+        cor = CORES_POR_PERFIL[perfil]
+        vagas = sorted(vazao[perfil])
+        eixos[0].plot(vagas, [vazao[perfil][v] for v in vagas], color=cor,
+                      linewidth=2, marker="o", markersize=8,
+                      label=dict(PERFIS)[perfil])
+        eixos[1].plot(vagas, [recusas[perfil][v] for v in vagas], color=cor,
+                      linewidth=2, marker="o", markersize=8,
+                      label=dict(PERFIS)[perfil])
+        eixos[0].annotate(f"{vazao[perfil][vagas[-1]]:.0f}", (vagas[-1], vazao[perfil][vagas[-1]]),
+                          textcoords="offset points", xytext=(8, 0), va="center",
+                          fontsize=9, color=cor)
+        eixos[1].annotate(f"{recusas[perfil][vagas[-1]]:,}".replace(",", "."),
+                          (vagas[-1], recusas[perfil][vagas[-1]]),
+                          textcoords="offset points", xytext=(8, 0), va="center",
+                          fontsize=9, color=cor)
+
+    eixos[0].set_title("Vazão bem-sucedida", loc="left", fontsize=11, pad=8)
+    eixos[0].set_ylabel("requisições por segundo (2xx)")
+    eixos[1].set_title("Requisições recusadas (503)", loc="left", fontsize=11, pad=8)
+    eixos[1].set_ylabel("recusas na janela de 20 s")
+    eixos[1].yaxis.set_major_formatter(
+        matplotlib.ticker.FuncFormatter(lambda valor, _: f"{valor:,.0f}".replace(",", ".")))
+    for ax in eixos:
+        ax.set_xlabel("vagas de trabalho (--max-concurrency)")
+        ax.set_xscale("log", base=2)
+        ax.set_xticks([1, 4, 8, 16, 32])
+        ax.set_xticklabels(["1", "4", "8", "16", "32"])
+        ax.set_xlim(0.8, 40)
+        eixo_y_grid(ax)
+        ax.legend(frameon=False, loc="upper left", fontsize=9)
+    eixos[1].set_ylim(-2000, 66000)
+    fig.suptitle("Vagas abaixo da demanda: o servidor recusa na hora",
+                 x=0.01, ha="left", fontsize=13)
+    fig.tight_layout(rect=(0, 0, 1, 0.93))
     fig.savefig(destino, dpi=160)
     plt.close(fig)
 
@@ -419,6 +518,9 @@ def main():
     tabela_iostat = ler_tabela(Path(args.results) / "iostat.csv")
     if tabela_iostat:
         figura_volume(tabela_iostat, destino / "volume.png")
+    tabela_vagas = ler_tabela(Path(args.results) / "summary-vagas.csv")
+    if tabela_vagas:
+        figura_vagas(tabela_vagas, destino / "vagas.png")
     print("gerado em", destino)
 
 

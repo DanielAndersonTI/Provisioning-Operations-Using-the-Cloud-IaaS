@@ -1,0 +1,48 @@
+$ curl http://150.165.85.77:8102/work?size=1024 + python3 scripts/load_test.py --concurrency 2 --duration 30
+# host=osboxes user=osboxes utc=2026-10-29T19:09:13Z
+
+execucao         : size-io-s1024-c2-r2
+url              : http://150.165.85.77:8102/work?size=1024
+concorrencia     : 2 cliente(s)
+janela medida    : 30.0 s (aquecimento descartado)
+
+requisicoes      : 139
+sucessos         : 139
+erros            : 0 
+taxa de erro     : 0.0
+vazao (rps)      : 4.5576 (sucesso) / 4.5576 (total)
+latencia media   : 438.751 ms
+p50 / p95 / p99  : 359.247 / 970.421 / 1107.707 ms
+maximo           : 1163.371 ms
+
+amostras do monitor: 80 (intervalo de 0,5 s)
+cpu da VM        : media   2.4%  pico   7.8%
+memoria da VM    : media  21.0%  pico  21.1%
+swap em uso      : media   0.0 MiB pico   0.0 MiB
+
+contadores da aplicacao (delta da execucao):
+  requisicoes    : 169
+  aceitas (2xx)  : 169
+  recusadas (503): 0
+  espera media   : 0.009 ms
+  trabalho medio : 374.751 ms
+  trabalho maximo: 3913.523 ms
+  em voo no pico : 16
+
+disco vda: 40 amostras de iostat
+  ocupacao       : media 0.04%  pico 0.9%
+  fila (aqu-sz)  : media 0.002
+  escritas       : 6.0 req/s
+  leituras       : 0.0 req/s
+  espera escrita : 0.26 ms
+  espera leitura : 0.01 ms
+
+disco vdb: 40 amostras de iostat
+  ocupacao       : media 79.3%  pico 95.4%
+  fila (aqu-sz)  : media 1.692
+  escritas       : 12.7 req/s
+  leituras       : 0.0 req/s
+  espera escrita : 128.41 ms
+  espera leitura : 2.57 ms
+
+[exit 0] 2026-10-29T19:09:13Z

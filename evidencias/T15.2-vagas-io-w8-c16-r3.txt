@@ -1,0 +1,26 @@
+$ ssh ... 'python3 /opt/atividade3/scripts/load_test.py --url http://127.0.0.1:8011/work?size=1024 --concurrency 16 --duration 20 --run-id vagas-io-w8-c16-r3'
+# host=osboxes user=osboxes utc=2026-10-29T18:41:52Z
+
+servidor: io application listening on port 8011 (max 8 concurrent work units)
+
+execucao         : vagas-io-w8-c16-r3
+url              : http://127.0.0.1:8011/work?size=1024
+vagas (servidor) : 8
+clientes         : 16 dentro da VM
+janela medida    : 20.0 s
+
+requisicoes      : 18033
+sucessos         : 192
+erros            : 17841 http_503=17841
+taxa de erro     : 0.9894
+vazao (rps)      : 9.159 (sucesso) / 860.2259 (total)
+latencia media   : 18.144 ms
+p50 / p95 / p99  : 3.8 / 7.73 / 783.513 ms
+
+contadores da aplicacao (delta da execucao):
+  recusadas (503): 17841
+  espera media   : 0.0 ms
+  trabalho medio : 8.88 ms
+  em voo no pico : 8
+
+[exit 0] 2026-10-29T18:41:52Z

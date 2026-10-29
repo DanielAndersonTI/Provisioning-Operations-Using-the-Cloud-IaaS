@@ -22,8 +22,8 @@ balanceador, como o enunciado pede.
 
 Depois do deploy, medimos as três aplicações sob carga: os nove cenários base
 repetidos três vezes — **15.237 requisições e nenhum erro** — mais as matrizes de
-tamanho do trabalho, de saturação e de provisionamento. São 72 execuções pela
-VIP e seis dentro da VM. Os resultados mostram onde cada perfil satura os
+tamanho do trabalho, de saturação, de provisionamento, de mistura de tamanhos e
+de número de vagas. São 107 execuções pela VIP e 24 dentro da VM. Os resultados mostram onde cada perfil satura os
 recursos de 1 vCPU e 2 GB, e estão no capítulo 5 com tabela, gráficos e
 discussão.
 
@@ -193,6 +193,24 @@ o balanceador entrega o tráfego — não para a internet:
 
 O ICMP foi incluído para permitir diagnóstico de rede (ping) a partir da VDI.
 
+**Por que essas portas, e não 80 e 443.** As três aplicações escutam em
+**8000, 8001 e 8002**, acima da faixa privilegiada (0–1023). Isso não é
+acidente: portas abaixo de 1024 exigem `CAP_NET_BIND_SERVICE` ou execução como
+root, e os serviços rodam como usuário comum (`ubuntu`) com
+`NoNewPrivileges=true`. Escolher 8000-8002 mantém o processo sem privilégio.
+O TCP/22 fica na porta padrão porque é o `sshd` do sistema, que já roda com o
+privilégio necessário.
+Na ponta do balanceador, as portas externas **não podem ser as mesmas**: os
+listeners 8000-8002 e 2222 do `poi-atividades` já estavam ocupados por outros
+grupos (T1.6), e a porta de SSH não pode ser 22 porque o balanceador é
+compartilhado. Por isso o caminho externo é **2222 → 22** e **8100-8102 →
+8000-8002**, com o pool traduzindo porta e endereço.
+A origem `10.5.8.0/22` é a rede de onde o balanceador entrega o tráfego — a
+mesma faixa da VIP e do membro. Abrir para `0.0.0.0/0` deixaria a VM alcançável
+por qualquer origem da nuvem, sem necessidade: todo acesso externo passa pelo
+balanceador. A saída permanece aberta porque a VM precisa buscar pacotes e
+resolver DNS.
+
 ![Regras do grupo de segurança](evidencias/T3.1-sg-rules.png)
 
 ### 4.5 SSH pela VIP
@@ -255,6 +273,32 @@ nos três perfis e sai com código diferente de zero se algum falhar.
 ![Instalação do a3-smoke](evidencias/T5.3-install-smoke.png)
 
 ![Health check local](evidencias/T5.5-health-local.png)
+
+### Modelo de execução de cada aplicação
+
+Cada perfil é **um processo** rodando `server.py`, e dentro dele um
+`ThreadingHTTPServer` cria uma thread por requisição. Não há processo worker,
+nem servidor WSGI de terceiros: a concorrência da aplicação é limitada por um
+`threading.BoundedSemaphore` com o número de **vagas de trabalho** mostrado na
+tabela acima. A vaga é tomada na entrada de `/work` e devolvida no fim; quando
+todas estão ocupadas, a requisição recebe **503 na hora**, em vez de esperar
+numa fila sem limite.
+
+Três consequências para a leitura das medições:
+
+- **As vagas são configuráveis** (`--max-concurrency`, ou o padrão do perfil).
+  O valor não é uma constante escondida: a fase 17 mede o efeito de mudá-lo.
+- **Os três serviços rodam ao mesmo tempo na mesma VM**, mas só o perfil do
+  cenário recebe carga. Por isso a memória de base das medições fica em ~23 % —
+  é a soma dos três processos ociosos, não consumo da carga.
+- **O perfil de CPU usa `hashlib`**, e o CPython libera o GIL para hashes de
+  buffers com 2048 bytes ou mais. É o que permite que duas vCPUs rendam quase o
+  dobro no `general.medium`; a explicação está em 5.6.
+
+O teto de vagas foi escolhido para caber na memória da VM e evitar que um
+cliente mal comportado criasse threads sem limite: 32 no perfil de CPU (que não
+retém memória por requisição), 4 no de memória (4 × 256 MiB ≈ 1 GiB) e 16 no
+de IO (que bloqueia na escrita e libera o interpretador).
 
 ### 4.7 Volume de 1 GB e logs no volume
 
@@ -443,10 +487,14 @@ continuaram apontando para o volume e não para uma cópia local.
 
 ## 5. Experimentos de carga
 
-Foram cinco blocos de medição, todos com o mesmo protocolo e a mesma forma de
+Foram seis blocos de medição, todos com o mesmo protocolo e a mesma forma de
 coletar: cenários base, efeito do tamanho do trabalho, saturação, comparação de
-provisionamento e carga local. Juntos somam 72 execuções pela VIP — 27 base, 27
-de tamanho, 6 de saturação e 12 no flavor maior — mais seis feitas dentro da VM.
+provisionamento, mistura de tamanhos e carga com número de vagas variado. Juntos
+somam 107 execuções pela VIP — 27 base, 49 de tamanho, 10 de saturação, 12 no
+flavor maior e 9 de mistura — mais 24 dentro da VM (18 com número de vagas
+variado e 6 de carga local). A primeira passagem, feita de manhã, tem mais nove
+execuções guardadas como histórico e não entra em nenhuma média; as células que
+ela deixou duvidosas foram refeitas e estão explicadas em 5.4.
 
 ### 5.1 Como foi medido
 
@@ -455,8 +503,8 @@ de tamanho, 6 de saturação e 12 no flavor maior — mais seis feitas dentro da
   exatamente o número de clientes. A latência registrada é a que o cliente vê e
   inclui TCP, fila no balanceador, fila no servidor e a volta.
 - **Janela fixa por duração.** 5 s de aquecimento, descartados em arquivo
-  separado, antes de 45 s medidos nos cenários base e 30 s nas matrizes. O que
-  entra na conta é só a janela medida.
+  separado, antes de 45 s medidos nos cenários base e 30 s nas matrizes; nas
+  fases de mistura e de vagas, 20 s. O que entra na conta é só a janela medida.
 - **Monitor dentro da VM.** Um processo lê CPU, memória e swap a cada 0,5 s
   (biblioteca `psutil`), porque só o sistema operacional de dentro vê o que a
   nuvem realmente entregou.
@@ -472,6 +520,11 @@ de tamanho, 6 de saturação e 12 no flavor maior — mais seis feitas dentro da
   primeira medição, feita de manhã, fica no repositório como histórico e não
   entra na média: o caminho até a nuvem muda ao longo do dia e misturar horários
   colocaria duas condições na mesma conta.
+- **Tipo de requisição variado.** Além das matrizes de tamanho único, uma fase
+  repete a carga com cada requisição sorteando o tamanho de uma lista
+  (`--sizes`), com média igual ao tamanho padrão do perfil. Sem isso, o
+  experimento responderia qual é a capacidade para *um* tipo de pedido, e não
+  para uma carga real.
 
 ### 5.2 Cenários base
 
@@ -543,39 +596,109 @@ de 1 s. O `iostat` confirma: durante essas execuções o volume `vdb` fica entre
 
 ### 5.4 Efeito do tamanho do trabalho
 
-Vinte e sete execuções — três tamanhos por perfil com 1, 2 e 4 clientes — para
-separar "mais clientes" de "pedido maior".
+Vinte e sete células — três tamanhos por perfil com 1, 2 e 4 clientes — para
+separar "mais clientes" de "pedido maior". O bloco de CPU, o de IO e o tamanho
+padrão do perfil de memória foram medidos uma segunda vez; a tabela traz a média
+das repetições quando existem, pelos motivos da reconciliação abaixo.
 
 | Perfil | Tamanho | 1 cliente | 2 clientes | 4 clientes |
 | --- | --- | --- | --- | --- |
-| CPU | 5 | 2,97 | 7,67 | 16,68 |
-| CPU | 10 | 5,47 | 12,48 | 19,19 |
-| CPU | 20 | 6,24 | 8,57 | 9,28 |
+| CPU | 5 | 11,34 | 18,71 | 35,84 |
+| CPU | 10 | 9,22 | 13,87 | 18,63 |
+| CPU | 20 | 4,82 | 8,54 | 11,09 |
 | Memory | 16 | 13,07 | 31,47 | 33,21 |
-| Memory | 32 | 8,72 | 12,11 | 25,50 |
+| Memory | 32 | 9,97 | 16,18 | 24,45 |
 | Memory | 64 | 7,22 | 9,74 | 14,14 |
-| IO | 512 KiB | 5,46 | 8,16 | 10,54 |
-| IO | 1024 KiB | 4,63 | 2,48 | 2,02 |
-| IO | 4096 KiB | 2,09 | 2,11 | 2,49 |
+| IO | 512 KiB | 5,13 | 6,70 | 11,33 |
+| IO | 1024 KiB | 4,95 | 4,56 | 6,38 |
+| IO | 4096 KiB | 1,80 | 2,23 | 2,37 |
 
 (valores em requisições por segundo de sucesso)
 
-O trabalho medido **dentro** do servidor cresce com o tamanho, como esperado:
-41,9 → 67,9 → 102,3 ms no perfil de CPU para tamanhos 5/10/20 com um cliente, e
-123 → 160 → 438 ms no perfil de IO para 512/1024/4096 KiB. O que muda entre os
-perfis é o quanto isso pesa na vazão:
+#### A reconciliação da matriz
 
-- **CPU** ganha pouco com clientes quando o pedido é grande: com tamanho 20, ir de
-  um para quatro clientes aumenta a vazão de 6,2 para 9,3 rps, porque o trabalho
-  quadruplica e o núcleo é o mesmo.
+A primeira passagem desta matriz deixou células que não fechavam com o mesmo
+trabalho medido nos cenários base: o tamanho 5 do perfil de CPU com um cliente
+apareceu com p95 de 1.196 ms contra 149 ms do cenário base equivalente, e o
+tamanho de 1024 KiB do IO com dois e quatro clientes chegou a 2,4 e 3,4 s. Como
+o caminho até a nuvem é o mesmo, a explicação mais provável era ruído do
+balanceador compartilhado naquela janela, não efeito do tamanho.
+
+Os blocos de CPU e de IO foram refeitos — 18 execuções de 30 s — e cada célula
+foi comparada com um teto de plausibilidade: p95 não maior que 2,5 vezes o p95
+do cenário base equivalente, corrigido pela razão entre o tamanho da célula e o
+tamanho padrão (mínimo de 500 ms para não punir células pequenas). As 18
+passaram no teto já na segunda medição e o desvio desapareceu: CPU tamanho 5 com
+um cliente foi de 1.196 para 93,6 ms, e IO 1024 KiB com dois e quatro clientes
+caiu para 970 e 1.229 ms. O perfil de memória não tinha p95 fora do teto, mas o
+tamanho padrão com dois clientes rendia 12,1 rps contra 16,2 do cenário base;
+repetido, ficou em 16,2 rps, confirmando que também era amostra.
+
+A tabela compara a célula de tamanho padrão de cada perfil com o cenário base de
+mesma concorrência. As duas medem o mesmo trabalho, então deveriam coincidir:
+
+| Perfil | Clientes | rps base | rps matriz | Δ rps | p95 base (ms) | p95 matriz (ms) | Δ p95 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| CPU | 1 | 8,58 | 9,22 | +7 % | 149,3 | 116,5 | −22 % |
+| CPU | 2 | 13,08 | 13,87 | +6 % | 211,3 | 159,2 | −25 % |
+| CPU | 4 | 19,83 | 18,63 | −6 % | 274,2 | 259,2 | −6 % |
+| Memory | 1 | 9,88 | 9,97 | +1 % | 130,2 | 127,9 | −2 % |
+| Memory | 2 | 16,22 | 16,18 | −0,3 % | 155,9 | 131,6 | −16 % |
+| Memory | 4 | 29,10 | 24,45 | −16 % | 188,7 | 223,0 | +18 % |
+| IO | 1 | 3,94 | 4,95 | +25 % | 556,7 | 362,0 | −35 % |
+| IO | 2 | 5,38 | 4,56 | −15 % | 743,6 | 970,4 | +31 % |
+| IO | 4 | 6,57 | 6,38 | −3 % | 1.034,9 | 1.229,1 | +19 % |
+
+Em CPU as duas medidas coincidem dentro de 8 %. Em memória e IO a diferença
+chega a 25 %, e o sinal é o de sempre: quando a vazão cai, o p95 sobe e vice-versa
+(IO com um cliente rendeu mais e respondeu mais rápido; memória com quatro
+clientes, o contrário). É a variação do caminho compartilhado entre duas sessões,
+não do trabalho — por isso **as comparações do relatório são sempre feitas dentro
+da mesma tabela**, e a célula padrão da matriz não substitui as três repetições
+dos cenários base (5.2).
+
+O trabalho medido **dentro** do servidor cresce com o tamanho, como esperado:
+42,5 → 62,3 → 103,2 ms no perfil de CPU para tamanhos 5/10/20 com um cliente;
+5,4 → 46,0 → 74,0 ms na memória para 16/32/64 MiB; e 155 → 151 → 489 ms no IO
+para 512/1024/4096 KiB (o 1024 KiB com um cliente ficou abaixo do 512 por
+variação do disco). O que muda entre os perfis é o quanto isso pesa na vazão:
+
+- **CPU** ganha com clientes mesmo quando o pedido é grande, mas o teto do
+  núcleo aparece: com tamanho 20, ir de um para quatro clientes leva a vazão de
+  4,8 para 11,1 rps e o trabalho por requisição de 103 para 313 ms. Com tamanho
+  5, quatro clientes entregam 35,8 rps — quase o dobro do cenário base, que usa
+  tamanho 10 (19,8 rps).
 - **Memória** tem um degrau entre 16 e 32 (5,4 ms contra 46 ms de trabalho): a
   alocação de 16 MiB cabe numa faixa pequena, a de 32 já entra na faixa seguinte.
-  Por isso o pedido menor é o mais barato dos três.
-- **IO** é o perfil em que o tamanho mais pesa: com 1024 KiB o trabalho por
-  requisição chega a 2 s com quatro clientes, e a vazão despenca de 10,5 para 2,0
-  rps. O `iostat` mostra o volume em 76 % (512 KiB), 90 % (1024 KiB) e 89 %
-  (4096 KiB) de ocupação — o limite é a taxa de operações do disco, não a CPU,
-  que fica entre 1 % e 4 %.
+  Com quatro clientes a vazão vai de 33,2 para 24,5 e 14,1 rps conforme o pedido
+  cresce.
+- **IO** é o perfil em que o tamanho mais pesa: com 4096 KiB e quatro clientes o
+  trabalho por requisição chega a 1.651 ms e a vazão fica em 2,4 rps, contra
+  11,3 rps com 512 KiB. O `iostat` mostra o volume em 76 % (512 KiB), 82 %
+  (1024 KiB) e 87 % (4096 KiB) de ocupação — o limite é a taxa de operações do
+  disco, não a CPU, que fica entre 1,8 % e 4,2 %.
+
+#### Quando a requisição não tem tamanho fixo
+
+Uma carga real não repete o mesmo pedido. Uma fase repetiu quatro clientes com o
+tamanho sorteado a cada requisição de uma lista cuja média é o tamanho padrão do
+perfil (CPU 5/10/15, memória 16/32/48, IO 512/1024/1536 KiB), três repetições por
+perfil:
+
+| Perfil | Tamanho único, 4 clientes | Mistura de tamanhos | p95 único (ms) | p95 mistura (ms) |
+| --- | --- | --- | --- | --- |
+| CPU | 19,83 | 21,46 ± 0,23 | 274 | 275 |
+| Memory | 29,10 | 31,12 ± 1,00 | 189 | 198 |
+| IO | 6,57 | 7,30 ± 0,78 | 1.035 | 1.004 |
+
+Com a média dos tamanhos igualada, a mistura rendeu de 7 % a 11 % mais vazão que
+o cenário de tamanho único — pouco, mas com o mesmo sinal nos três perfis, e as
+três repetições ficaram dentro de ±1 rps da média. A cauda não acompanha a
+média: o p95 da mistura fica no mesmo nível do p95 do cenário de tamanho único
+(275 contra 274 ms em CPU; 198 contra 189 ms em memória), porque o percentil
+superior é ocupado pelos pedidos maiores da lista. Quem dimensiona por p95
+precisa olhar o maior tamanho que a carga pode sortear, não o tamanho médio.
+O registro da fase está em [`docs/execucao/T16.md`](docs/execucao/T16.md).
 
 ![Efeito do tamanho do trabalho](docs/graficos/tamanho.png)
 
@@ -590,14 +713,14 @@ que a vazão para de crescer:
 | --- | --- | --- | --- | --- | --- |
 | CPU — vazão (rps) | 8,58 | 13,08 | 19,83 | 21,52 | 21,78 |
 | CPU — p95 (ms) | 149 | 211 | 274 | 396 | 786 |
-| Memory — vazão (rps) | 9,88 | 16,22 | 29,10 | 33,21 | 31,28 |
-| Memory — p95 (ms) | 130 | 156 | 189 | 277 | 1.335 |
-| IO — vazão (rps) | 3,94 | 5,38 | 6,57 | 9,23 | 9,65 |
-| IO — p95 (ms) | 557 | 744 | 1.035 | 1.119 | 2.053 |
+| Memory — vazão (rps) | 9,88 | 16,22 | 29,10 | 33,21 | 32,56 |
+| Memory — p95 (ms) | 130 | 156 | 189 | 277 | 1.323 |
+| IO — vazão (rps) | 3,94 | 5,38 | 6,57 | 9,23 | 9,61 |
+| IO — p95 (ms) | 557 | 744 | 1.035 | 1.119 | 2.024 |
 
 **A vazão achatou, a latência não.** De quatro para dezesseis clientes a vazão
 do perfil de CPU sobe 10 %, a de memória fica praticamente parada (29,1 → 33,2 →
-31,3) e a de IO cresce 47 %, mas com o p95 quase quadruplicando (1.035 → 2.053
+32,6) e a de IO cresce 46 %, mas com o p95 quase quadruplicando (1.035 → 2.024
 ms). Quadruplicar os clientes não quadruplica a vazão.
 
 **Nenhuma requisição foi recusada.** Os seis cenários terminaram com zero erros e
@@ -640,6 +763,50 @@ admissão é o mesmo que vale na nuvem.
 
 ![Saturação](docs/graficos/saturacao.png)
 
+#### Quanto cada vaga vale
+
+O número de vagas não é constante do projeto: `--max-concurrency` escolhe, por
+processo, quantas requisições executam ao mesmo tempo. Para medir o efeito, uma
+cópia da aplicação foi subida fora do balanceador (portas 8010 e 8011), com o
+cliente dentro da VM, e a mesma carga foi repetida três vezes por valor:
+oito clientes no perfil de CPU e dezesseis no de IO.
+
+| Perfil | Vagas | Tentativas | Sucessos | 503 | rps (sucesso) | pico em voo |
+| --- | --- | --- | --- | --- | --- | --- |
+| CPU | 1 | 46.023 | 281 | 45.742 | 4,47 ± 0,04 | 1 |
+| CPU | 4 | 19.059 | 867 | 18.192 | 14,38 ± 0,05 | 4 |
+| CPU | 32 | 1.278 | 1.278 | 0 | 21,14 ± 0,04 | 8 |
+| IO | 4 | 55.792 | 485 | 55.307 | 7,65 ± 0,69 | 4 |
+| IO | 8 | 53.929 | 543 | 53.386 | 8,66 ± 0,68 | 8 |
+| IO | 16 | 508 | 508 | 0 | 8,11 ± 0,58 | 16 |
+
+**O pico de requisições em voo é exatamente o número de vagas** em todas as
+células, medido pelo contador da própria aplicação: a admissão funcionou como
+projetada e o servidor chegou ao limite sempre que a demanda o alcançou.
+
+- **No perfil de CPU, mais vagas são mais vazão.** De 1 para 4 vagas a vazão
+  triplica (4,5 → 14,4 rps) e de 4 para 32 quase dobra (21,1 rps). O trabalho por
+  requisição é curto, então quem limita é quantas podem executar ao mesmo tempo —
+  e não o número de clientes, que é o mesmo (oito) nas três células.
+- **No perfil de IO, mais vagas só reduzem recusa.** A vazão quase não muda
+  (7,7 → 8,7 → 8,1 rps): cada escrita bloqueia por mais de um segundo e o disco é
+  o gargalo, então deixar mais requisições entrarem ao mesmo tempo só muda quantas
+  esperam. O ganho aparece no outro número — as 55 mil recusas somem quando há
+  vaga para todos.
+- **A latência média não se compara entre células.** Uma recusa 503 volta em
+  milissegundos e entra na média e no p95; por isso a célula de 1 vaga aparece
+  com p95 de 10 ms, menor que a de 32 vagas. A leitura correta usa vazão de
+  sucesso, contagem de recusas e pico em voo.
+
+Isso separa duas coisas que a carga pela VIP confunde: **o limite do servidor
+(vagas) e o limite da máquina (flavor)**. Com o mesmo `general.small` e a mesma
+carga, mudar só o número de vagas levou a vazão de 4,5 para 21,1 rps e as recusas
+de 45,7 mil para zero. O flavor continua importando, mas só depois que a
+aplicação deixa de recusar (5.6). O detalhe de cada execução está em
+[`docs/execucao/T15.md`](docs/execucao/T15.md).
+
+![Vagas de trabalho](docs/graficos/vagas.png)
+
 ### 5.6 Demanda × provisionamento
 
 A mesma VM foi redimensionada para `general.medium` (2 vCPU, 4 GB), medida com a
@@ -677,6 +844,18 @@ mesmos; a única variável é o provisionamento.
   com o núcleo único.
 - **O medium também satura.** Com oito clientes o perfil de CPU cai para 34,4 rps,
   o trabalho por requisição dobra para 100 ms e o p95 vai a 1.115 ms.
+
+**Por que threads em Python ganham com o segundo núcleo.** O intérprete tem GIL,
+e a expectativa usual é que threads não paralelizem trabalho de CPU. Aqui
+paralelizam por um detalhe de implementação: o CPython **libera o GIL** durante
+`hashlib.sha256` para buffers de 2048 bytes ou mais, e o bloco do perfil de CPU
+tem 1 MiB. Cada thread passa a maior parte do tempo dentro da função de hash, sem
+o GIL, e duas vCPUs conseguem executar dois hashes de fato ao mesmo tempo — é o
+que sustenta os +90 % de vazão com quatro clientes. Se o trabalho fosse uma
+sequência de hashes pequenos, ou código puro de Python, o `medium` não renderia
+nada a mais e a medição mostraria isso. O desenho do bloco está documentado no
+código (`compute_cpu`, em `apps/server.py`), justamente para que a comparação de
+provisionamento meça o que se propõe.
 
 ![Mesma VM, dois provisionamentos](docs/graficos/flavor.png)
 
@@ -731,6 +910,51 @@ O gargalo dominante nas medições pela VIP não foi nenhum dos três: foi o cam
 compartilhado VDI → balanceador → VM, que fixa ~55 ms de custo por requisição e
 limita a taxa de chegada antes da aplicação. As vagas internas só foram
 exercitadas quando a carga passou a rodar dentro da VM (5.5).
+
+### 5.9 Limitações e ameaças à validade
+
+Esta seção reúne o que o experimento **não** consegue provar e o que foi feito
+para que isso não vire leitura errada dos números.
+
+1. **Não há JVM para configurar.** As aplicações são Python puro, sem heap nem
+   coletor de lixo gerenciado. O parâmetro equivalente — memória por requisição —
+   foi variado de 16 a 64 MiB (5.4), e o teto de memória do processo foi
+   dimensionado em 4 vagas × 256 MiB. A pergunta "como a configuração de memória
+   afeta o perfil?" é respondida pelo tamanho da alocação, não por flags de JVM.
+2. **Uma única VM, sem escala horizontal real.** O enunciado pede uma VM por
+   grupo, então não há dois membros no pool e não foi medida a vazão agregada de
+   duas instâncias. O que se mediu foi escala vertical (5.6) e escala interna da
+   aplicação (5.5): o que muda quando se acrescenta núcleo e quando se muda o
+   número de vagas, com o resto constante.
+3. **O caminho de rede é compartilhado e não isolável.** O `poi-atividades` é da
+   turma, e o cliente roda na VDI de acesso. Isso fixa ~55 ms por requisição
+   (5.3) e faz a vazão absoluta depender de quanto outro grupo está usando o
+   balanceador no mesmo minuto. Por isso **todas as comparações são relativas**:
+   os dois lados de cada tabela passam pelo mesmo caminho, na mesma sessão.
+   Quando uma execução apresentou p95 incompatível com o próprio trabalho, ela
+   foi refeita (5.4).
+4. **O backend de disco é opaco.** Não há acesso às métricas do Ceph nem ao
+   limite de IOPS do volume. A conclusão "o limite é a taxa de operações do
+   disco" vem do `iostat` dentro da VM (`%util` entre 71 % e 90 % com o disco
+   raiz abaixo de 0,1 %) e do `w_await`, não de um número de IOPS do provedor.
+5. **O resize reinicia a VM.** É a semântica do OpenStack, não uma escolha. Cada
+   mudança de flavor custa ~3,5 min e derruba as conexões; por isso o script
+   espera SSH e as três portas antes de medir e as medições vêm em blocos.
+6. **Amostragem de 0,5 s e janelas de 45 s.** Picos mais curtos que a amostragem
+   não aparecem, e janelas longas diluem rajadas. A janela foi escolhida para
+   cobrir centenas de requisições por célula e o aquecimento foi descartado; a
+   série temporal (5.7) mostra que o formato dentro da janela é estável.
+7. **Os valores absolutos não são portáteis.** Vazão e latência valem para esta
+   VDI, esta VIP e este horário. O que se leva do trabalho são as razões entre
+   cenários — 2× com quatro clientes, 2,3× no IO, 0 recusas até dezesseis
+   clientes — e não os rps isolados.
+8. **A comparação de provisionamento tem dois pontos.** `small` e `medium` foram
+   medidos; o flavor seguinte (`general.large`, 4 vCPU/8 GB) exigiria um novo
+   ciclo de resize, com outro reinício da VM, e não foi incluído. Dois pontos já
+   mostram a direção do efeito e onde ele some (um cliente: −1 %), mas não
+   permitem afirmar se a vazão do perfil de CPU continuaria subindo linearmente
+   com quatro núcleos. A matriz de vagas (5.5) cobre parte dessa pergunta do
+   lado da aplicação.
 
 ---
 
@@ -814,6 +1038,12 @@ no disco do volume. O volume de 1 GB, usado para os logs, ficou com cerca de
 630 KB ocupados após todas as execuções e uma rotação — a escolha de tamanho se
 mostrou adequada, e a rotação funciona.
 
+O limite da aplicação foi medido à parte, com o mesmo flavor: variar
+`--max-concurrency` de 1 para 32 vagas levou a vazão do perfil de CPU de 4,5
+para 21,1 rps e zerou as recusas. Isso separa o que a carga pela VIP mistura —
+quantas requisições o servidor aceita ao mesmo tempo e quanto a máquina
+consegue processar.
+
 Todos os itens pedidos foram entregues: par de chaves, uma VM `general.small`
 com `ubuntu-24.04`, grupo de segurança, SSH pela VIP, aplicações pela VIP, volume
 de 1 GB montado e usado para logs, e snapshot da VM configurada. O repositório
@@ -831,12 +1061,12 @@ guarda a transcrição de cada comando (`evidencias/`), um registro por task
 | Índice das evidências (task, arquivo, tamanho, sha256, dimensões) | `evidencias/manifest.csv` |
 | Registro por task (objetivo, comandos, decisões, problemas) | `docs/execucao/T*.md` |
 | Índice dos registros | `docs/execucao/INDEX.md` |
-| Dados brutos dos experimentos | `results/measurements.csv`, `results/warmup.csv`, `results/resources-*.csv` |
-| Resumo consolidado dos experimentos | `results/summary.csv` |
+| Dados brutos dos experimentos | `results/measurements.csv` (primeira passagem), `results/measurements-v2.csv` (cenários base, tamanhos, saturação, flavor e reconciliação), `results/measurements-misto.csv`, `results/measurements-vagas.csv`, `results/warmup.csv`, `results/resources-*.csv` |
+| Resumo consolidado dos experimentos | `results/summary.csv`, `summary-size.csv`, `summary-saturation.csv`, `summary-medium.csv`, `summary-misto.csv`, `summary-vagas.csv` |
 | Gráficos | `docs/graficos/*.png` |
 | Scripts das fases automatizadas | `automation/remote/*.sh` |
 | Gerador de carga e monitor | `scripts/load_test.py`, `scripts/monitor.py` |
 | Geração dos gráficos e do manifesto | `scripts/make_charts.py`, `scripts/make_manifest.py` |
 
-**Cobertura das evidências:** 123 transcrições, 123 prints, 41 tasks — todas com
+**Cobertura das evidências:** 306 transcrições, 306 prints, 80 tasks — todas com
 print; nenhuma evidência textual ficou sem imagem.

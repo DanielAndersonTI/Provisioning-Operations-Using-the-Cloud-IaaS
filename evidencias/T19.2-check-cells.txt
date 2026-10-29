@@ -1,0 +1,32 @@
+$ python3 scripts/check_cells.py results
+# host=osboxes user=osboxes utc=2026-10-29T19:15:06Z
+
+size-cpu-s5-c1           p95=     93.6 ms  teto=    500.0 ms  (base cpu-c1 p95=149.277 ms)  ok
+size-cpu-s5-c2           p95=    114.9 ms  teto=    500.0 ms  (base cpu-c2 p95=211.304 ms)  ok
+size-cpu-s5-c4           p95=    143.6 ms  teto=    500.0 ms  (base cpu-c4 p95=274.205 ms)  ok
+size-cpu-s10-c1          p95=    116.5 ms  teto=    500.0 ms  (base cpu-c1 p95=149.277 ms)  ok
+size-cpu-s10-c2          p95=    159.2 ms  teto=    528.3 ms  (base cpu-c2 p95=211.304 ms)  ok
+size-cpu-s10-c4          p95=    259.2 ms  teto=    685.5 ms  (base cpu-c4 p95=274.205 ms)  ok
+size-cpu-s20-c1          p95=    401.2 ms  teto=    746.4 ms  (base cpu-c1 p95=149.277 ms)  ok
+size-cpu-s20-c2          p95=    251.6 ms  teto=   1056.5 ms  (base cpu-c2 p95=211.304 ms)  ok
+size-cpu-s20-c4          p95=    386.6 ms  teto=   1371.0 ms  (base cpu-c4 p95=274.205 ms)  ok
+size-io-s512-c1          p95=    475.6 ms  teto=    695.9 ms  (base io-c1 p95=556.745 ms)  ok
+size-io-s512-c2          p95=    595.0 ms  teto=    929.5 ms  (base io-c2 p95=743.596 ms)  ok
+size-io-s512-c4          p95=    581.2 ms  teto=   1293.6 ms  (base io-c4 p95=1034.909 ms)  ok
+size-io-s1024-c1         p95=    362.0 ms  teto=   1391.9 ms  (base io-c1 p95=556.745 ms)  ok
+size-io-s1024-c2         p95=    970.4 ms  teto=   1859.0 ms  (base io-c2 p95=743.596 ms)  ok
+size-io-s1024-c4         p95=   1229.1 ms  teto=   2587.3 ms  (base io-c4 p95=1034.909 ms)  ok
+size-io-s4096-c1         p95=    821.7 ms  teto=   5567.4 ms  (base io-c1 p95=556.745 ms)  ok
+size-io-s4096-c2         p95=   1224.6 ms  teto=   7436.0 ms  (base io-c2 p95=743.596 ms)  ok
+size-io-s4096-c4         p95=   2255.8 ms  teto=  10349.1 ms  (base io-c4 p95=1034.909 ms)  ok
+size-memory-s16-c1       p95=    132.8 ms  teto=    500.0 ms  (base memory-c1 p95=130.178 ms)  ok
+size-memory-s16-c2       p95=     81.3 ms  teto=    500.0 ms  (base memory-c2 p95=155.867 ms)  ok
+size-memory-s16-c4       p95=    279.3 ms  teto=    500.0 ms  (base memory-c4 p95=188.741 ms)  ok
+size-memory-s32-c1       p95=    127.9 ms  teto=    500.0 ms  (base memory-c1 p95=130.178 ms)  ok
+size-memory-s32-c2       p95=    131.6 ms  teto=    500.0 ms  (base memory-c2 p95=155.867 ms)  ok
+size-memory-s32-c4       p95=    223.0 ms  teto=    500.0 ms  (base memory-c4 p95=188.741 ms)  ok
+size-memory-s64-c1       p95=    197.2 ms  teto=    650.9 ms  (base memory-c1 p95=130.178 ms)  ok
+size-memory-s64-c2       p95=    325.6 ms  teto=    779.3 ms  (base memory-c2 p95=155.867 ms)  ok
+size-memory-s64-c4       p95=    449.7 ms  teto=    943.7 ms  (base memory-c4 p95=188.741 ms)  ok
+
+[exit 0] 2026-10-29T19:15:06Z

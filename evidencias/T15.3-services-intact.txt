@@ -1,0 +1,16 @@
+$ ssh ... 'systemctl is-active app-cpu app-memory app-io; curl 127.0.0.1:800[0-2]/health'
+# host=osboxes user=osboxes utc=2026-10-29T18:43:33Z
+
+active
+active
+active
+
+8000 -> 200
+8001 -> 200
+8002 -> 200
+
+LISTEN 0      5            0.0.0.0:8000      0.0.0.0:*    users:(("python3",pid=2366,fd=3))                    
+LISTEN 0      5            0.0.0.0:8001      0.0.0.0:*    users:(("python3",pid=2367,fd=3))                    
+LISTEN 0      5            0.0.0.0:8002      0.0.0.0:*    users:(("python3",pid=2368,fd=3))                    
+
+[exit 0] 2026-10-29T18:43:33Z

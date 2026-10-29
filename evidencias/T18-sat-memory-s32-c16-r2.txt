@@ -1,0 +1,32 @@
+$ curl http://150.165.85.77:8101/work?size=32 + python3 scripts/load_test.py --concurrency 16 --duration 30
+# host=osboxes user=osboxes utc=2026-10-29T18:58:27Z
+
+execucao         : sat-memory-s32-c16-r2
+url              : http://150.165.85.77:8101/work?size=32
+concorrencia     : 16 cliente(s)
+janela medida    : 30.0 s (aquecimento descartado)
+
+requisicoes      : 1029
+sucessos         : 1029
+erros            : 0 
+taxa de erro     : 0.0
+vazao (rps)      : 32.1419 (sucesso) / 32.1419 (total)
+latencia media   : 473.349 ms
+p50 / p95 / p99  : 271.671 / 1318.751 / 3365.754 ms
+maximo           : 5330.415 ms
+
+amostras do monitor: 80 (intervalo de 0,5 s)
+cpu da VM        : media  89.0%  pico 100.0%
+memoria da VM    : media  24.7%  pico  27.0%
+swap em uso      : media   0.0 MiB pico   0.0 MiB
+
+contadores da aplicacao (delta da execucao):
+  requisicoes    : 1209
+  aceitas (2xx)  : 1209
+  recusadas (503): 0
+  espera media   : 0.006 ms
+  trabalho medio : 48.918 ms
+  trabalho maximo: 203.411 ms
+  em voo no pico : 4
+
+[exit 0] 2026-10-29T18:58:27Z

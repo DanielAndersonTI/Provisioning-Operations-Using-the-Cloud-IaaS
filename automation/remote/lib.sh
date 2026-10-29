@@ -189,21 +189,29 @@ port_of() {
     esac
 }
 
-# run_scenario <tag> <run_id> <perfil> <tamanho> <concorrencia> <duracao>
+# run_scenario <tag> <run_id> <perfil> <tamanho> <concorrencia> <duracao> [sizes] [saida]
 #
 # Executa um cenario completo: monitor dentro da VM, iostat quando o perfil e IO,
 # aquecimento descartado, janela medida, contadores do app antes e depois, e a
 # evidencia com o resumo. Depende de VIP, VM_SSH, WARMUP e INTERVAL definidos
 # pela fase que a chama.
+#
+# `sizes` (opcional) passa `--sizes` ao gerador de carga: cada requisicao sorteia
+# um tamanho da lista, e o cenario passa a medir uma mistura em vez de um custo
+# unico. `saida` (opcional) troca o arquivo de medidas - a matriz de tamanhos e
+# a de saturacao gravam cada uma no seu, para nao misturar experimentos.
 run_scenario() {
     local tag="$1" run_id="$2" profile="$3" size="$4" concurrency="$5" duration="$6"
+    local sizes="${7:-}" outfile="${8:-$RESULTS/measurements-v2.csv}"
     local port url mon_seconds monitor_pid iostat_pid=""
+    local mixed=()
+    [ -n "$sizes" ] && mixed=(--sizes "$sizes")
     port="$(port_of "$profile")"
     url="http://$VIP:$port/work?size=$size"
     mon_seconds=$(( duration + WARMUP + 5 ))
 
     echo
-    echo "=== $run_id  url=$url  concorrencia=$concurrency  janela=${duration}s ==="
+    echo "=== $run_id  url=$url  concorrencia=$concurrency  janela=${duration}s ${sizes:+tamanhos=$sizes} ==="
 
     curl -s --max-time 10 "http://$VIP:$port/metrics" >"/tmp/before-$run_id.json" 2>/dev/null || echo '{}' >"/tmp/before-$run_id.json"
 
@@ -220,12 +228,12 @@ run_scenario() {
     python3 "$BASE/scripts/load_test.py" --url "$url" --scenario "$profile" \
         --level "$concurrency" --concurrency "$concurrency" \
         --duration "$WARMUP" --run-id "warmup-$run_id" \
-        --out "$RESULTS/warmup.csv" >/dev/null 2>&1
+        --out "$RESULTS/warmup.csv" "${mixed[@]}" >/dev/null 2>&1
 
     python3 "$BASE/scripts/load_test.py" --url "$url" --scenario "$profile" \
         --level "$concurrency" --concurrency "$concurrency" \
         --duration "$duration" --run-id "$run_id" \
-        --out "$RESULTS/measurements-v2.csv" >"$LOGS/load-$run_id.json" 2>&1
+        --out "$outfile" "${mixed[@]}" >"$LOGS/load-$run_id.json" 2>&1
 
     wait "$monitor_pid" 2>/dev/null || true
     [ -n "$iostat_pid" ] && { wait "$iostat_pid" 2>/dev/null || true; }
@@ -243,5 +251,5 @@ run_scenario() {
     python3 "$BASE/scripts/app_metrics.py" "/tmp/before-$run_id.json" "/tmp/after-$run_id.json" "$run_id" "$RESULTS/app-metrics.csv" >/dev/null 2>&1 || true
 
     evidence_from "$tag" "curl $url + python3 scripts/load_test.py --concurrency $concurrency --duration $duration" \
-        "$(python3 "$BASE/scripts/run_summary.py" "$RESULTS" "$run_id")"
+        "$(python3 "$BASE/scripts/run_summary.py" "$RESULTS" "$run_id" "$(basename "$outfile")")"
 }

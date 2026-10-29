@@ -24,6 +24,16 @@ Examples:
     python scripts/load_test.py --url http://127.0.0.1:8080/work?size=60000 \
         --scenario C1 --level 4 --concurrency 4 --requests 40
 
+    # mixed request sizes in the same window
+    python scripts/load_test.py --url http://127.0.0.1:8080/work?size=10 \
+        --sizes 5,10,20 --scenario C1 --level mixed --concurrency 4 --duration 30
+
+`--sizes` replaces the size of `--url` with a draw from the given list, per
+request. The run then sees a distribution of request costs instead of one cost:
+the mean latency is the mean over the mixture, and p95 is pulled towards the
+tail of the largest size. The `url` column records the template as
+`...?size=5,10,20` so a mixed run is never mistaken for a single-size one.
+
 Reading the throughput columns: `elapsed_s` covers the whole run, including the
 ramp-down while the last in-flight requests finish, so throughput is slightly
 understated. The tail is at most one request duration, which is negligible at
@@ -38,6 +48,7 @@ import datetime
 import json
 import math
 import os
+import random
 import socket
 import statistics
 import threading
@@ -45,6 +56,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from urllib.error import HTTPError, URLError
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from urllib.request import urlopen
 
 
@@ -105,16 +117,36 @@ def request_once(url, timeout):
     return ok, kind, time.perf_counter() - started
 
 
-def run_for_duration(url, timeout, concurrency, seconds):
+def with_size(url, size):
+    """Return `url` with its `size` parameter set to `size`."""
+    parts = urlsplit(url)
+    query = [(key, value) for key, value in parse_qsl(parts.query, keep_blank_values=True)
+             if key != "size"]
+    query.append(("size", str(size)))
+    return urlunsplit((parts.scheme, parts.netloc, parts.path,
+                       urlencode(query), parts.fragment))
+
+
+def size_urls(url, sizes):
+    """Expand `--sizes` into the URLs a mixed run draws from."""
+    if not sizes:
+        return [url]
+    return [with_size(url, size) for size in sizes]
+
+
+def run_for_duration(urls, timeout, concurrency, seconds):
     """Keep `concurrency` clients busy for `seconds`, returning samples."""
     deadline = time.perf_counter() + seconds
     samples = []
     collected = threading.Lock()
+    # One size means one URL; several mean each request draws a size, so the
+    # window sees the cost distribution and not a single cost.
+    pick = (lambda: random.choice(urls)) if len(urls) > 1 else (lambda: urls[0])
 
     def worker():
         local = []
         while time.perf_counter() < deadline:
-            local.append(request_once(url, timeout))
+            local.append(request_once(pick(), timeout))
         with collected:
             samples.extend(local)
 
@@ -127,21 +159,22 @@ def run_for_duration(url, timeout, concurrency, seconds):
     return samples, time.perf_counter() - started
 
 
-def run_fixed_count(url, timeout, concurrency, requests):
+def run_fixed_count(urls, timeout, concurrency, requests):
     """Fire exactly `requests` requests across `concurrency` clients."""
+    pick = (lambda: random.choice(urls)) if len(urls) > 1 else (lambda: urls[0])
     started = time.perf_counter()
     with ThreadPoolExecutor(max_workers=concurrency) as pool:
-        futures = [pool.submit(request_once, url, timeout) for _ in range(requests)]
+        futures = [pool.submit(request_once, pick(), timeout) for _ in range(requests)]
         samples = [future.result() for future in as_completed(futures)]
     return samples, time.perf_counter() - started
 
 
-def measure(url, concurrency, timeout, duration=None, requests=None):
+def measure(urls, concurrency, timeout, duration=None, requests=None):
     """Run one load level. Returns (samples, elapsed_seconds, mode)."""
     if duration is not None:
-        samples, elapsed = run_for_duration(url, timeout, concurrency, duration)
+        samples, elapsed = run_for_duration(urls, timeout, concurrency, duration)
         return samples, elapsed, "duration"
-    samples, elapsed = run_fixed_count(url, timeout, concurrency, requests)
+    samples, elapsed = run_fixed_count(urls, timeout, concurrency, requests)
     return samples, elapsed, "requests"
 
 
@@ -248,6 +281,11 @@ def main():
     parser.add_argument("--requests", type=int, help="fixed request count instead")
     parser.add_argument("--timeout", type=float, default=60.0)
     parser.add_argument("--run-id", default="")
+    parser.add_argument(
+        "--sizes",
+        default="",
+        help="comma-separated sizes; each request draws one (mixed workload)",
+    )
     parser.add_argument("--out", default="results/measurements.csv")
     args = parser.parse_args()
 
@@ -260,15 +298,22 @@ def main():
     if args.requests is not None and args.requests < 1:
         parser.error("--requests must be at least 1")
 
+    sizes = [int(value) for value in args.sizes.split(",") if value.strip()]
+    if any(size < 1 for size in sizes):
+        parser.error("--sizes values must be at least 1")
+
     run_id = args.run_id or f"{args.scenario}-L{args.level or args.concurrency}"
+    record_url = (with_size(args.url, ",".join(str(size) for size in sizes))
+                  if sizes else args.url)
     samples, elapsed, mode = measure(
-        args.url, args.concurrency, args.timeout, args.duration, args.requests
+        size_urls(args.url, sizes), args.concurrency, args.timeout,
+        args.duration, args.requests
     )
     row = build_row(
         run_id,
         args.scenario,
         args.level,
-        args.url,
+        record_url,
         args.concurrency,
         mode,
         args.requests,

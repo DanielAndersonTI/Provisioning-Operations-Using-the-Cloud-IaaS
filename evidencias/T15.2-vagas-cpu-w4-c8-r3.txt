@@ -1,0 +1,26 @@
+$ ssh ... 'python3 /opt/atividade3/scripts/load_test.py --url http://127.0.0.1:8010/work?size=10 --concurrency 8 --duration 20 --run-id vagas-cpu-w4-c8-r3'
+# host=osboxes user=osboxes utc=2026-10-29T18:36:52Z
+
+servidor: cpu application listening on port 8010 (max 4 concurrent work units)
+
+execucao         : vagas-cpu-w4-c8-r3
+url              : http://127.0.0.1:8010/work?size=10
+vagas (servidor) : 4
+clientes         : 8 dentro da VM
+janela medida    : 20.0 s
+
+requisicoes      : 6312
+sucessos         : 288
+erros            : 6024 http_503=6024
+taxa de erro     : 0.9544
+vazao (rps)      : 14.327 (sucesso) / 314.0005 (total)
+latencia media   : 25.393 ms
+p50 / p95 / p99  : 11.999 / 25.18 / 294.567 ms
+
+contadores da aplicacao (delta da execucao):
+  recusadas (503): 6024
+  espera media   : 0.0 ms
+  trabalho medio : 12.402 ms
+  em voo no pico : 4
+
+[exit 0] 2026-10-29T18:36:52Z

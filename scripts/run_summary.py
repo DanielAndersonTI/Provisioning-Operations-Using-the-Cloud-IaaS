@@ -5,7 +5,10 @@ resource samples and the application counters -- and prints one aligned block
 that the phase script saves as evidence.
 
 Usage:
-    python scripts/run_summary.py results <run_id>
+    python scripts/run_summary.py results <run_id> [measurements.csv]
+
+The third argument names the measurement file: most phases write
+measurements-v2.csv, the mixed-size phase writes measurements-misto.csv.
 """
 
 import csv
@@ -30,10 +33,11 @@ def find(rows, key, value):
 
 def main():
     results, run_id = sys.argv[1:3]
+    measurements = sys.argv[3] if len(sys.argv) > 3 else "measurements-v2.csv"
 
-    row = find(read_rows(os.path.join(results, "measurements-v2.csv")), "run_id", run_id)
+    row = find(read_rows(os.path.join(results, measurements)), "run_id", run_id)
     if row is None:
-        print("execucao nao encontrada em measurements-v2.csv:", run_id)
+        print(f"execucao nao encontrada em {measurements}:", run_id)
         return
 
     samples = read_rows(os.path.join(results, f"resources-v2-{run_id}.csv"))

@@ -1,0 +1,64 @@
+$ curl http://150.165.85.77:8102/work?size=1024 + python3 scripts/load_test.py --concurrency 4 --duration 20
+# host=osboxes user=osboxes utc=2026-10-29T18:53:13Z
+
+execucao         : misto-io-c4-r1
+url              : http://150.165.85.77:8102/work?size=512%2C1024%2C1536
+concorrencia     : 4 cliente(s)
+janela medida    : 20.0 s (aquecimento descartado)
+
+requisicoes      : 158
+sucessos         : 158
+erros            : 0 
+taxa de erro     : 0.0
+vazao (rps)      : 7.7176 (sucesso) / 7.7176 (total)
+latencia media   : 518.04 ms
+p50 / p95 / p99  : 450.967 / 900.904 / 1386.628 ms
+maximo           : 3411.117 ms
+
+amostras do monitor: 120 (intervalo de 0,5 s)
+cpu da VM        : media   2.9%  pico   8.0%
+memoria da VM    : media  21.5%  pico  24.6%
+swap em uso      : media   0.0 MiB pico   0.0 MiB
+
+contadores da aplicacao (delta da execucao):
+  requisicoes    : 103
+  aceitas (2xx)  : 103
+  recusadas (503): 0
+  espera media   : 0.009 ms
+  trabalho medio : 971.906 ms
+  trabalho maximo: 3913.523 ms
+  em voo no pico : 4
+
+disco vda: 30 amostras de iostat
+  ocupacao       : media 0.06%  pico 1.0%
+  fila (aqu-sz)  : media 0.002
+  escritas       : 5.5 req/s
+  leituras       : 0.0 req/s
+  espera escrita : 0.27 ms
+  espera leitura : 0.01 ms
+
+disco vdb: 30 amostras de iostat
+  ocupacao       : media 84.74%  pico 100.0%
+  fila (aqu-sz)  : media 5.419
+  escritas       : 10.6 req/s
+  leituras       : 0.0 req/s
+  espera escrita : 423.43 ms
+  espera leitura : 3.42 ms
+
+disco vda: 30 amostras de iostat
+  ocupacao       : media 0.06%  pico 1.3%
+  fila (aqu-sz)  : media 0.003
+  escritas       : 6.2 req/s
+  leituras       : 0.0 req/s
+  espera escrita : 0.13 ms
+  espera leitura : 0.01 ms
+
+disco vdb: 30 amostras de iostat
+  ocupacao       : media 76.74%  pico 96.6%
+  fila (aqu-sz)  : media 3.465
+  escritas       : 15.9 req/s
+  leituras       : 0.0 req/s
+  espera escrita : 192.94 ms
+  espera leitura : 3.42 ms
+
+[exit 0] 2026-10-29T18:53:13Z

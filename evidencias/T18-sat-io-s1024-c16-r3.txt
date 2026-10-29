@@ -1,0 +1,48 @@
+$ curl http://150.165.85.77:8102/work?size=1024 + python3 scripts/load_test.py --concurrency 16 --duration 30
+# host=osboxes user=osboxes utc=2026-10-29T18:57:43Z
+
+execucao         : sat-io-s1024-c16-r3
+url              : http://150.165.85.77:8102/work?size=1024
+concorrencia     : 16 cliente(s)
+janela medida    : 30.0 s (aquecimento descartado)
+
+requisicoes      : 274
+sucessos         : 274
+erros            : 0 
+taxa de erro     : 0.0
+vazao (rps)      : 8.9705 (sucesso) / 8.9705 (total)
+latencia media   : 1781.005 ms
+p50 / p95 / p99  : 1766.892 / 2307.93 / 2342.865 ms
+maximo           : 2385.609 ms
+
+amostras do monitor: 80 (intervalo de 0,5 s)
+cpu da VM        : media   4.1%  pico  16.3%
+memoria da VM    : media  21.1%  pico  21.9%
+swap em uso      : media   0.0 MiB pico   0.0 MiB
+
+contadores da aplicacao (delta da execucao):
+  requisicoes    : 322
+  aceitas (2xx)  : 322
+  recusadas (503): 0
+  espera media   : 0.009 ms
+  trabalho medio : 1695.384 ms
+  trabalho maximo: 3913.523 ms
+  em voo no pico : 16
+
+disco vda: 40 amostras de iostat
+  ocupacao       : media 0.06%  pico 1.0%
+  fila (aqu-sz)  : media 0.002
+  escritas       : 3.7 req/s
+  leituras       : 0.0 req/s
+  espera escrita : 0.29 ms
+  espera leitura : 0.01 ms
+
+disco vdb: 40 amostras de iostat
+  ocupacao       : media 87.64%  pico 100.1%
+  fila (aqu-sz)  : media 9.067
+  escritas       : 10.3 req/s
+  leituras       : 0.0 req/s
+  espera escrita : 762.23 ms
+  espera leitura : 2.57 ms
+
+[exit 0] 2026-10-29T18:57:43Z

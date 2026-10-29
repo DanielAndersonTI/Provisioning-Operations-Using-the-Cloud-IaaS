@@ -145,6 +145,9 @@ Updated as the steps are completed.
 - The required `general.small` flavor exists under that exact name in the project (`7441c7d9-2648-4a33-907e-4d28c2270da3`), contrary to what the instructor's materials suggested.
 - The I/O-bound application writes its scratch file to the mounted volume during the experiments (`A3_WORK_DIR`), so the I/O measured is the I/O of the provisioned storage, not of the root disk.
 - To show demand against provisioning, the same VM was resized to `general.medium` (2 vCPUs) for a short second matrix and then resized back. The VM is delivered on `general.small`, as the assignment requires, and the final flavor is recorded in the execution record.
+- The number of work slots is a parameter, not a constant: `--max-concurrency` was varied (1, 4, 32 for CPU; 4, 8, 16 for I/O) against a copy of the application listening outside the load balancer, with the load generator running inside the VM. The result is in `results/summary-vagas.csv`.
+- Request sizes are not always uniform: one phase draws a size per request from a list whose mean equals the profile's standard size, so the effect of a mixed workload is measured instead of assumed (`results/summary-misto.csv`).
+- Some size cells were measured twice. The first pass left cells whose p95 was inconsistent with the same work measured in the baseline scenarios; those blocks were re-measured, and a cell is only accepted if its p95 stays below a plausibility ceiling computed from the baseline (`docs/execucao/T17.md`, `docs/execucao/T19.md`).
 - No credentials, private keys, or passwords are stored in this repository.
 - The list of load balancers was checked before creating any resources. The `poi-atividades` load balancer already existed in the project and is shared by the class; therefore, the external ports are `2222` and `8100-8102`, which differ from the internal ports.
 

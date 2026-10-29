@@ -11,6 +11,8 @@ vdi.env
 __pycache__/
 *.pyc
 .venv/
+# Console local das fases — o conteúdo já está em evidencias/
+logs-run-*.txt
 
 # Sistema
 Thumbs.db

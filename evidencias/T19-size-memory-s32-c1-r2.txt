@@ -1,0 +1,32 @@
+$ curl http://150.165.85.77:8101/work?size=32 + python3 scripts/load_test.py --concurrency 1 --duration 30
+# host=osboxes user=osboxes utc=2026-10-29T19:13:39Z
+
+execucao         : size-memory-s32-c1-r2
+url              : http://150.165.85.77:8101/work?size=32
+concorrencia     : 1 cliente(s)
+janela medida    : 30.0 s (aquecimento descartado)
+
+requisicoes      : 300
+sucessos         : 300
+erros            : 0 
+taxa de erro     : 0.0
+vazao (rps)      : 9.9725 (sucesso) / 9.9725 (total)
+latencia media   : 100.26 ms
+p50 / p95 / p99  : 94.369 / 127.928 / 207.046 ms
+maximo           : 222.663 ms
+
+amostras do monitor: 80 (intervalo de 0,5 s)
+cpu da VM        : media  41.4%  pico  57.1%
+memoria da VM    : media  22.0%  pico  22.1%
+swap em uso      : media   0.0 MiB pico   0.0 MiB
+
+contadores da aplicacao (delta da execucao):
+  requisicoes    : 349
+  aceitas (2xx)  : 349
+  recusadas (503): 0
+  espera media   : 0.009 ms
+  trabalho medio : 46.024 ms
+  trabalho maximo: 203.411 ms
+  em voo no pico : 4
+
+[exit 0] 2026-10-29T19:13:39Z

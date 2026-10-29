@@ -1,0 +1,16 @@
+$ ssh ... 'systemctl is-active app-cpu app-memory app-io; ss -ltnp | grep :800[0-2]'
+# host=osboxes user=osboxes utc=2026-10-29T18:33:29Z
+
+active
+active
+active
+
+LISTEN 0      5            0.0.0.0:8000      0.0.0.0:*    users:(("python3",pid=2366,fd=3))                    
+LISTEN 0      5            0.0.0.0:8001      0.0.0.0:*    users:(("python3",pid=2367,fd=3))                    
+LISTEN 0      5            0.0.0.0:8002      0.0.0.0:*    users:(("python3",pid=2368,fd=3))                    
+
+1
+               total        used        free      shared  buff/cache   available
+Mem:            1967         313        1531           3         273        1654
+
+[exit 0] 2026-10-29T18:33:29Z
