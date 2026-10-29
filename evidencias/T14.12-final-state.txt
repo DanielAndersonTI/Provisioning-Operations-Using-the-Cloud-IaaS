@@ -1,0 +1,20 @@
+$ openstack server show vm-daniel-ranya -f value -c name -c status -c flavor; echo; openstack volume show vol-daniel-ranya-logs -f value -c name -c status -c size; echo; openstack volume snapshot list; echo; openstack image list | grep -E 'snap-vm|snap-vol' || openstack image list | head -10
+# host=osboxes user=osboxes utc=2026-10-29T17:26:54Z
+
+general.small (7441c7d9-2648-4a33-907e-4d28c2270da3)
+vm-daniel-ranya
+ACTIVE
+
+vol-daniel-ranya-logs
+1
+in-use
+
++--------------------------------------+----------------------------+-------------------------------------------+-----------+------+
+| ID                                   | Name                       | Description                               | Status    | Size |
++--------------------------------------+----------------------------+-------------------------------------------+-----------+------+
+| df5d86d9-f4d9-43d1-a805-7edf619355d0 | snap-vol-daniel-ranya-logs | Snapshot do volume de logs da Atividade 3 | available |    1 |
++--------------------------------------+----------------------------+-------------------------------------------+-----------+------+
+
+| 6034d4a8-45bb-40ea-abe2-867e659e8f53 | snap-vm-daniel-ranya         | active |
+
+[exit 0] 2026-10-29T17:27:20Z

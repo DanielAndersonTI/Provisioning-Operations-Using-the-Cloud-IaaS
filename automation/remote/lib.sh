@@ -162,3 +162,86 @@ cap_soft() {
 section() {
     printf '\n\n========== %s ==========\n' "$*"
 }
+
+# evidence_from <id> <titulo> <corpo>
+# Grava um corpo de texto como evidencia, com o mesmo preambulo de `cap`.
+evidence_from() {
+    local id="$1" title="$2" body="$3"
+    local txt="$EVID/$id.txt"
+    {
+        printf '$ %s\n' "$title"
+        printf '# host=%s user=%s utc=%s\n\n' "$(hostname)" "$(whoami)" "$(utc_now)"
+        printf '%s\n' "$body"
+        printf '\n[exit 0] %s\n' "$(utc_now)"
+    } >"$txt"
+    render_png "$txt" "$EVID/$id.png" || true
+    echo "----- $id -----"
+    printf '%s\n' "$body"
+    echo "----------------"
+}
+
+# port_of <perfil> - porta externa (VIP) de cada aplicacao.
+port_of() {
+    case "$1" in
+        cpu) echo "${A3_CPU_PORT:-8100}" ;;
+        memory) echo "${A3_MEMORY_PORT:-8101}" ;;
+        io) echo "${A3_IO_PORT:-8102}" ;;
+    esac
+}
+
+# run_scenario <tag> <run_id> <perfil> <tamanho> <concorrencia> <duracao>
+#
+# Executa um cenario completo: monitor dentro da VM, iostat quando o perfil e IO,
+# aquecimento descartado, janela medida, contadores do app antes e depois, e a
+# evidencia com o resumo. Depende de VIP, VM_SSH, WARMUP e INTERVAL definidos
+# pela fase que a chama.
+run_scenario() {
+    local tag="$1" run_id="$2" profile="$3" size="$4" concurrency="$5" duration="$6"
+    local port url mon_seconds monitor_pid iostat_pid=""
+    port="$(port_of "$profile")"
+    url="http://$VIP:$port/work?size=$size"
+    mon_seconds=$(( duration + WARMUP + 5 ))
+
+    echo
+    echo "=== $run_id  url=$url  concorrencia=$concurrency  janela=${duration}s ==="
+
+    curl -s --max-time 10 "http://$VIP:$port/metrics" >"/tmp/before-$run_id.json" 2>/dev/null || echo '{}' >"/tmp/before-$run_id.json"
+
+    $VM_SSH "python3 /opt/atividade3/scripts/monitor.py --scenario $run_id --seconds $mon_seconds --interval $INTERVAL --out /tmp/mon-$run_id.csv" \
+        >"$LOGS/monitor-$run_id.log" 2>&1 &
+    monitor_pid=$!
+
+    if [ "$profile" = "io" ]; then
+        $VM_SSH "iostat -dx 1 $mon_seconds > /tmp/iostat-$run_id.txt 2>&1" >/dev/null 2>&1 &
+        iostat_pid=$!
+    fi
+
+    sleep 2
+    python3 "$BASE/scripts/load_test.py" --url "$url" --scenario "$profile" \
+        --level "$concurrency" --concurrency "$concurrency" \
+        --duration "$WARMUP" --run-id "warmup-$run_id" \
+        --out "$RESULTS/warmup.csv" >/dev/null 2>&1
+
+    python3 "$BASE/scripts/load_test.py" --url "$url" --scenario "$profile" \
+        --level "$concurrency" --concurrency "$concurrency" \
+        --duration "$duration" --run-id "$run_id" \
+        --out "$RESULTS/measurements-v2.csv" >"$LOGS/load-$run_id.json" 2>&1
+
+    wait "$monitor_pid" 2>/dev/null || true
+    [ -n "$iostat_pid" ] && { wait "$iostat_pid" 2>/dev/null || true; }
+
+    $VM_SSH "cat /tmp/mon-$run_id.csv" >"$RESULTS/resources-v2-$run_id.csv" 2>/dev/null || true
+
+    if [ "$profile" = "io" ]; then
+        $VM_SSH "cat /tmp/iostat-$run_id.txt" >"$RESULTS/iostat-$run_id.txt" 2>/dev/null || true
+        python3 "$BASE/scripts/parse_iostat.py" "$RESULTS/iostat-$run_id.txt" "$run_id" "$RESULTS/iostat.csv" \
+            >"$LOGS/iostat-$run_id.log" 2>&1 \
+            || echo "AVISO: parse_iostat falhou em $run_id" >&2
+    fi
+
+    curl -s --max-time 10 "http://$VIP:$port/metrics" >"/tmp/after-$run_id.json" 2>/dev/null || echo '{}' >"/tmp/after-$run_id.json"
+    python3 "$BASE/scripts/app_metrics.py" "/tmp/before-$run_id.json" "/tmp/after-$run_id.json" "$run_id" "$RESULTS/app-metrics.csv" >/dev/null 2>&1 || true
+
+    evidence_from "$tag" "curl $url + python3 scripts/load_test.py --concurrency $concurrency --duration $duration" \
+        "$(python3 "$BASE/scripts/run_summary.py" "$RESULTS" "$run_id")"
+}

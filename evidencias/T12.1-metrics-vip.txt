@@ -1,0 +1,11 @@
+$ for p in 8100 8101 8102; do echo "-- porta $p"; curl -s --max-time 10 http://150.165.85.77:$p/metrics; echo; done
+# host=osboxes user=osboxes utc=2026-10-29T15:51:01Z
+
+-- porta 8100
+{"profile": "cpu", "max_concurrency": 32, "uptime_seconds": 3.531, "requests": 0, "ok": 0, "rejected_503": 0, "failed": 0, "completed": 0, "inflight": 0, "max_inflight": 0, "wait_seconds_total": 0.0, "work_seconds_total": 0.0, "mean_wait_ms": 0.0, "mean_work_ms": 0.0, "max_work_ms": 0.0}
+-- porta 8101
+{"profile": "memory", "max_concurrency": 4, "uptime_seconds": 3.619, "requests": 0, "ok": 0, "rejected_503": 0, "failed": 0, "completed": 0, "inflight": 0, "max_inflight": 0, "wait_seconds_total": 0.0, "work_seconds_total": 0.0, "mean_wait_ms": 0.0, "mean_work_ms": 0.0, "max_work_ms": 0.0}
+-- porta 8102
+{"profile": "io", "max_concurrency": 16, "uptime_seconds": 3.712, "requests": 0, "ok": 0, "rejected_503": 0, "failed": 0, "completed": 0, "inflight": 0, "max_inflight": 0, "wait_seconds_total": 0.0, "work_seconds_total": 0.0, "mean_wait_ms": 0.0, "mean_work_ms": 0.0, "max_work_ms": 0.0}
+
+[exit 0] 2026-10-29T15:51:01Z

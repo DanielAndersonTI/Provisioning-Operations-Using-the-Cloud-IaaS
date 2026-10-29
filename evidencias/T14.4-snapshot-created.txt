@@ -1,0 +1,18 @@
+$ openstack image show snap-vm-daniel-ranya-final -c id -c name -c status -c size -c 'disk_format' -c 'min_disk'; echo; openstack image list | grep snap-vm-daniel-ranya
+# host=osboxes user=osboxes utc=2026-10-29T17:21:47Z
+
++-------------+--------------------------------------+
+| Field       | Value                                |
++-------------+--------------------------------------+
+| disk_format | qcow2                                |
+| id          | 6034d4a8-45bb-40ea-abe2-867e659e8f53 |
+| min_disk    | 20                                   |
+| name        | snap-vm-daniel-ranya-final           |
+| size        | 3682992128                           |
+| status      | active                               |
++-------------+--------------------------------------+
+
+| 7fb6d24c-583d-4f04-b843-5a1a35424816 | snap-vm-daniel-ranya         | active |
+| 6034d4a8-45bb-40ea-abe2-867e659e8f53 | snap-vm-daniel-ranya-final   | active |
+
+[exit 0] 2026-10-29T17:21:54Z

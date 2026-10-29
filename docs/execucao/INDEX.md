@@ -68,3 +68,42 @@ com a CLI do OpenStack, e as fases automatizadas estão em
 | T11.1 | Relatório | `RELATORIO.md` | concluída |
 | T11.2 | Índice das evidências | `evidencias/manifest.csv` | concluída |
 | T11.3 | Revisão de notas e limpeza | — | concluída |
+
+## Medições complementares
+
+| Task | Descrição | Evidência | Status |
+| --- | --- | --- | --- |
+| T12.1 | Redeploy conferido por checksum e reinício dos serviços | `T12.1-*` | concluída |
+| T12.2 | Diretório de trabalho do perfil IO no volume | `T12.2-*` | concluída |
+| T12.3 | Prova de que o IO ocorre no volume (`iostat`) | `T12.3-*` | concluída |
+| T12.4 | Matriz tamanho do trabalho × concorrência (27 execuções) | `T12.4-*`, `results/summary-size.csv` | concluída |
+| T12.5 | Saturação com 8 e 16 clientes | `T12.5-*`, `results/summary-saturation.csv` | concluída |
+| T12.6 | Três repetições contemporâneas dos cenários base | `T12.6-*`, `results/summary.csv` | concluída |
+| T12.7 | Consolidação final das medições | `T12.7-summary` | concluída |
+| T12.8 | Carga local dentro da VM e recusa por vagas | `T12.8-*`, `results/measurements-local.csv` | concluída |
+
+## Provisionamento e entrega final
+
+| Task | Descrição | Evidência | Status |
+| --- | --- | --- | --- |
+| T13.1 | Estado da VM antes do resize | `T13.1-*` | concluída |
+| T13.2 | Pedido de resize para `general.medium` | `T13.2-*` | concluída |
+| T13.3 | Confirmação do resize | `T13.3-resize-confirm` | concluída |
+| T13.4 | Recursos dentro da VM em `general.medium` | `T13.4-medium-resources` | concluída |
+| T13.5 | 12 execuções em `general.medium` (3 perfis × 1/2/4/8) | `T13.5-*`, `results/summary-medium.csv` | concluída |
+| T13.6 | Pedido de resize de volta para `general.small` | `T13.6-*` | concluída |
+| T13.7 | Confirmação da volta | `T13.7-resize-back-confirm` | concluída |
+| T13.8 | Recursos após a volta, flavor final | `T13.8-*` | concluída |
+| T13.9 | Comparação `small` × `medium` | `T13.9-summary` | concluída |
+| T14.1 | Volume antes do snapshot | `T14.1-volume-before` | concluída |
+| T14.2 | Snapshot do volume com o volume anexado (recusado) | `T14.2-*` | concluída |
+| T14.3 | Imagens existentes antes do snapshot novo | `T14.3-snapshot-before` | concluída |
+| T14.4 | Criação e conferência do snapshot novo da VM | `T14.4-*` | concluída |
+| T14.5 | Remoção do snapshot antigo | `T14.5-snapshot-delete-old` | concluída |
+| T14.6 | Troca de nome do snapshot | `T14.6-*` | concluída |
+| T14.7 | Estado dos recursos ao fim da fase | `T14.7-final-state` | concluída |
+| T14.8 | Volume antes do ciclo e parada das aplicações | `T14.8-*` | concluída |
+| T14.9 | Desmontagem e desanexação do volume | `T14.9-*` | concluída |
+| T14.10 | Snapshot do volume | `T14.10-*` | concluída |
+| T14.11 | Reanexo, montagem, serviços e escrita no volume | `T14.11-*` | concluída |
+| T14.12 | Estado final dos recursos | `T14.12-final-state` | concluída |

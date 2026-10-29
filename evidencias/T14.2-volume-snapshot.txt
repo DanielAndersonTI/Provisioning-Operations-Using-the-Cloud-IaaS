@@ -1,0 +1,6 @@
+$ openstack volume snapshot create --volume vol-daniel-ranya-logs --description 'Snapshot do volume de logs da Atividade 3 (usado pelas aplicacoes)' snap-vol-daniel-ranya-logs
+# host=osboxes user=osboxes utc=2026-10-29T17:09:10Z (tentativa 3)
+
+Invalid volume: Volume 2271182d-ac0c-4dd9-bcf7-cc535379f532 status must be available, but current status is: in-use. (HTTP 400) (Request-ID: req-644c1496-1b82-48be-9ca1-ae103849486b)
+
+[exit 1] 2026-10-29T17:09:16Z

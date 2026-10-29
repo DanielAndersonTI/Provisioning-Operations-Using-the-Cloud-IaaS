@@ -1,0 +1,15 @@
+$ openstack server add volume vm-daniel-ranya vol-daniel-ranya-logs
+# host=osboxes user=osboxes utc=2026-10-29T17:23:55Z (tentativa 1)
+
++-----------------------+--------------------------------------+
+| Field                 | Value                                |
++-----------------------+--------------------------------------+
+| ID                    | 2271182d-ac0c-4dd9-bcf7-cc535379f532 |
+| Server ID             | bdc0447e-fb71-48c8-9ce2-04a8c5e20ee0 |
+| Volume ID             | 2271182d-ac0c-4dd9-bcf7-cc535379f532 |
+| Device                | /dev/vdb                             |
+| Tag                   | None                                 |
+| Delete On Termination | False                                |
++-----------------------+--------------------------------------+
+
+[exit 0] 2026-10-29T17:24:04Z

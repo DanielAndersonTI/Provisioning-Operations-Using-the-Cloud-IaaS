@@ -1,0 +1,7 @@
+date_utc,run_id,scenario,level,url,concurrency,mode,requests_target,duration_target_s,elapsed_s,attempts,successes,errors,error_rate,errors_by_kind,throughput_rps,success_throughput_rps,mean_ms,p50_ms,p95_ms,p99_ms,min_ms,max_ms,client_host,client_cpu_count
+2026-10-29T16:43:31+00:00,local-cpu-c8,cpu,8,http://127.0.0.1:8000/work?size=10,8,duration,,20.0,20.2647,424,424,0,0.0,,20.9231,20.9231,381.277,371.576,403.951,737.982,266.801,860.515,vm-daniel-ranya,1
+2026-10-29T16:43:54+00:00,local-cpu-c32,cpu,32,http://127.0.0.1:8000/work?size=10,32,duration,,20.0,20.7984,417,417,0,0.0,,20.0496,20.0496,1567.565,1469.572,2502.038,4012.809,798.772,4645.041,vm-daniel-ranya,1
+2026-10-29T16:44:18+00:00,local-memory-c8,memory,8,http://127.0.0.1:8001/work?size=32,8,duration,,20.0,20.5685,658,658,0,0.0,,31.9907,31.9907,244.942,213.398,272.977,1268.228,130.968,2287.177,vm-daniel-ranya,1
+2026-10-29T16:44:51+00:00,local-memory-c32,memory,32,http://127.0.0.1:8001/work?size=32,32,duration,,20.0,29.7352,638,638,0,0.0,,21.4561,21.4561,1069.256,256.853,4027.49,7127.906,130.907,29586.076,vm-daniel-ranya,1
+2026-10-29T16:45:14+00:00,local-io-c8,io,8,http://127.0.0.1:8002/work?size=1024,8,duration,,20.0,20.0594,82,82,0,0.0,,4.0879,4.0879,1955.988,1392.929,5118.557,5130.262,683.228,5130.697,vm-daniel-ranya,1
+2026-10-29T16:45:39+00:00,local-io-c32,io,32,http://127.0.0.1:8002/work?size=1024,32,duration,,20.0,22.5318,13244,127,13117,0.9904,http_503=13117,587.7913,5.6365,52.061,7.217,9.715,1448.802,0.884,6758.04,vm-daniel-ranya,1

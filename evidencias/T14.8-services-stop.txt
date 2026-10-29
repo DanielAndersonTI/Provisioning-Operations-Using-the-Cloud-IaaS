@@ -1,0 +1,12 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo systemctl stop app-cpu app-memory app-io; sleep 2; systemctl is-active app-cpu app-memory app-io; echo; sudo fuser -vm /mnt/atividade3-logs 2>&1 || echo "nenhum processo usando /mnt/atividade3-logs"'
+# host=osboxes user=osboxes utc=2026-10-29T17:23:19Z
+
+inactive
+inactive
+inactive
+
+                     USER        PID ACCESS COMMAND
+/mnt/atividade3-logs:
+                     root     kernel mount /mnt/atividade3-logs
+
+[exit 0] 2026-10-29T17:23:22Z

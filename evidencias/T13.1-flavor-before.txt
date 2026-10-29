@@ -1,0 +1,23 @@
+$ openstack server show vm-daniel-ranya -f value -c name -c status -c flavor; openstack server show vm-daniel-ranya -c flavor -c status; echo; openstack flavor show general.small -f value -c name -c vcpus -c ram -c disk; openstack flavor show general.medium -f value -c name -c vcpus -c ram -c disk
+# host=osboxes user=osboxes utc=2026-10-29T16:46:56Z
+
+general.small (7441c7d9-2648-4a33-907e-4d28c2270da3)
+vm-daniel-ranya
+ACTIVE
++--------+------------------------------------------------------+
+| Field  | Value                                                |
++--------+------------------------------------------------------+
+| flavor | general.small (7441c7d9-2648-4a33-907e-4d28c2270da3) |
+| status | ACTIVE                                               |
++--------+------------------------------------------------------+
+
+20
+general.small
+2048
+1
+20
+general.medium
+4096
+2
+
+[exit 0] 2026-10-29T16:47:29Z

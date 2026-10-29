@@ -1,0 +1,14 @@
+$ openstack server show vm-daniel-ranya -f value -c status -c flavor; echo; openstack server show vm-daniel-ranya -c flavor -c status
+# host=osboxes user=osboxes utc=2026-10-29T16:51:13Z
+
+general.medium (69495bdc-cc5a-4596-9b0a-e2c30956df46)
+VERIFY_RESIZE
+
++--------+-------------------------------------------------------+
+| Field  | Value                                                 |
++--------+-------------------------------------------------------+
+| flavor | general.medium (69495bdc-cc5a-4596-9b0a-e2c30956df46) |
+| status | VERIFY_RESIZE                                         |
++--------+-------------------------------------------------------+
+
+[exit 0] 2026-10-29T16:51:21Z

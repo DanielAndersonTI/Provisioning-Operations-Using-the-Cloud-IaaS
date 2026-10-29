@@ -1,0 +1,15 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'nproc; echo; free -m | head -2; echo; systemctl is-active app-cpu app-memory app-io; echo; df -h /mnt/atividade3-logs | tail -1'
+# host=osboxes user=osboxes utc=2026-10-29T16:47:30Z
+
+1
+
+               total        used        free      shared  buff/cache   available
+Mem:            1968         448         251           4        1464        1519
+
+active
+active
+active
+
+/dev/vdb        974M  616K  947M   1% /mnt/atividade3-logs
+
+[exit 0] 2026-10-29T16:47:31Z

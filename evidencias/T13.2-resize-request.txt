@@ -1,0 +1,5 @@
+$ openstack server resize --flavor general.medium vm-daniel-ranya
+# host=osboxes user=osboxes utc=2026-10-29T16:47:31Z (tentativa 1)
+
+
+[exit 0] 2026-10-29T16:47:48Z

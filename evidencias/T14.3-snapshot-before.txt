@@ -1,0 +1,16 @@
+$ openstack image list --long | grep -E 'snap|ubuntu-24.04' || openstack image list
+# host=osboxes user=osboxes utc=2026-10-29T17:15:52Z
+
+| 4cce44a1-73ee-45a1-8a9a-c5aa7fce4c14 | grupo14-snapshot             | qcow2       | bare             |  2484994048 | b34d0c06a0e939aa0662ae34449e7772 | active | private    | False     | 2c593796f29e4b829b1b523775e2fa26 |      |
+| 6a8bf9e6-160b-4907-8df6-35974bab6e7e | poi-dougsilva-snapshot       | qcow2       | bare             |  4438097920 | 0f41c279e6a06baa8af67e6c877fa2de | active | private    | False     | 2c593796f29e4b829b1b523775e2fa26 |      |
+| 7fb6d24c-583d-4f04-b843-5a1a35424816 | snap-vm-daniel-ranya         | qcow2       | bare             |  1983840256 | a0fd2f54ee2d896297cd079c616bd758 | active | private    | False     | 2c593796f29e4b829b1b523775e2fa26 |      |
+| fcfa5a46-a54c-4689-aab4-d1eafbb6ca52 | snapshot-Rafael_VM_POI       | qcow2       | bare             |  2561933312 | cbe6c32425b992451bc75f2826b3e5e9 | active | private    | False     | 2c593796f29e4b829b1b523775e2fa26 |      |
+| ec51dfbe-041b-44ac-aa2a-e5a075faccab | snapshot-arthur-pedro-poi    | qcow2       | bare             |  3950772224 | 6e34522f085d18bba89a184af5e03079 | active | private    | False     | 2c593796f29e4b829b1b523775e2fa26 |      |
+| 5bf2ef7d-21d1-492b-9575-7ae1212d5fb4 | snapshot-lucas-vm-poi        | qcow2       | bare             |  3020685312 | 00094821c9e2203119006f6aa44aa469 | active | private    | False     | 2c593796f29e4b829b1b523775e2fa26 |      |
+| 61f9c68b-3c8c-45d5-b12c-3fad6e022bcf | snapshot-thyago-app          | qcow2       | bare             |  2506162176 | f86f9aa80afe1582d0ac9961680d5057 | active | private    | False     | 2c593796f29e4b829b1b523775e2fa26 |      |
+| 73b4d615-214e-45ca-8ba9-b8ede5a8641e | snapshot-vm-grupo1           | qcow2       | bare             |  4169596928 | 094f34d0d8a27663f2c6de1e86b216f8 | active | private    | False     | 2c593796f29e4b829b1b523775e2fa26 |      |
+| c7a7fab3-9bb8-45c7-af1a-514227a92faa | snapshot-vm-jardel           | qcow2       | bare             |  4964548608 | a72b5723ee706df4a1276cc5248f501f | active | private    | False     | 2c593796f29e4b829b1b523775e2fa26 |      |
+| 8aa3bd2f-15de-4aa9-ad4c-64c21c6aea55 | snapshot_gabriel_yuri_vm_poi | qcow2       | bare             |  4687200256 | fa27e378aba30613d3a8f0bf73d2d916 | active | private    | False     | 2c593796f29e4b829b1b523775e2fa26 |      |
+| 8ac7c385-d5d2-488a-82a4-4e1b57ffa6b1 | ubuntu-24.04                 | qcow2       | bare             |   625476096 | 66b07f6cfe43657ed32d2963e0ec68fd | active | public     | False     | d23490d7c4434b2cb5a9d0a107169583 |      |
+
+[exit 0] 2026-10-29T17:15:56Z

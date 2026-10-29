@@ -1,0 +1,48 @@
+$ curl http://150.165.85.77:8102/work?size=1024 + python3 scripts/load_test.py --concurrency 8 --duration 30 (general.medium)
+# host=osboxes user=osboxes utc=2026-10-29T17:00:20Z
+
+execucao         : med-io-s1024-c8
+url              : http://150.165.85.77:8102/work?size=1024
+concorrencia     : 8 cliente(s)
+janela medida    : 30.0 s (aquecimento descartado)
+
+requisicoes      : 454
+sucessos         : 454
+erros            : 0 
+taxa de erro     : 0.0
+vazao (rps)      : 15.0626 (sucesso) / 15.0626 (total)
+latencia media   : 530.735 ms
+p50 / p95 / p99  : 458.559 / 1112.952 / 1451.329 ms
+maximo           : 2057.315 ms
+
+amostras do monitor: 80 (intervalo de 0,5 s)
+cpu da VM        : media   4.8%  pico  13.1%
+memoria da VM    : media  11.2%  pico  11.5%
+swap em uso      : media   0.0 MiB pico   0.0 MiB
+
+contadores da aplicacao (delta da execucao):
+  requisicoes    : 558
+  aceitas (2xx)  : 558
+  recusadas (503): 0
+  espera media   : 0.013 ms
+  trabalho medio : 438.92 ms
+  trabalho maximo: 2418.92 ms
+  em voo no pico : 8
+
+disco vda: 40 amostras de iostat
+  ocupacao       : media 1.12%  pico 23.4%
+  fila (aqu-sz)  : media 0.226
+  escritas       : 4.4 req/s
+  leituras       : 0.3 req/s
+  espera escrita : 5.48 ms
+  espera leitura : 0.02 ms
+
+disco vdb: 40 amostras de iostat
+  ocupacao       : media 79.11%  pico 100.0%
+  fila (aqu-sz)  : media 3.725
+  escritas       : 21.5 req/s
+  leituras       : 0.0 req/s
+  espera escrita : 178.47 ms
+  espera leitura : 0.33 ms
+
+[exit 0] 2026-10-29T17:00:20Z

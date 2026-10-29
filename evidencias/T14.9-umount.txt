@@ -1,0 +1,14 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo umount /mnt/atividade3-logs; sleep 1; findmnt /mnt/atividade3-logs || echo "/mnt/atividade3-logs desmontado"; echo; lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINT'
+# host=osboxes user=osboxes utc=2026-10-29T17:23:22Z
+
+/mnt/atividade3-logs desmontado
+
+NAME     SIZE TYPE FSTYPE LABEL           MOUNTPOINT
+vda       20G disk                        
+├─vda1    19G part ext4   cloudimg-rootfs /
+├─vda14    4M part                        
+├─vda15  106M part vfat   UEFI            /boot/efi
+└─vda16  913M part ext4   BOOT            /boot
+vdb        1G disk ext4   a3logs          
+
+[exit 0] 2026-10-29T17:23:24Z

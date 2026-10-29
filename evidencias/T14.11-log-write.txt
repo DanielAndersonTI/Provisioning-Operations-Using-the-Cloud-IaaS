@@ -1,0 +1,19 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'findmnt /mnt/atividade3-logs; echo; sudo find /mnt/atividade3-logs -maxdepth 2 -name app.log -printf "%p mtime=%TY-%Tm-%TdT%TH:%TM:%TS bytes=%s\n" | sort; echo; echo ultima linha de cada log:; sudo tail -1 /mnt/atividade3-logs/cpu/app.log; sudo tail -1 /mnt/atividade3-logs/memory/app.log; sudo tail -1 /mnt/atividade3-logs/io/app.log; echo; sudo sh -c "cat /mnt/atividade3-logs/*/app.log | wc -l"; sudo sh -c "cat /mnt/atividade3-logs/*/app.log | sha256sum"'
+# host=osboxes user=osboxes utc=2026-10-29T17:29:19Z
+
+TARGET               SOURCE   FSTYPE OPTIONS
+/mnt/atividade3-logs /dev/vdb ext4   rw,relatime
+
+/mnt/atividade3-logs/cpu/app.log mtime=2026-10-29T17:29:01.1028066150 bytes=201411
+/mnt/atividade3-logs/io/app.log mtime=2026-10-29T17:27:11.0028290280 bytes=229936
+/mnt/atividade3-logs/memory/app.log mtime=2026-10-29T17:25:33.2258325920 bytes=139985
+
+ultima linha de cada log:
+----------------------------------------
+memory application listening on port 8001 (max 4 concurrent work units)
+----------------------------------------
+
+10943
+08656f65964afc72ddf194e0d7febf04e8cc71668b56a43be469d53db4afced1  -
+
+[exit 0] 2026-10-29T17:29:21Z

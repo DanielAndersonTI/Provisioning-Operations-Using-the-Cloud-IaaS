@@ -5,6 +5,7 @@ assignment behind a single, small HTTP surface:
 
     GET /health        -> identifies the running profile
     GET /work?size=N   -> performs one bounded unit of work for that profile
+    GET /metrics       -> counters kept inside the process (wait, work, rejections)
 
 Each profile has its own safe size range, and the number of work units that may
 execute simultaneously is bounded. Requests that arrive while every slot is busy
@@ -58,6 +59,81 @@ def _build_cpu_block():
     return bytearray((CPU_SEED * repeats)[:CPU_BLOCK_SIZE])
 
 
+class RequestMetrics:
+    """Counters kept inside the application process.
+
+    The load generator records what the client sees. These counters record what
+    the server did: how long each request waited for a work slot, how long the
+    work itself took, and how many requests were refused because every slot was
+    busy. They are what turns "the service felt slow" into a number produced by
+    the application itself.
+    """
+
+    def __init__(self, profile, max_concurrency):
+        self.profile = profile
+        self.max_concurrency = max_concurrency
+        self.started_at = time.time()
+        self._lock = threading.Lock()
+        self.requests = 0
+        self.ok = 0
+        self.rejected = 0
+        self.failed = 0
+        self.inflight = 0
+        self.max_inflight = 0
+        self.wait_seconds = 0.0
+        self.work_seconds = 0.0
+        self.max_work_seconds = 0.0
+
+    def record_rejected(self):
+        """A request refused before reaching a work slot (HTTP 503)."""
+        with self._lock:
+            self.requests += 1
+            self.rejected += 1
+
+    def enter(self, waited_seconds):
+        """A request that got a slot; `waited_seconds` is the queue time."""
+        with self._lock:
+            self.requests += 1
+            self.inflight += 1
+            if self.inflight > self.max_inflight:
+                self.max_inflight = self.inflight
+            self.wait_seconds += waited_seconds
+
+    def leave(self, worked_seconds, status):
+        with self._lock:
+            self.inflight -= 1
+            self.work_seconds += worked_seconds
+            if worked_seconds > self.max_work_seconds:
+                self.max_work_seconds = worked_seconds
+            if status == 200:
+                self.ok += 1
+            elif status == 503:
+                self.rejected += 1
+            else:
+                self.failed += 1
+
+    def snapshot(self):
+        with self._lock:
+            done = self.ok + self.rejected + self.failed
+            return {
+                "profile": self.profile,
+                "max_concurrency": self.max_concurrency,
+                "uptime_seconds": round(time.time() - self.started_at, 3),
+                "requests": self.requests,
+                "ok": self.ok,
+                "rejected_503": self.rejected,
+                "failed": self.failed,
+                "completed": done,
+                "inflight": self.inflight,
+                "max_inflight": self.max_inflight,
+                "wait_seconds_total": round(self.wait_seconds, 6),
+                "work_seconds_total": round(self.work_seconds, 6),
+                "mean_wait_ms": round(1000.0 * self.wait_seconds / done, 3) if done else 0.0,
+                "mean_work_ms": round(1000.0 * self.work_seconds / done, 3) if done else 0.0,
+                "max_work_ms": round(1000.0 * self.max_work_seconds, 3),
+            }
+
+
 def compute_cpu(iterations):
     """CPU-bound work: repeated SHA-256 over a fixed 1 MiB block, CPU only.
 
@@ -91,7 +167,10 @@ def compute_memory(mib):
 def compute_io(kib):
     """IO-bound work: write, flush to disk, then read back a temporary file."""
     payload = b"X" * 65536
-    with tempfile.TemporaryFile() as file:
+    # A3_WORK_DIR lets the experiment put the scratch file on a chosen disk
+    # (the attached volume, for instance) instead of the root filesystem.
+    work_dir = os.environ.get("A3_WORK_DIR") or None
+    with tempfile.TemporaryFile(dir=work_dir) as file:
         remaining = kib * 1024
         while remaining:
             chunk = payload[: min(len(payload), remaining)]
@@ -118,12 +197,17 @@ class WorkRequestHandler(BaseHTTPRequestHandler):
 
     profile = "cpu"
     work_slots = None
+    metrics = None
 
     def do_GET(self):
         request = urlparse(self.path)
 
         if request.path == "/health":
             self._respond(200, {"status": "ok", "profile": self.profile})
+            return
+
+        if request.path == "/metrics":
+            self._respond(200, self.metrics.snapshot())
             return
 
         if request.path != "/work":
@@ -144,21 +228,29 @@ class WorkRequestHandler(BaseHTTPRequestHandler):
             )
             return
 
+        arrival = time.perf_counter()
         if not self.work_slots.acquire(blocking=False):
+            self.metrics.record_rejected()
             self._respond(503, {"error": "server busy: all work slots are in use"})
             return
 
+        self.metrics.enter(time.perf_counter() - arrival)
+        status = 200
+        result = None
+        start = time.perf_counter()
         try:
-            start = time.perf_counter()
-            try:
-                result = self._compute(size)
-            except OSError:
-                # Do not echo the exception text: it can disclose server paths.
-                self._respond(500, {"error": "work failed: storage error"})
-                return
-            elapsed = time.perf_counter() - start
+            result = self._compute(size)
+        except OSError:
+            # Do not echo the exception text: it can disclose server paths.
+            status = 500
+            self._respond(500, {"error": "work failed: storage error"})
         finally:
+            elapsed = time.perf_counter() - start
             self.work_slots.release()
+            self.metrics.leave(elapsed, status)
+
+        if status != 200:
+            return
 
         self._respond(
             200,
@@ -231,12 +323,14 @@ def serve(profile, port, max_concurrency=None):
     if max_concurrency is None:
         max_concurrency = DEFAULT_MAX_CONCURRENCY[profile]
 
+    metrics = RequestMetrics(profile, max_concurrency)
     handler = type(
         f"{profile.capitalize()}RequestHandler",
         (WorkRequestHandler,),
         {
             "profile": profile,
             "work_slots": threading.BoundedSemaphore(max_concurrency),
+            "metrics": metrics,
         },
     )
 

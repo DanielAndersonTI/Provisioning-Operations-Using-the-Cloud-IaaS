@@ -1,0 +1,8 @@
+$ sha256sum /home/osboxes/atividade3/apps/server.py; echo; ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sha256sum /opt/atividade3/apps/server.py'
+# host=osboxes user=osboxes utc=2026-10-29T15:50:53Z
+
+80ac1f492332eae2773df48da16e778617b4f9c1546370123def5c40ce3821d8  /home/osboxes/atividade3/apps/server.py
+
+80ac1f492332eae2773df48da16e778617b4f9c1546370123def5c40ce3821d8  /opt/atividade3/apps/server.py
+
+[exit 0] 2026-10-29T15:50:56Z

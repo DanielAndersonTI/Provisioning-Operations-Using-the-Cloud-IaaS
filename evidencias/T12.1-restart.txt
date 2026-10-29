@@ -1,0 +1,11 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo systemctl restart app-cpu app-memory app-io; sleep 3; systemctl is-active app-cpu app-memory app-io; echo; curl -s http://127.0.0.1:8000/metrics; echo; curl -s http://127.0.0.1:8001/health; echo; curl -s http://127.0.0.1:8002/health'
+# host=osboxes user=osboxes utc=2026-10-29T15:50:56Z
+
+active
+active
+active
+
+{"profile": "cpu", "max_concurrency": 32, "uptime_seconds": 2.682, "requests": 0, "ok": 0, "rejected_503": 0, "failed": 0, "completed": 0, "inflight": 0, "max_inflight": 0, "wait_seconds_total": 0.0, "work_seconds_total": 0.0, "mean_wait_ms": 0.0, "mean_work_ms": 0.0, "max_work_ms": 0.0}
+{"status": "ok", "profile": "memory"}
+{"status": "ok", "profile": "io"}
+[exit 0] 2026-10-29T15:51:00Z

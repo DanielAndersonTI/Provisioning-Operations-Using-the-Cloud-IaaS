@@ -1,0 +1,17 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo find /mnt/atividade3-logs -type f -printf "%p %s bytes\n" | sort; echo; sudo sh -c "cat /mnt/atividade3-logs/*.log 2>/dev/null | sha256sum"; echo total_de_linhas:; sudo sh -c "cat /mnt/atividade3-logs/*.log 2>/dev/null | wc -l"'
+# host=osboxes user=osboxes utc=2026-10-29T17:24:17Z
+
+/mnt/atividade3-logs/cpu/app.log 200247 bytes
+/mnt/atividade3-logs/cpu/app.log.1 140 bytes
+/mnt/atividade3-logs/io/app.log 228772 bytes
+/mnt/atividade3-logs/io/app.log.1 138 bytes
+/mnt/atividade3-logs/marca-antes-do-reboot.txt 21 bytes
+/mnt/atividade3-logs/memory/app.log 139913 bytes
+/mnt/atividade3-logs/memory/app.log.1 144 bytes
+/mnt/atividade3-logs/teste.txt 10 bytes
+
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  -
+total_de_linhas:
+0
+
+[exit 0] 2026-10-29T17:24:17Z

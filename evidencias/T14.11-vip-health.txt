@@ -1,0 +1,12 @@
+$ for p in 8100 8101 8102; do curl -s -o /dev/null -w "porta $p: HTTP %{http_code}\n" --max-time 15 http://150.165.85.77:$p/health; done; echo; for p in 8100 8101 8102; do curl -s -o /dev/null -w "porta $p: HTTP %{http_code}\n" --max-time 20 "http://150.165.85.77:$p/work?size=5"; done
+# host=osboxes user=osboxes utc=2026-10-29T17:26:54Z
+
+porta 8100: HTTP 200
+porta 8101: HTTP 200
+porta 8102: HTTP 200
+
+porta 8100: HTTP 200
+porta 8101: HTTP 200
+porta 8102: HTTP 200
+
+[exit 0] 2026-10-29T17:26:54Z

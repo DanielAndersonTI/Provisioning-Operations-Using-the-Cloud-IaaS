@@ -1,0 +1,70 @@
+$ openstack server show vm-daniel-ranya -f value -c name -c status -c flavor; echo; openstack server list; echo; openstack image list; echo; openstack volume list; echo; openstack volume snapshot list
+# host=osboxes user=osboxes utc=2026-10-29T17:22:20Z
+
+general.small (7441c7d9-2648-4a33-907e-4d28c2270da3)
+vm-daniel-ranya
+ACTIVE
+
++--------------------------------------+---------------------+--------+----------------------+--------------------------+----------------+
+| ID                                   | Name                | Status | Networks             | Image                    | Flavor         |
++--------------------------------------+---------------------+--------+----------------------+--------------------------+----------------+
+| 11196ff7-e51a-4202-bb28-b4a0fff76bfe | minha-vm-grupo      | ERROR  |                      | ubuntu-24.04             | general.small  |
+| 4c77262d-38fe-4a24-bd21-15f965340d58 | vm-grupo-5          | ACTIVE | provider=10.5.11.135 | ubuntu-24.04             | general.small  |
+| bdc0447e-fb71-48c8-9ce2-04a8c5e20ee0 | vm-daniel-ranya     | ACTIVE | provider=10.5.9.15   | ubuntu-24.04             | general.small  |
+| a27a23a5-b84f-4f1e-8097-bb1dfb4ec43b | vm-grupo-8          | ACTIVE | provider=10.5.9.169  | ubuntu-24.04             | general.small  |
+| 7a9bec71-7c6f-4c8d-af9b-90f8ab18883d | vm-grupo-4          | ACTIVE | provider=10.5.10.161 | ubuntu-24.04             | general.small  |
+| ce2f802f-7bd1-4ff0-9760-b54356396f50 | grupo14-vm          | ACTIVE | provider=10.5.10.184 | ubuntu-24.04             | general.small  |
+| 9eb3dcd9-3023-45a3-9396-11318c65370b | vm-grupo1           | ACTIVE | provider=10.5.9.156  | ubuntu-24.04             | general.small  |
+| 3813a680-be44-4444-8a97-a8131fc081f9 | vm-arthur-pedro-poi | ACTIVE | provider=10.5.9.10   | ubuntu-24.04             | general.small  |
+| 34dc4f6b-b061-4889-8629-3736d562a52b | worker-2            | ACTIVE | provider=10.5.8.111  | N/A (booted from volume) | general.large  |
+| 72fd6063-0235-45a3-8515-5ac98682ccbf | worker-1            | ACTIVE | provider=10.5.8.79   | N/A (booted from volume) | general.large  |
+| 27736a14-3c91-43a0-bd28-9110852b3161 | control-plane       | ACTIVE | provider=10.5.9.37   | N/A (booted from volume) | general.medium |
++--------------------------------------+---------------------+--------+----------------------+--------------------------+----------------+
+
++--------------------------------------+------------------------------+--------+
+| ID                                   | Name                         | Status |
++--------------------------------------+------------------------------+--------+
+| db57cfde-6940-4ebb-b0a4-925892fd2de2 | deploy-initrd                | active |
+| a7208b71-a1bd-4404-a94f-606c3d738626 | deploy-vmlinuz               | active |
+| ba571f05-b02f-4549-86a6-5b495a944a03 | gabriel_yuri_vm_poi_4        | active |
+| 4cce44a1-73ee-45a1-8a9a-c5aa7fce4c14 | grupo14-snapshot             | active |
+| 6ca23eb1-6211-445c-8892-0a4bb75c0fc3 | instance-esther              | active |
+| 32f72098-4567-4f1e-b70e-e74c35cbab84 | poi-aula                     | active |
+| 6a8bf9e6-160b-4907-8df6-35974bab6e7e | poi-dougsilva-snapshot       | active |
+| 940d1413-bd7a-4547-96ee-e40f95e0fd3b | rocky-10                     | active |
+| 78e31203-d8d2-44f0-94c6-a387779394e2 | scos                         | active |
+| 6034d4a8-45bb-40ea-abe2-867e659e8f53 | snap-vm-daniel-ranya         | active |
+| fcfa5a46-a54c-4689-aab4-d1eafbb6ca52 | snapshot-Rafael_VM_POI       | active |
+| ec51dfbe-041b-44ac-aa2a-e5a075faccab | snapshot-arthur-pedro-poi    | active |
+| 5bf2ef7d-21d1-492b-9575-7ae1212d5fb4 | snapshot-lucas-vm-poi        | active |
+| 61f9c68b-3c8c-45d5-b12c-3fad6e022bcf | snapshot-thyago-app          | active |
+| 73b4d615-214e-45ca-8ba9-b8ede5a8641e | snapshot-vm-grupo1           | active |
+| c7a7fab3-9bb8-45c7-af1a-514227a92faa | snapshot-vm-jardel           | active |
+| 8aa3bd2f-15de-4aa9-ad4c-64c21c6aea55 | snapshot_gabriel_yuri_vm_poi | active |
+| 4ab54a71-8bac-48a9-8b70-d702a2c0b02c | ubuntu-20.04                 | active |
+| 8ac7c385-d5d2-488a-82a4-4e1b57ffa6b1 | ubuntu-24.04                 | active |
++--------------------------------------+------------------------------+--------+
+
++--------------------------------------+-------------------------+-----------+------+----------------------------------------------+
+| ID                                   | Name                    | Status    | Size | Attached to                                  |
++--------------------------------------+-------------------------+-----------+------+----------------------------------------------+
+| 2271182d-ac0c-4dd9-bcf7-cc535379f532 | vol-daniel-ranya-logs   | in-use    |    1 | Attached to vm-daniel-ranya on /dev/vdb      |
+| 6495f2c5-0036-446c-b2eb-b6de875a5099 | grupo-14                | in-use    |    1 | Attached to grupo14-vm on /dev/vdb           |
+| 5e64b935-4bd4-4a71-97cd-682214831793 | volume-arthur-pedro-poi | in-use    |    1 | Attached to vm-arthur-pedro-poi on /dev/vdb  |
+| 8f71ed8d-7eaf-4f62-beb0-d70bb8d2fd78 | vol-grupo1              | in-use    |    1 | Attached to vm-grupo1 on /dev/vdb            |
+| e8add32e-6a10-4475-b0f0-6554d1a852a4 |                         | in-use    |   20 | Attached to worker-2 on /dev/vda             |
+| 0498e209-5ef9-4a2e-b2aa-55334b879810 |                         | in-use    |   20 | Attached to worker-1 on /dev/vda             |
+| 3d60aefc-0070-4690-9c4b-3659b4c69ffa |                         | in-use    |   20 | Attached to control-plane on /dev/vda        |
+| b88656a9-589c-4766-9fa3-d21be2a5082e | gabriel_yuri_volume     | available |    1 |                                              |
+| 5b158c2a-2ac0-4a50-befb-07eaa3a7bd0f | rafael-volume           | available |    1 |                                              |
+| 99b32f2e-8c0f-4a8e-a84c-ecec94e02579 | volume-jardel           | available |    1 |                                              |
+| 23a9ea58-7144-469e-b39e-1e2e3cd9309c | lucas-volume            | available |    1 |                                              |
+| c98f7bf2-8710-4091-aa72-db87042c6b4a |                         | available |   20 |                                              |
+| 721325b0-90d2-4b8b-b269-c09626a314c4 |                         | available |   20 |                                              |
+| d5e800be-3bdc-46b9-b668-7f3def6a6f83 |                         | available |   20 |                                              |
+| 2b8ccf00-8c4b-4c53-982a-c73880893e70 |                         | available |   20 |                                              |
++--------------------------------------+-------------------------+-----------+------+----------------------------------------------+
+
+
+
+[exit 0] 2026-10-29T17:22:45Z

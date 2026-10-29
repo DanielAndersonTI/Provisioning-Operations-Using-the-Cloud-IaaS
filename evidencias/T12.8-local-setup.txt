@@ -1,0 +1,6 @@
+$ cat scripts/load_test.py | ssh ... 'sudo tee /opt/atividade3/scripts/load_test.py'
+# host=osboxes user=osboxes utc=2026-10-29T16:43:09Z
+
+[Errno 13] Permission denied: '/opt/atividade3/scripts/__pycache__/load_test.cpython-312.pyc.133931465849776'
+
+[exit 0] 2026-10-29T16:43:09Z

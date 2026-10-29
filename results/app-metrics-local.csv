@@ -1,0 +1,7 @@
+run_id,profile,app_requests,app_ok,app_rejected,app_failed,app_completed,app_mean_wait_ms,app_mean_work_ms,app_max_work_ms,app_max_inflight,app_inflight_end
+local-cpu-c8,cpu,424,424,0,0,424,0.005,365.743,746.972,16,0
+local-cpu-c32,cpu,417,417,0,0,417,0.014,1346.134,1701.379,32,0
+local-memory-c8,memory,658,658,0,0,658,0.006,48.123,252.694,4,0
+local-memory-c32,memory,638,638,0,0,638,0.006,49.567,252.694,4,0
+local-io-c8,io,82,82,0,0,82,0.017,1907.846,5121.546,16,0
+local-io-c32,io,13244,127,13117,0,13244,0.0,23.84,5764.4,16,0

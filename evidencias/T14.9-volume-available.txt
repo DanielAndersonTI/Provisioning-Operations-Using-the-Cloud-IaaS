@@ -1,0 +1,17 @@
+$ openstack volume show vol-daniel-ranya-logs -c id -c name -c size -c status -c attachments; echo; openstack volume list | grep -E 'daniel|ID|Status' || openstack volume list
+# host=osboxes user=osboxes utc=2026-10-29T17:23:32Z
+
++-------------+--------------------------------------+
+| Field       | Value                                |
++-------------+--------------------------------------+
+| attachments | []                                   |
+| id          | 2271182d-ac0c-4dd9-bcf7-cc535379f532 |
+| name        | vol-daniel-ranya-logs                |
+| size        | 1                                    |
+| status      | available                            |
++-------------+--------------------------------------+
+
+| ID                                   | Name                    | Status    | Size | Attached to                                  |
+| 2271182d-ac0c-4dd9-bcf7-cc535379f532 | vol-daniel-ranya-logs   | available |    1 |                                              |
+
+[exit 0] 2026-10-29T17:23:40Z

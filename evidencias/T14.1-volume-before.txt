@@ -1,0 +1,33 @@
+$ openstack volume show vol-daniel-ranya-logs -c id -c status -c size -c attachments; echo; openstack volume list --long
+# host=osboxes user=osboxes utc=2026-10-29T17:08:13Z
+
++-------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field       | Value                                                                                                                                                                                                                                                                                                     |
++-------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| attachments | [{'id': '2271182d-ac0c-4dd9-bcf7-cc535379f532', 'attachment_id': '74ac707a-eb46-485c-8445-d81c4154c557', 'volume_id': '2271182d-ac0c-4dd9-bcf7-cc535379f532', 'server_id': 'bdc0447e-fb71-48c8-9ce2-04a8c5e20ee0', 'host_name': None, 'device': '/dev/vdb', 'attached_at': '2026-10-29T17:04:17.000000'}] |
+| id          | 2271182d-ac0c-4dd9-bcf7-cc535379f532                                                                                                                                                                                                                                                                      |
+| size        | 1                                                                                                                                                                                                                                                                                                         |
+| status      | in-use                                                                                                                                                                                                                                                                                                    |
++-------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
++--------------------------------------+-------------------------+-----------+------+-------------+----------+----------------------------------------------+------------+
+| ID                                   | Name                    | Status    | Size | Type        | Bootable | Attached to                                  | Properties |
++--------------------------------------+-------------------------+-----------+------+-------------+----------+----------------------------------------------+------------+
+| 2271182d-ac0c-4dd9-bcf7-cc535379f532 | vol-daniel-ranya-logs   | in-use    |    1 | __DEFAULT__ | false    | Attached to vm-daniel-ranya on /dev/vdb      |            |
+| 6495f2c5-0036-446c-b2eb-b6de875a5099 | grupo-14                | in-use    |    1 | __DEFAULT__ | false    | Attached to grupo14-vm on /dev/vdb           |            |
+| 5e64b935-4bd4-4a71-97cd-682214831793 | volume-arthur-pedro-poi | in-use    |    1 | __DEFAULT__ | false    | Attached to vm-arthur-pedro-poi on /dev/vdb  |            |
+| 8f71ed8d-7eaf-4f62-beb0-d70bb8d2fd78 | vol-grupo1              | in-use    |    1 | __DEFAULT__ | false    | Attached to vm-grupo1 on /dev/vdb            |            |
+| e8add32e-6a10-4475-b0f0-6554d1a852a4 |                         | in-use    |   20 | __DEFAULT__ | true     | Attached to worker-2 on /dev/vda             |            |
+| 0498e209-5ef9-4a2e-b2aa-55334b879810 |                         | in-use    |   20 | __DEFAULT__ | true     | Attached to worker-1 on /dev/vda             |            |
+| 3d60aefc-0070-4690-9c4b-3659b4c69ffa |                         | in-use    |   20 | __DEFAULT__ | true     | Attached to control-plane on /dev/vda        |            |
+| b88656a9-589c-4766-9fa3-d21be2a5082e | gabriel_yuri_volume     | available |    1 | __DEFAULT__ | false    |                                              |            |
+| 5b158c2a-2ac0-4a50-befb-07eaa3a7bd0f | rafael-volume           | available |    1 | __DEFAULT__ | false    |                                              |            |
+| 99b32f2e-8c0f-4a8e-a84c-ecec94e02579 | volume-jardel           | available |    1 | __DEFAULT__ | false    |                                              |            |
+| 23a9ea58-7144-469e-b39e-1e2e3cd9309c | lucas-volume            | available |    1 | __DEFAULT__ | false    |                                              |            |
+| c98f7bf2-8710-4091-aa72-db87042c6b4a |                         | available |   20 | __DEFAULT__ | true     |                                              |            |
+| 721325b0-90d2-4b8b-b269-c09626a314c4 |                         | available |   20 | __DEFAULT__ | true     |                                              |            |
+| d5e800be-3bdc-46b9-b668-7f3def6a6f83 |                         | available |   20 | __DEFAULT__ | true     |                                              |            |
+| 2b8ccf00-8c4b-4c53-982a-c73880893e70 |                         | available |   20 | __DEFAULT__ | true     |                                              |            |
++--------------------------------------+-------------------------+-----------+------+-------------+----------+----------------------------------------------+------------+
+
+[exit 0] 2026-10-29T17:08:26Z

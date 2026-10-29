@@ -1,0 +1,13 @@
+$ openstack server show vm-daniel-ranya -f value -c name -c status -c flavor -c addresses; echo; openstack flavor show general.small -f value -c name -c vcpus -c ram
+# host=osboxes user=osboxes utc=2026-10-29T17:04:53Z
+
+{'provider': ['10.5.9.15']}
+general.small (7441c7d9-2648-4a33-907e-4d28c2270da3)
+vm-daniel-ranya
+ACTIVE
+
+general.small
+2048
+1
+
+[exit 0] 2026-10-29T17:05:06Z

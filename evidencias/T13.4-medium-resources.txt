@@ -1,0 +1,21 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'nproc; echo; grep -c ^processor /proc/cpuinfo; echo; free -m | head -2; echo; systemctl is-active app-cpu app-memory app-io; echo; df -h /mnt/atividade3-logs | tail -1; echo; for p in 8000 8001 8002; do curl -s -o /dev/null -w "porta $p: HTTP %{http_code}\n" http://127.0.0.1:$p/health; done'
+# host=osboxes user=osboxes utc=2026-10-29T16:51:53Z
+
+2
+
+2
+
+               total        used        free      shared  buff/cache   available
+Mem:            3915         434        3478           4         224        3481
+
+active
+active
+active
+
+/dev/vdb        974M  620K  947M   1% /mnt/atividade3-logs
+
+porta 8000: HTTP 200
+porta 8001: HTTP 200
+porta 8002: HTTP 200
+
+[exit 0] 2026-10-29T16:51:54Z

@@ -1,0 +1,5 @@
+$ openstack server resize confirm vm-daniel-ranya
+# host=osboxes user=osboxes utc=2026-10-29T17:04:29Z (tentativa 1)
+
+
+[exit 0] 2026-10-29T17:04:33Z

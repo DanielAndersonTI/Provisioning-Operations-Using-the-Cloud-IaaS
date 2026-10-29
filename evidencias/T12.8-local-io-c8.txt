@@ -1,0 +1,26 @@
+$ ssh ... 'python3 /opt/atividade3/scripts/load_test.py --url http://127.0.0.1:8002/work?size=1024 --concurrency 8 --duration 20'
+# host=osboxes user=osboxes utc=2026-10-29T16:45:15Z
+
+execucao         : local-io-c8
+url              : http://127.0.0.1:8002/work?size=1024
+concorrencia     : 8 cliente(s) dentro da VM
+janela medida    : 20.0 s
+
+requisicoes      : 82
+sucessos         : 82
+erros            : 0 
+taxa de erro     : 0.0
+vazao (rps)      : 4.0879 (sucesso) / 4.0879 (total)
+latencia media   : 1955.988 ms
+p50 / p95 / p99  : 1392.929 / 5118.557 / 5130.262 ms
+maximo           : 5130.697 ms
+
+contadores da aplicacao (delta da execucao):
+  requisicoes    : 82
+  aceitas (2xx)  : 82
+  recusadas (503): 0
+  espera media   : 0.017 ms
+  trabalho medio : 1907.846 ms
+  em voo no pico : 16
+
+[exit 0] 2026-10-29T16:45:15Z

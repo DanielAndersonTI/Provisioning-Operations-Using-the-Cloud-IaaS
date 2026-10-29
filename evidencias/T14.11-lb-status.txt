@@ -1,0 +1,16 @@
+$ openstack loadbalancer status show poi-atividades 2>/dev/null | grep -E 'operating_status|provisioning_status' | sort | uniq -c
+# host=osboxes user=osboxes utc=2026-10-29T17:28:08Z
+
+      6                                 "operating_status": "NO_MONITOR",
+     10                                 "operating_status": "ONLINE",
+     11                             "operating_status": "ONLINE"
+     17                         "operating_status": "ONLINE",
+     17                 "operating_status": "ONLINE",
+      1         "operating_status": "ONLINE",
+     16                                 "provisioning_status": "ACTIVE",
+     11                             "provisioning_status": "ACTIVE",
+     17                         "provisioning_status": "ACTIVE",
+     17                 "provisioning_status": "ACTIVE",
+      1         "provisioning_status": "ACTIVE",
+
+[exit 0] 2026-10-29T17:28:16Z

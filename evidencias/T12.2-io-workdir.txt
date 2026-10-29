@@ -1,0 +1,23 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo install -d -o appsvc -g appsvc -m 0750 /mnt/atividade3-logs/scratch; sudo install -d -m 0755 /etc/systemd/system/app-io.service.d; printf "[Service]\nEnvironment=A3_WORK_DIR=/mnt/atividade3-logs/scratch\nReadWritePaths=/var/log/atividade3/io /mnt/atividade3-logs/scratch\n" | sudo tee /etc/systemd/system/app-io.service.d/20-workdir.conf >/dev/null; sudo systemctl daemon-reload; sudo systemctl restart app-io; sleep 2; systemctl show app-io -p Environment; echo; systemctl cat app-io | tail -14; echo; curl -s -o /dev/null -w "io /work pela porta interna: HTTP %{http_code}\n" "http://127.0.0.1:8002/work?size=64"'
+# host=osboxes user=osboxes utc=2026-10-29T15:51:02Z
+
+Environment=PYTHONUNBUFFERED=1 A3_WORK_DIR=/mnt/atividade3-logs/scratch
+
+
+[Install]
+WantedBy=multi-user.target
+
+# /etc/systemd/system/app-io.service.d/20-workdir.conf
+[Service]
+Environment=A3_WORK_DIR=/mnt/atividade3-logs/scratch
+ReadWritePaths=/var/log/atividade3/io /mnt/atividade3-logs/scratch
+
+# /etc/systemd/system/app-io.service.d/volume-logs.conf
+[Service]
+StandardOutput=append:/mnt/atividade3-logs/io/app.log
+StandardError=append:/mnt/atividade3-logs/io/app.log
+ReadWritePaths=/var/log/atividade3/io /mnt/atividade3-logs/io
+
+io /work pela porta interna: HTTP 200
+
+[exit 0] 2026-10-29T15:51:06Z

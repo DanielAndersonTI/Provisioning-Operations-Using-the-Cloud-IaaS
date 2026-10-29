@@ -1,0 +1,8 @@
+$ openstack volume snapshot show snap-vol-daniel-ranya-logs; echo; openstack volume snapshot list
+# host=osboxes user=osboxes utc=2026-10-29T17:15:45Z
+
+No snapshot with a name or ID of 'snap-vol-daniel-ranya-logs' exists.
+
+
+
+[exit 0] 2026-10-29T17:15:52Z

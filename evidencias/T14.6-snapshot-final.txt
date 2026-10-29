@@ -1,0 +1,17 @@
+$ openstack image show snap-vm-daniel-ranya -c id -c name -c status -c size; echo; openstack image list | grep -E 'snap-vm|snap-vol'; echo; openstack volume snapshot list
+# host=osboxes user=osboxes utc=2026-10-29T17:22:09Z
+
++--------+--------------------------------------+
+| Field  | Value                                |
++--------+--------------------------------------+
+| id     | 6034d4a8-45bb-40ea-abe2-867e659e8f53 |
+| name   | snap-vm-daniel-ranya                 |
+| size   | 3682992128                           |
+| status | active                               |
++--------+--------------------------------------+
+
+| 6034d4a8-45bb-40ea-abe2-867e659e8f53 | snap-vm-daniel-ranya         | active |
+
+
+
+[exit 0] 2026-10-29T17:22:20Z

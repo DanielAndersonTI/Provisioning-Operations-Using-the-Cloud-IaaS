@@ -1,0 +1,11 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo blkid -L a3logs; echo; sudo mount -a; sleep 1; findmnt /mnt/atividade3-logs; echo; df -h /mnt/atividade3-logs | tail -1'
+# host=osboxes user=osboxes utc=2026-10-29T17:24:13Z
+
+/dev/vdb
+
+TARGET               SOURCE   FSTYPE OPTIONS
+/mnt/atividade3-logs /dev/vdb ext4   rw,relatime
+
+/dev/vdb        974M  632K  947M   1% /mnt/atividade3-logs
+
+[exit 0] 2026-10-29T17:24:15Z

@@ -156,6 +156,13 @@ def main():
     parser.add_argument("script", help="path relative to automation/, e.g. remote/10-recon.sh")
     parser.add_argument("--pull", action="store_true", help="download evidence after the run")
     parser.add_argument("--no-upload", action="store_true", help="skip uploading automation/")
+    parser.add_argument(
+        "--env",
+        action="append",
+        default=[],
+        metavar="KEY=VALUE",
+        help="environment variable for the remote phase (repeatable)",
+    )
     args = parser.parse_args()
 
     client, user = connect()
@@ -192,7 +199,8 @@ def main():
     write_remote_file(sftp, f"/home/{user}/.atividade3/session.env", cloud_env)
 
     remote_script = posixpath.join(root, "automation", posixpath.basename(args.script))
-    command = f"bash {remote_script}"
+    prefix = " ".join(args.env)
+    command = f"{prefix + ' ' if prefix else ''}bash {remote_script}"
     print(f"\n===== {args.script} @ {user} =====\n", flush=True)
     status = stream_command(client, command)
     print(f"\n===== exit {status} =====\n", flush=True)

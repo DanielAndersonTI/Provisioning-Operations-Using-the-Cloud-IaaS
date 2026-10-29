@@ -1,0 +1,5 @@
+$ openstack server remove volume vm-daniel-ranya vol-daniel-ranya-logs
+# host=osboxes user=osboxes utc=2026-10-29T17:23:24Z (tentativa 1)
+
+
+[exit 0] 2026-10-29T17:23:28Z

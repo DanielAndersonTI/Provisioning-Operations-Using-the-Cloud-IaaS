@@ -1,64 +1,47 @@
-# Atividade 3 — Usando Nuvem IaaS
+# Using IaaS Cloud
 
-Terceira atividade avaliativa da disciplina de Provisionamento e Operação. O
-grupo é o mesmo da Atividade 2 e as aplicações são as mesmas desenvolvidas
-naquela atividade; o que muda é o ambiente: em vez de uma VM local no
-VirtualBox, o deploy passa a ser feito em uma máquina virtual na **Nuvem IaaS do
-LSD**, no projeto **Provisionamento**, usando o OpenStack.
+Third graded assignment for the Provisioning and Operations course. The group is the same as in Activity 2, and the applications are the same ones developed for that assignment. The main difference is the environment: instead of a local virtual machine running in VirtualBox, deployment is now performed on a virtual machine in the **LSD IaaS Cloud**, under the **Provisioning** project, using OpenStack.
 
-Este README registra o plano de execução e as decisões do grupo. Ele é
-preenchido ao longo do trabalho: os valores marcados como *a preencher* só
-devem ser substituídos por dados realmente obtidos, nunca por estimativas.
+This README documents the group's execution plan and decisions. It is updated throughout the assignment: values marked as *to be filled in* must only be replaced with actual results, never estimates.
 
-## Objetivos
+## Objectives
 
-- Operar a Nuvem do LSD pela **CLI do OpenStack**, a partir da VDI de
-  provisionamento disponível em `/local/uasc/provisionamento`.
-- Criar a infraestrutura da atividade: par de chaves, VM, grupo de segurança e
-  volume de armazenamento.
-- Fazer o deploy das aplicações da Atividade 2 na VM e expô-las pelo balanceador
-  de carga `poi-atividades`.
-- Persistir os dados gerados pela aplicação (por exemplo, logs) em um volume da
-  nuvem, montado no sistema operacional da VM.
-- Produzir um documento com as etapas e evidências (prints) de todo o processo.
+- Operate the LSD Cloud through the **OpenStack CLI**, using the provisioning VDI available at `/local/uasc/provisionamento`.
+- Create the infrastructure required for the assignment: a key pair, a VM, a security group, and a storage volume.
+- Deploy the applications from Activity 2 on the VM and expose them through the `poi-atividades` load balancer.
+- Persist application-generated data (e.g., logs) on a cloud volume mounted in the VM's operating system.
+- Produce a document describing each step and providing evidence (screenshots) of the entire process.
 
-## Acesso à nuvem
+## Cloud Access
 
-| Item | Valor |
+| Item | Value |
 | --- | --- |
-| Dashboard e API | `cloud.lsd.ufcg.edu.br` |
-| Projeto | `provisionamento` |
-| Credenciais | LDAP para usuários antigos; para contas novas, o username da planilha com a matrícula como senha |
-| Cliente | `python3-openstackclient` (ou `python-openstackclient` em virtualenv) |
-| Inicialização | arquivo **OpenStack RC (Identity API v3)**, baixado em *Projeto → Acesso à API* |
+| Dashboard and API | `cloud.lsd.ufcg.edu.br` |
+| Project | `provisionamento` |
+| Credentials | LDAP for existing users; for new accounts, the username listed in the spreadsheet, with the student ID as the password |
+| Client | `python3-openstackclient` (or `python-openstackclient` in a virtual environment) |
+| Initialization | **OpenStack RC file (Identity API v3)**, downloaded from *Project → API Access* |
 
 ```bash
 . provisionamento-openrc.sh
 openstack flavor list
 ```
 
-A VDI de acesso é a `ubuntu_serve_2204_poi_openstack.vdi`, disponibilizada pelo
-professor; nos LCCs, a equivalente fica em `/local/uasc/provisionamento`. Ela é
-a máquina de onde a CLI é executada — não é a VM da atividade.
+The access VDI is `ubuntu_serve_2204_poi_openstack.vdi`, provided by the instructor. In the LCC labs, the equivalent environment is available at `/local/uasc/provisionamento`. This is the machine from which the CLI is executed; it is not the VM created for the assignment.
 
-Serviços do OpenStack usados: Nova (instâncias), Glance (imagens e snapshots),
-Neutron (rede e grupos de segurança), Cinder (volumes), Octavia (balanceador de
-carga) e Keystone (identidade).
+The OpenStack services used are Nova (instances), Glance (images and snapshots), Neutron (networking and security groups), Cinder (volumes), Octavia (load balancing), and Keystone (identity).
 
-## Aplicações
+## Applications
 
-As três aplicações de backend da Atividade 2 estão em [`apps/`](apps/): os
-perfis CPU-bound, Memory-bound e IO-bound, todos em Python 3 com apenas a
-biblioteca padrão e o mesmo contrato HTTP.
+The three backend applications from Activity 2 are located in [`apps/`](apps/): CPU-bound, memory-bound, and I/O-bound workloads. All are implemented in Python 3 using only the standard library and follow the same HTTP interface.
 
-| Perfil | Arquivo | Trabalho executado |
+| Profile | File | Workload |
 | --- | --- | --- |
-| CPU-bound | [`apps/cpu/server.py`](apps/cpu/server.py) | SHA-256 repetido sobre um bloco de 1 MiB |
-| Memory-bound | [`apps/memory/server.py`](apps/memory/server.py) | Alocação de `size` MiB com escrita em cada página de 4 KiB |
-| IO-bound | [`apps/io/server.py`](apps/io/server.py) | Escrita de `size` KiB, `fsync` e releitura |
+| CPU-bound | [`apps/cpu/server.py`](apps/cpu/server.py) | Repeated SHA-256 hashing of a 1 MiB block |
+| Memory-bound | [`apps/memory/server.py`](apps/memory/server.py) | Allocation of `size` MiB, writing to every 4 KiB page |
+| I/O-bound | [`apps/io/server.py`](apps/io/server.py) | Writing `size` KiB, calling `fsync`, and reading the data back |
 
-Pontos de entrada: `GET /health` identifica o perfil e `GET /work?size=N`
-executa o trabalho. Cada aplicação roda como um processo independente:
+Endpoints: `GET /health` identifies the workload profile, `GET /work?size=N` executes the workload, and `GET /metrics` returns the counters kept inside the process (requests, rejections, queue wait and work time). The counters are what the client-side generator cannot see. Each application runs as an independent process:
 
 ```bash
 python apps/cpu/server.py    --port 8000
@@ -66,22 +49,20 @@ python apps/memory/server.py --port 8000
 python apps/io/server.py     --port 8000
 ```
 
-Requisito: Python 3.10 ou superior.
+Requirement: Python 3.10 or later.
 
-## Etapas da atividade
+## Assignment Steps
 
-### Primeira parte — infraestrutura
+### Part One — Infrastructure
 
-1. Acessar a Nuvem do LSD pela CLI do OpenStack, usando a VDI de
-   provisionamento em `/local/uasc/provisionamento`.
-2. Listar os recursos disponíveis: flavors, instâncias, imagens, snapshots.
-3. Criar o par de chaves que será usado no acesso SSH às VMs.
-4. Criar **uma única VM** por grupo, com o flavor `general.small` e a imagem
-   `ubuntu-24.04`, informando o par de chaves criado.
-5. Criar um grupo de segurança abrindo as portas necessárias ao acesso à VM.
-6. Configurar o balanceador de carga `poi-atividades` para o acesso SSH à VM.
+1. Access the LSD Cloud through the OpenStack CLI using the provisioning VDI at `/local/uasc/provisionamento`.
+2. List the available resources: flavors, instances, images, and snapshots.
+3. Create the key pair that will be used to access the VMs via SSH.
+4. Create **a single VM per group**, using the `general.small` flavor and the `ubuntu-24.04` image, and specify the newly created key pair.
+5. Create a security group allowing the ports required to access the VM.
+6. Configure the `poi-atividades` load balancer to provide SSH access to the VM.
 
-Comandos previstos (ajustados conforme a nuvem responder):
+Planned commands (to be adjusted according to the cloud's responses):
 
 ```bash
 openstack flavor list
@@ -89,96 +70,87 @@ openstack server list
 openstack image list
 openstack snapshot list
 
-openstack keypair create <nome-da-chave> > <nome-da-chave>.pem
-chmod 600 <nome-da-chave>.pem
+openstack keypair create <key-name> > <key-name>.pem
+chmod 600 <key-name>.pem
 
 openstack server create \
   --flavor general.small \
   --image ubuntu-24.04 \
-  --key-name <nome-da-chave> \
-  <nome-da-vm>
+  --key-name <key-name> \
+  <vm-name>
 
 openstack security group rule create ...
 ```
 
-### Segunda parte — deploy e armazenamento
+### Part Two — Deployment and Storage
 
-1. Acessar a VM do grupo via SSH.
-2. Fazer o deploy das aplicações na VM.
-3. Criar um volume de **1 GB**, anexá-lo à VM e montá-lo no sistema operacional.
-4. Configurar as aplicações para usarem o volume montado (por exemplo, os
-   arquivos de log).
-5. Configurar o balanceador de carga `poi-atividades` para as aplicações em
-   execução na VM.
-6. Fazer o snapshot da VM já configurada.
-7. Produzir o documento do grupo com a descrição e os prints de cada etapa.
-8. Responder o formulário de entrega.
+1. Access the group's VM via SSH.
+2. Deploy the applications on the VM.
+3. Create a **1 GB** volume, attach it to the VM, and mount it in the operating system.
+4. Configure the applications to use the mounted volume (e.g., for log files).
+5. Configure the `poi-atividades` load balancer to route traffic to the applications running on the VM.
+6. Create a snapshot of the configured VM.
+7. Produce the group's report describing each step and including screenshots.
+8. Complete the assignment submission form.
 
-> **Atenção:** apenas as respostas do formulário são consideradas na correção.
+> **Important:** Only the answers submitted through the form will be considered for grading.
 
-## Estrutura do repositório
+## Repository Structure
 
-| Caminho | Conteúdo |
+| Path | Contents |
 | --- | --- |
-| [`RELATORIO.md`](RELATORIO.md) | documento do grupo: descrição das etapas, prints, experimentos e análise |
-| [`apps/`](apps/) | as três aplicações da Atividade 2, agora implantadas na nuvem |
-| [`evidencias/`](evidencias/) | transcrição de cada comando (`.txt`), o print correspondente (`.png`) e o índice `manifest.csv` |
-| [`docs/execucao/`](docs/execucao/) | um registro por task: objetivo, comandos, decisões e problemas |
-| [`docs/graficos/`](docs/graficos/) | gráficos de latência, vazão e uso dos recursos |
-| [`results/`](results/) | dados brutos dos experimentos e o resumo consolidado |
-| [`automation/`](automation/) | fases automatizadas executadas na VDI |
-| [`scripts/`](scripts/) | gerador de carga, monitor da VM e geradores de gráficos e manifesto |
+| [`RELATORIO.md`](RELATORIO.md) | Group report describing the steps, screenshots, experiments, and analysis |
+| [`apps/`](apps/) | The three applications from Activity 2, now deployed in the cloud |
+| [`evidencias/`](evidencias/) | Transcripts of each command (`.txt`), corresponding screenshots (`.png`), and the `manifest.csv` index |
+| [`docs/execucao/`](docs/execucao/) | One execution record per task, documenting objectives, commands, decisions, and issues |
+| [`docs/graficos/`](docs/graficos/) | Latency, throughput, and resource utilization charts |
+| [`results/`](results/) | Raw experiment data and the consolidated summary |
+| [`automation/`](automation/) | Automated phases executed on the VDI |
+| [`scripts/`](scripts/) | Load generator, VM monitor, consolidation, chart and manifest generation scripts |
 
-## Registro de execução
+## Execution Record
 
-Preenchido conforme as etapas forem concluídas.
+Updated as the steps are completed.
 
-| Item | Valor |
+| Item | Value |
 | --- | --- |
-| Grupo | Daniel Anderson de Souza Silva · Ranya Duran Greco |
-| Projeto no OpenStack | `Provisionamento` |
-| Flavor da VM | `general.small` |
-| Imagem da VM | `ubuntu-24.04` |
-| Nome da VM | `vm-daniel-ranya` (`bdc0447e-fb71-48c8-9ce2-04a8c5e20ee0`) |
-| Nome da chave SSH | `atividade3-daniel-ranya` |
-| Endereço de acesso SSH (balanceador) | `150.165.85.77:2222` → `10.5.9.15:22` |
-| Portas abertas no grupo de segurança | `tcp/22`, `tcp/8000-8002`, `icmp` — origem `10.5.8.0/22` |
+| Group | Daniel Anderson de Souza Silva · Ranya Duran Greco |
+| OpenStack project | `Provisionamento` |
+| VM flavor | `general.small` |
+| VM image | `ubuntu-24.04` |
+| VM name | `vm-daniel-ranya` (`bdc0447e-fb71-48c8-9ce2-04a8c5e20ee0`) |
+| SSH key name | `atividade3-daniel-ranya` |
+| SSH access address (load balancer) | `150.165.85.77:2222` → `10.5.9.15:22` |
+| Security group rules | `tcp/22`, `tcp/8000-8002`, `icmp` — source: `10.5.8.0/22` |
 | Volume | 1 GB — `vol-daniel-ranya-logs`, `/dev/vdb`, `/mnt/atividade3-logs` |
-| Aplicações implantadas e portas | cpu `8000`, memory `8001`, io `8002` (externas `8100-8102`) |
-| Nome do snapshot | `snap-vm-daniel-ranya` (`7fb6d24c-583d-4f04-b843-5a1a35424816`) |
+| Deployed applications and ports | CPU `8000`, memory `8001`, I/O `8002` (external ports `8100-8102`) |
+| Snapshot name | `snap-vm-daniel-ranya` (`6034d4a8-45bb-40ea-abe2-867e659e8f53`, 3.43 GiB) |
+| Volume snapshot | `snap-vol-daniel-ranya-logs` (`df5d86d9-f4d9-43d1-a805-7edf619355d0`, 1 GB) |
 
-## Entregáveis
+## Deliverables
 
-- [x] Par de chaves SSH criado e usado na VM.
-- [x] VM `general.small` com `ubuntu-24.04` criada (uma por grupo).
-- [x] Grupo de segurança configurado.
-- [x] Balanceador `poi-atividades` configurado para SSH e para as aplicações.
-- [x] Aplicações em execução na VM.
-- [x] Volume de 1 GB criado, anexado e montado; aplicações gravando nele.
-- [x] Snapshot da VM configurada.
-- [x] Documento do grupo com prints e explicação de cada etapa.
-- [ ] Formulário de entrega respondido.
+- [x] SSH key pair created and used with the VM.
+- [x] `general.small` VM created with `ubuntu-24.04` (one per group).
+- [x] Security group configured.
+- [x] `poi-atividades` load balancer configured for SSH and application traffic.
+- [x] Applications running on the VM.
+- [x] 1 GB volume created, attached, and mounted; applications writing to it.
+- [x] Snapshot of the configured VM created.
+- [x] Group report completed with screenshots and explanations of each step.
+- [ ] Assignment submission form completed.
 
-## Observações e pendências
+## Notes and Pending Items
 
-- As três aplicações da Atividade 2 não gravavam log em arquivo: o
-  `log_message` do servidor HTTP é silenciado de propósito, para que milhares de
-  requisições de carga não acrescentem I/O ao que está sendo medido. Para a
-  atividade, as aplicações passaram a escrever uma linha de inicialização e o
-  `systemd` direciona essa saída (`StandardOutput=append:`) para o volume
-  montado, com rotação configurada no `logrotate`.
-- O flavor `general.small` exigido existe com esse nome no projeto
-  (`7441c7d9-2648-4a33-907e-4d28c2270da3`), ao contrário do que o material do
-  professor sugeria.
-- Nenhuma credencial, chave privada ou senha é versionada neste repositório.
-- A lista de balanceadores foi conferida antes de criar qualquer recurso: o
-  `poi-atividades` já existia no projeto e é compartilhado com a turma, por isso
-  as portas externas são 2222 e 8100-8102, diferentes das internas.
+- The three applications from Activity 2 did not write logs to files: the HTTP server's `log_message` method is deliberately silenced so that thousands of load-test requests do not add I/O overhead to the measurements. For this assignment, the applications were configured to write a startup message, and `systemd` redirects this output (`StandardOutput=append:`) to the mounted volume, with log rotation configured through `logrotate`.
+- The required `general.small` flavor exists under that exact name in the project (`7441c7d9-2648-4a33-907e-4d28c2270da3`), contrary to what the instructor's materials suggested.
+- The I/O-bound application writes its scratch file to the mounted volume during the experiments (`A3_WORK_DIR`), so the I/O measured is the I/O of the provisioned storage, not of the root disk.
+- To show demand against provisioning, the same VM was resized to `general.medium` (2 vCPUs) for a short second matrix and then resized back. The VM is delivered on `general.small`, as the assignment requires, and the final flavor is recorded in the execution record.
+- No credentials, private keys, or passwords are stored in this repository.
+- The list of load balancers was checked before creating any resources. The `poi-atividades` load balancer already existed in the project and is shared by the class; therefore, the external ports are `2222` and `8100-8102`, which differ from the internal ports.
 
-## Materiais da disciplina
+## Course Materials
 
-- Material sobre Cloud e OpenStack: [`Cloud Computing - OpenStack CLI.pptx`](Cloud%20Computing%20-%20OpenStack%20CLI.pptx).
-- VDI de provisionamento em `/local/uasc/provisionamento`.
-- Guia de deploy do balanceador de carga `poi-atividades` — [Octavia, basic
-  cookbook](https://docs.openstack.org/octavia/latest/user/guides/basic-cookbook.html).
-- Formulário de entrega da atividade.
+- Cloud and OpenStack materials: [`Cloud Computing - OpenStack CLI.pptx`](Cloud%20Computing%20-%20OpenStack%20CLI.pptx).
+- Provisioning VDI available at `/local/uasc/provisionamento`.
+- Deployment guide for the `poi-atividades` load balancer — [Octavia: Basic Cookbook](https://docs.openstack.org/octavia/latest/user/guides/basic-cookbook.html).
+- Assignment submission form.

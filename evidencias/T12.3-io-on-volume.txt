@@ -1,0 +1,27 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'iostat -dx 1 8 > /tmp/io-proof.txt 2>&1 & sleep 1; for i in 1 2 3 4 5 6; do curl -s -o /dev/null "http://127.0.0.1:8002/work?size=4096"; done; wait; echo; df -h /mnt/atividade3-logs | tail -1; echo; awk "NR<=4 || /^Device/ || /^vdb/" /tmp/io-proof.txt'
+# host=osboxes user=osboxes utc=2026-10-29T15:51:07Z
+
+
+/dev/vdb        974M  584K  947M   1% /mnt/atividade3-logs
+
+Linux 6.8.0-87-generic (vm-daniel-ranya) 	10/29/26 	_x86_64_	(1 CPU)
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+loop0            0.00      0.00     0.00   0.00    0.05     1.14    0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.00
+vdb              0.01      0.18     0.00   0.95    3.36    18.48    0.06      1.47     0.03  34.12   46.24    24.77    0.00      0.00     0.00   0.00    0.00     0.00    0.03    7.96    0.00   0.15
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+vdb              0.00      0.00     0.00   0.00    0.00     0.00    1.00      4.00     0.00   0.00    3.00     4.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.30
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+vdb              0.00      0.00     0.00   0.00    0.00     0.00   21.00   8252.00    10.00  32.26  283.19   392.95    0.00      0.00     0.00   0.00    0.00     0.00    4.00    0.00    5.95  89.70
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+vdb              0.00      0.00     0.00   0.00    0.00     0.00   20.00   8248.00    10.00  33.33  360.00   412.40    0.00      0.00     0.00   0.00    0.00     0.00    4.00    0.25    7.20  95.00
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+vdb              0.00      0.00     0.00   0.00    0.00     0.00   20.00   8248.00    10.00  33.33  317.05   412.40    0.00      0.00     0.00   0.00    0.00     0.00    4.00    0.00    6.34  88.80
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+vdb              0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.00
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+vdb              0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.00
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+vdb              0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.00
+
+[exit 0] 2026-10-29T15:51:15Z
