@@ -113,12 +113,7 @@ resultados. Isso não substitui a CLI: cada fase é uma sequência de comandos
 
 ### Por que as portas externas são diferentes das internas
 
-O `poi-atividades` é **um balanceador só, compartilhado por toda a turma**. Antes
-de criar qualquer recurso, listamos os listeners existentes
-(`T1.6-port-list`) para não colidir com as portas de outro grupo. Como 8000-8002
-e 2222 já estavam em uso, a VM foi publicada em **2222, 8100, 8101 e 8102**, com
-o balanceador encaminhando para **22, 8000, 8001 e 8002** dentro da VM.
-
+O `poi-atividades` é **um balanceador só, compartilhado por toda a turma**. Antes de criar nossos listeners, consultamos a lista dos já existentes (`T1.5-listener-list`) para evitar conflitos. A listagem mostrava a porta **8001** ocupada e as portas **22, 2201 e 22022** utilizadas para SSH. Escolhemos as portas externas **2222, 8100, 8101 e 8102**, que estavam disponíveis naquele momento. O balanceador encaminha essas conexões para as portas **22, 8000, 8001 e 8002** dentro da VM.
 ---
 
 ## 4. Execução, etapa por etapa
@@ -200,11 +195,7 @@ root, e os serviços rodam como usuário comum (`ubuntu`) com
 `NoNewPrivileges=true`. Escolher 8000-8002 mantém o processo sem privilégio.
 O TCP/22 fica na porta padrão porque é o `sshd` do sistema, que já roda com o
 privilégio necessário.
-Na ponta do balanceador, as portas externas **não podem ser as mesmas**: os
-listeners 8000-8002 e 2222 do `poi-atividades` já estavam ocupados por outros
-grupos (T1.6), e a porta de SSH não pode ser 22 porque o balanceador é
-compartilhado. Por isso o caminho externo é **2222 → 22** e **8100-8102 →
-8000-8002**, com o pool traduzindo porta e endereço.
+Na ponta do balanceador, optamos por portas externas diferentes para evitar conflitos no recurso compartilhado. A listagem inicial (`T1.5-listener-list`) mostrava a porta **8001** ocupada, além das portas **22, 2201 e 22022** utilizadas para SSH. As portas externas escolhidas estavam disponíveis naquele momento. Por isso, o caminho externo é **2222 → 22** e **8100-8102 → 8000-8002**, com o pool encaminhando as conexões para a VM.
 A origem `10.5.8.0/22` é a rede de onde o balanceador entrega o tráfego — a
 mesma faixa da VIP e do membro. Abrir para `0.0.0.0/0` deixaria a VM alcançável
 por qualquer origem da nuvem, sem necessidade: todo acesso externo passa pelo
@@ -993,8 +984,7 @@ for enviado pelo formulário é corrigido, então ele é o último passo da entr
    vai passar.
 2. **Health monitor já existente no pool de SSH.** A criação de um monitor TCP
    retornou 409 porque o pool já tinha um. Optamos por manter o existente.
-3. **Portas ocupadas na VIP.** A lista de listeners mostrou 8000-8002 e 2222 em
-   uso por outros grupos. A solução foi publicar em 2222 e 8100-8102.
+3. **Portas na VIP compartilhada.** A listagem inicial de listeners (`T1.5-listener-list`) mostrou a porta **8001** ocupada, além das portas **22, 2201 e 22022** utilizadas para SSH. Para evitar conflitos, escolhemos publicar o acesso SSH na porta externa **2222** e as aplicações nas portas **8100-8102**, disponíveis naquele momento.
 4. **VM sem IP flutuante.** Não havia endereço público para a VM; todo acesso
    (SSH e aplicações) teve de passar pelo balanceador, o que na prática virou uma
    vantagem: o caminho testado é o caminho real.
