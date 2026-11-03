@@ -480,11 +480,15 @@ def figura_serie(resultados, destino):
         ax.set_xlabel("tempo desde o início da coleta (s)")
         ax.set_ylim(0, 100)
         eixo_y_grid(ax)
-        ax.legend(frameon=False, loc="upper left", fontsize=9)
     eixos[0].set_ylabel("uso (%)")
     fig.suptitle("Uso dos recursos durante uma execução de 4 clientes",
                  x=0.01, ha="left", fontsize=13)
-    fig.tight_layout(rect=(0, 0, 1, 0.94))
+    # Legenda unica acima dos graficos para nao cobrir a curva de CPU.
+    handles, labels = eixos[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="upper right",
+               bbox_to_anchor=(0.99, 0.99),
+               ncol=2, frameon=False, fontsize=9)
+    fig.tight_layout(rect=(0, 0, 1, 0.88))
     fig.savefig(destino, dpi=160)
     plt.close(fig)
 
