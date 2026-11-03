@@ -420,13 +420,9 @@ Depois do snapshot, conferimos que a VM continuou `ACTIVE` e o volume continuou
 
 ![Snapshot ativo](evidencias/T9.3-snapshot-show.png)
 
-#### Snapshot final, depois das medições
+#### Snapshot após o retorno ao `general.small`
 
-Esse snapshot é o do instante em que os serviços ficaram prontos. Depois dele
-vieram as medições complementares — os scripts de carga instalados em
-`/opt/atividade3/scripts`, os cenários de saturação e a matriz de tamanhos — e o
-teste de resize. Para a entrega valer o estado final, o snapshot foi refeito ao
-fim de tudo, já de volta ao `general.small`:
+Após o primeiro snapshot, realizamos medições complementares e o teste de resize. Com a VM novamente configurada como `general.small`, criamos outro snapshot em 29/10/2026, às 17h16 UTC, confirmado como `active` às 17h21 UTC (`T14.4-snapshot-created`). Esse snapshot foi obtido antes das fases adicionais de vagas, carga mista e reconciliação, realizadas entre 18h33 e 19h15 UTC. Portanto, ele registra a configuração da VM naquele momento, mas não corresponde ao encerramento de todos os experimentos:
 
 ```bash
 openstack server image create --name snap-vm-daniel-ranya-final vm-daniel-ranya
@@ -961,7 +957,7 @@ permite conferir. Todas as evidências estão em `evidencias/` no formato `.txt`
 | 9 | Volume de 1 GB criado, anexado e montado | `vol-daniel-ranya-logs` em `/dev/vdb`, ext4 por rótulo, `fstab` com `nofail`, persistência provada com reboot | `T6.1-*`, `T6.2-*`, `T6.3-*`, `T6.4-*` |
 | 10 | Aplicações usando o volume | `StandardOutput=append:` para o volume, `logrotate` com `copytruncate`, prova de escrita no volume | `T7.1-*`, `T7.2-*`, `T7.3-*`, `T7.4-*` |
 | 11 | `poi-atividades` roteando para as aplicações | Três listeners (`8100-8102`), pools com health check e membros | `T8.2-*`, `T8.3-health-vip`, `T8.3-work-vip` |
-| 12 | Snapshot da VM configurada | Snapshot tirado com a VM pronta, refeito ao fim das medições e conferido como `active`; o volume de logs ganhou snapshot próprio | `T9.2-snapshot-create`, `T9.3-*`, `T14.4-snapshot-created`, `T14.10-volume-snapshot-show` |
+| 12 | Snapshot da VM configurada | Snapshot tirado com a VM pronta, recriado após o retorno ao `general.small` e confirmado como `active` às 17h21 UTC, antes das medições adicionais; o volume de logs ganhou snapshot próprio | `T9.2-snapshot-create`, `T9.3-*`, `T14.4-snapshot-created`, `T14.10-volume-snapshot-show` |
 | 13 | Relatório com prints de cada etapa | Este documento, com os prints das evidências e as tabelas e gráficos das medições | `evidencias/manifest.csv` |
 | 14 | Formulário de entrega | Preenchido pelo grupo, fora do repositório | — |
 
