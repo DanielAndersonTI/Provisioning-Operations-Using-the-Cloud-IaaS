@@ -345,10 +345,7 @@ cada arquivo, e não pela aparência do caminho:
 O que aparece no log: uma linha de inicialização por serviço e os *tracebacks*
 que o `http.server` imprime no `stderr` quando um cliente fecha a conexão no
 meio da resposta — o gerador de carga faz isso ao encerrar cada janela de 45 s.
-São 137 ocorrências no perfil CPU e 158 no IO depois de todas as execuções. Não
-são erros da aplicação: a requisição correspondente terminou 2xx; é o registro do
-socket já fechado. O volume inteiro ficou em ~450 KB, dos quais 16 KB são o
-`lost+found` do ext4.
+Os logs também registraram mensagens associadas ao encerramento de conexões pelos clientes. Essas mensagens, por si só, não demonstram falha no processamento das requisições pela aplicação. Em uma medição posterior, às 17h24 UTC, o volume apresentava `632K` em uso (1%), conforme a evidência `T14.11-volume-mount`.
 
 O `logrotate` foi configurado com rotação diária, 7 cópias e `copytruncate` — a
 aplicação mantém a saída aberta pelo `systemd`, então truncar o arquivo em vez de
@@ -891,9 +888,7 @@ concorrentes nos três perfis. A partir daí:
   `vdb` fica acima de 76 % de ocupação e o `w_await` chega a centenas de
   milissegundos. Mais vCPU ajuda (a vazão mais que dobra no medium), mas o teto
   continua sendo a taxa de operações do volume de 1 GB.
-- **O volume de 1 GB é folgado para logs:** depois de todas as execuções e de uma
-  rotação forçada, o uso ficou em 1 % (620 KiB). O que limita o perfil de IO é a
-  taxa de escrita, não o espaço.
+- **O volume de 1 GB é folgado para logs:** nas medições documentadas, o uso foi de 620K (1%) às 16h51 UTC (`T13.4-medium-resources`) e de 632K (1%) às 17h24 UTC (`T14.11-volume-mount`). Esses resultados indicam que o espaço disponível não foi o fator limitante do perfil de IO, mas sim o desempenho das operações de escrita.
 
 O gargalo dominante nas medições pela VIP não foi nenhum dos três: foi o caminho
 compartilhado VDI → balanceador → VM, que fixa ~55 ms de custo por requisição e
@@ -1022,9 +1017,7 @@ se for testado derrubando o serviço de propósito.
 Os números dos experimentos fecham com o que a infraestrutura oferece: 1 vCPU
 satura o perfil CPU-bound em torno de 20 rps com 4 clientes, o perfil de memória
 cresce sem tocar o swap, e o de I/O para perto de 10 rps por contenção de escrita
-no disco do volume. O volume de 1 GB, usado para os logs, ficou com cerca de
-630 KB ocupados após todas as execuções e uma rotação — a escolha de tamanho se
-mostrou adequada, e a rotação funciona.
+no disco do volume. Na medição das 17h24 UTC (`T14.11-volume-mount`), o volume de 1 GB destinado aos logs apresentava 632K (1%) de uso. Esse resultado indica que havia folga de capacidade naquele momento; a rotação dos logs foi configurada e testada.
 
 O limite da aplicação foi medido à parte, com o mesmo flavor: variar
 `--max-concurrency` de 1 para 32 vagas levou a vazão do perfil de CPU de 4,5
