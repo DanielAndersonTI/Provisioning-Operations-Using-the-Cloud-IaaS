@@ -868,7 +868,7 @@ O snapshot final foi tirado depois da volta.
 As amostras de 0,5 s mostram o formato da carga dentro da janela, com quatro
 clientes em um cenário de cada perfil:
 
-| Perfil | CPU da VM (mín / mediana / máx) | Memória da VM (mín / mediana / máx) |
+| Perfil | CPU da VM (mín / média / máx) | Memória da VM (mín / média / máx) |
 | --- | --- | --- |
 | CPU-bound | 0 % / 84 % / 100 % | 22,8 % / 23,2 % / 23,7 % |
 | Memory-bound | 0 % / 80 % / 100 % | 23,8 % / 26,9 % / 28,5 % |
