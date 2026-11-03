@@ -2,7 +2,7 @@
 
 Third graded assignment for the Provisioning and Operations course. The group is the same as in Activity 2, and the applications are the same ones developed for that assignment. The main difference is the environment: instead of a local virtual machine running in VirtualBox, deployment is now performed on a virtual machine in the **LSD IaaS Cloud**, under the **Provisioning** project, using OpenStack.
 
-This README documents the group's execution plan and decisions. It is updated throughout the assignment: values marked as *to be filled in* must only be replaced with actual results, never estimates.
+This README documents what the group executed and the decisions behind it. Every value below was recorded during the assignment, and each step links back to a command transcript in [`evidencias/`](evidencias/) and a record in [`docs/execucao/`](docs/execucao/). The full narrative, with the analysis of the load experiments, is in [`RELATORIO.md`](RELATORIO.md).
 
 ## Objectives
 
@@ -62,7 +62,7 @@ Requirement: Python 3.10 or later.
 5. Create a security group allowing the ports required to access the VM.
 6. Configure the `poi-atividades` load balancer to provide SSH access to the VM.
 
-Planned commands (to be adjusted according to the cloud's responses):
+The commands below are the ones actually executed, in this order. The public key was generated on the VDI and registered in the project; the private half never left the VDI.
 
 ```bash
 openstack flavor list
@@ -70,17 +70,28 @@ openstack server list
 openstack image list
 openstack snapshot list
 
-openstack keypair create <key-name> > <key-name>.pem
-chmod 600 <key-name>.pem
+openstack keypair create --public-key ~/.ssh/atividade3-daniel-ranya.pub \
+  atividade3-daniel-ranya
+
+openstack security group create sg-daniel-ranya \
+  --description 'Acesso do balanceador a VM - Atividade 3 POI'
+openstack security group rule create --protocol tcp --dst-port 22:22 \
+  --remote-ip 10.5.8.0/22 sg-daniel-ranya
+openstack security group rule create --protocol tcp --dst-port 8000:8002 \
+  --remote-ip 10.5.8.0/22 sg-daniel-ranya
+openstack security group rule create --protocol icmp \
+  --remote-ip 10.5.8.0/22 sg-daniel-ranya
 
 openstack server create \
   --flavor general.small \
   --image ubuntu-24.04 \
-  --key-name <key-name> \
-  <vm-name>
-
-openstack security group rule create ...
+  --key-name atividade3-daniel-ranya \
+  --network provider \
+  --security-group sg-daniel-ranya \
+  vm-daniel-ranya --wait
 ```
+
+The VM is created on the project's `provider` network and receives a private address only. External access is through the shared `poi-atividades` load balancer, never through a floating IP on the VM itself.
 
 ### Part Two — Deployment and Storage
 
@@ -122,8 +133,9 @@ Updated as the steps are completed.
 | SSH key name | `atividade3-daniel-ranya` |
 | SSH access address (load balancer) | `150.165.85.77:2222` → `10.5.9.15:22` |
 | Security group rules | `tcp/22`, `tcp/8000-8002`, `icmp` — source: `10.5.8.0/22` |
-| Volume | 1 GB — `vol-daniel-ranya-logs`, `/dev/vdb`, `/mnt/atividade3-logs` |
+| Volume | 1 GB — `vol-daniel-ranya-logs` (`2271182d-ac0c-4dd9-bcf7-cc535379f532`), `/dev/vdb`, `/mnt/atividade3-logs` |
 | Deployed applications and ports | CPU `8000`, memory `8001`, I/O `8002` (external ports `8100-8102`) |
+| Application URLs | CPU `http://150.165.85.77:8100`, memory `http://150.165.85.77:8101`, I/O `http://150.165.85.77:8102` |
 | Snapshot name | `snap-vm-daniel-ranya` (`6034d4a8-45bb-40ea-abe2-867e659e8f53`, 3.43 GiB) |
 | Volume snapshot | `snap-vol-daniel-ranya-logs` (`df5d86d9-f4d9-43d1-a805-7edf619355d0`, 1 GB) |
 
@@ -149,7 +161,7 @@ Updated as the steps are completed.
 - Request sizes are not always uniform: one phase draws a size per request from a list whose mean equals the profile's standard size, so the effect of a mixed workload is measured instead of assumed (`results/summary-misto.csv`).
 - Some size cells were measured twice. The first pass left cells whose p95 was inconsistent with the same work measured in the baseline scenarios; those blocks were re-measured, and a cell is only accepted if its p95 stays below a plausibility ceiling computed from the baseline (`docs/execucao/T17.md`, `docs/execucao/T19.md`).
 - No credentials, private keys, or passwords are stored in this repository.
-- The list of load balancers was checked before creating any resources. The `poi-atividades` load balancer already existed in the project and is shared by the class; therefore, the external ports are `2222` and `8100-8102`, which differ from the internal ports.
+- The listeners of the `poi-atividades` load balancer were listed before creating any resources. It already existed in the project and is shared by the class, and several of its ports already belong to other groups (`8001`, `22`, `2201`, `22022`, `14001-14003`). The external ports for this group are therefore `2222` and `8100-8102`, which differ from the internal ports.
 
 ## Course Materials
 
