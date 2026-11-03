@@ -191,7 +191,7 @@ O ICMP foi incluído para permitir diagnóstico de rede (ping) a partir da VDI.
 **Por que essas portas, e não 80 e 443.** As três aplicações escutam em
 **8000, 8001 e 8002**, acima da faixa privilegiada (0–1023). Isso não é
 acidente: portas abaixo de 1024 exigem `CAP_NET_BIND_SERVICE` ou execução como
-root, e os serviços rodam como usuário comum (`ubuntu`) com
+root, e os serviços rodam como usuário comum (`appsvc`) com
 `NoNewPrivileges=true`. Escolher 8000-8002 mantém o processo sem privilégio.
 O TCP/22 fica na porta padrão porque é o `sshd` do sistema, que já roda com o
 privilégio necessário.
