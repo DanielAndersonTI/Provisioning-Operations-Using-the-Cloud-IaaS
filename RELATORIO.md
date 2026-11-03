@@ -824,9 +824,7 @@ mesmos; a única variável é o provisionamento.
 - **Com um cliente não há ganho nenhum.** O trabalho de uma requisição é
   sequencial; um segundo núcleo não acelera uma única thread. É a demonstração de
   que, com um cliente, o gargalo é o trabalho em si e não o provisionamento.
-- **De dois clientes em diante o flavor maior se paga.** No perfil de CPU a
-  vazão dobra com quatro clientes (19,83 → 37,65 rps) e o trabalho por requisição
-  cai de 97 para 59 ms.
+- **De dois clientes em diante o flavor maior se paga.** No perfil de CPU, com quatro clientes, a vazão quase dobra (19,83 → 37,65 rps) e o tempo médio de trabalho por requisição cai de 145,8 para 54,7 ms.
 - **A memória ganha menos e satura antes.** O medium com dois clientes (25,3 rps)
   quase alcança o small com quatro (29,1 rps) e daí em diante os dois empatam: o
   limite passa a ser a alocação dos 32 MiB por requisição.
