@@ -913,10 +913,7 @@ para que isso não vire leitura errada dos números.
    os dois lados de cada tabela passam pelo mesmo caminho, na mesma sessão.
    Quando uma execução apresentou p95 incompatível com o próprio trabalho, ela
    foi refeita (5.4).
-4. **O backend de disco é opaco.** Não há acesso às métricas do Ceph nem ao
-   limite de IOPS do volume. A conclusão "o limite é a taxa de operações do
-   disco" vem do `iostat` dentro da VM (`%util` entre 71 % e 90 % com o disco
-   raiz abaixo de 0,1 %) e do `w_await`, não de um número de IOPS do provedor.
+4. **O backend de disco é opaco.** Não há acesso às métricas do Ceph nem ao limite de IOPS do volume. A conclusão de que o perfil de IO é limitado pelas operações de disco se apoia nos valores de `%util` e `w_await` registrados pelo `iostat` dentro da VM. O volume `vdb` apresentou utilização elevada durante a carga, enquanto o disco raiz `vda` também registrou atividade em algumas amostras, inclusive no `general.medium`. Não atribuímos esse limite a um número de IOPS do provedor.
 5. **O resize reinicia a VM.** É a semântica do OpenStack, não uma escolha. Cada
    mudança de flavor custa ~3,5 min e derruba as conexões; por isso o script
    espera SSH e as três portas antes de medir e as medições vêm em blocos.
