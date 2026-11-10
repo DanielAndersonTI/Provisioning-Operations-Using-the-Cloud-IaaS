@@ -1,0 +1,23 @@
+$ for p in pool-app-cpu-daniel-ranya pool-app-memory-daniel-ranya pool-app-io-daniel-ranya; do openstack loadbalancer member list $p -c name -c address -c protocol_port -c operating_status -c provisioning_status; echo; done
+# host=osboxes user=osboxes utc=2026-11-10T03:35:18Z
+
++-----------------+---------------------+-----------+---------------+------------------+
+| name            | provisioning_status | address   | protocol_port | operating_status |
++-----------------+---------------------+-----------+---------------+------------------+
+| vm-daniel-ranya | ACTIVE              | 10.5.9.15 |          8000 | ONLINE           |
++-----------------+---------------------+-----------+---------------+------------------+
+
++-----------------+---------------------+-----------+---------------+------------------+
+| name            | provisioning_status | address   | protocol_port | operating_status |
++-----------------+---------------------+-----------+---------------+------------------+
+| vm-daniel-ranya | ACTIVE              | 10.5.9.15 |          8001 | ONLINE           |
++-----------------+---------------------+-----------+---------------+------------------+
+
++-----------------+---------------------+-----------+---------------+------------------+
+| name            | provisioning_status | address   | protocol_port | operating_status |
++-----------------+---------------------+-----------+---------------+------------------+
+| vm-daniel-ranya | ACTIVE              | 10.5.9.15 |          8002 | ONLINE           |
++-----------------+---------------------+-----------+---------------+------------------+
+
+
+[exit 0] 2026-11-10T03:35:47Z

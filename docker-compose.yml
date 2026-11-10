@@ -4,19 +4,39 @@
 #   docker compose pull
 #   docker compose up -d --no-build
 #
-# Variáveis lidas do arquivo .env ao lado deste arquivo (não versionado):
-#   DOCKERHUB_USER  usuário/conta do Docker Hub
+# Variáveis de ambiente, com padrão funcional (nenhuma credencial é necessária,
+# porque as imagens são públicas):
+#   DOCKERHUB_USER  conta do Docker Hub (padrão: danielandersonss)
 #   IMAGE_TAG       tag publicada (padrão: 1.0.0)
+#
+# O Compose também lê um arquivo `.env` ao lado deste arquivo, se existir. Na VM
+# da Atividade 3 o arquivo fica fora do repositório, em
+# /etc/poi-atividade4/docker.env, e é passado com `--env-file`.
 #
 # Os containers escutam sempre na porta 8000 internamente; a porta do host é
 # que muda (8000/8001/8002), preservando os membros já configurados no
 # balanceador poi-atividades (VIP 150.165.85.77:8100-8102).
+#
+# Endurecimento espelhado do systemd da Atividade 3: o container roda como UID
+# 10001, sem ganhar privilégio (NoNewPrivileges), sem capabilities e com o
+# sistema de arquivos somente leitura — só o volume de log é gravável.
 name: poi-atividade4
+
+x-hardening: &hardening
+  read_only: true
+  tmpfs:
+    - /tmp
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+  stop_grace_period: 5s
 
 services:
   cpu:
-    image: ${DOCKERHUB_USER}/poi-cpu:${IMAGE_TAG:-1.0.0}
+    image: ${DOCKERHUB_USER:-danielandersonss}/poi-cpu:${IMAGE_TAG:-1.0.0}
     pull_policy: always
+    <<: *hardening
     command:
       - sh
       - -c
@@ -39,8 +59,9 @@ services:
         max-file: "5"
 
   memory:
-    image: ${DOCKERHUB_USER}/poi-memory:${IMAGE_TAG:-1.0.0}
+    image: ${DOCKERHUB_USER:-danielandersonss}/poi-memory:${IMAGE_TAG:-1.0.0}
     pull_policy: always
+    <<: *hardening
     command:
       - sh
       - -c
@@ -63,8 +84,9 @@ services:
         max-file: "5"
 
   io:
-    image: ${DOCKERHUB_USER}/poi-io:${IMAGE_TAG:-1.0.0}
+    image: ${DOCKERHUB_USER:-danielandersonss}/poi-io:${IMAGE_TAG:-1.0.0}
     pull_policy: always
+    <<: *hardening
     environment:
       A3_WORK_DIR: /var/log/poi/io
     command:

@@ -1,0 +1,35 @@
+$ for l in app-cpu-daniel-ranya app-memory-daniel-ranya app-io-daniel-ranya; do openstack loadbalancer listener show $l -c name -c protocol -c protocol_port -c default_pool_id -c operating_status; echo; done
+# host=osboxes user=osboxes utc=2026-11-10T03:33:13Z
+
++------------------+--------------------------------------+
+| Field            | Value                                |
++------------------+--------------------------------------+
+| default_pool_id  | e3ed9841-637e-4030-bf5c-4e5dc7ba52e3 |
+| name             | app-cpu-daniel-ranya                 |
+| operating_status | ONLINE                               |
+| protocol         | HTTP                                 |
+| protocol_port    | 8100                                 |
++------------------+--------------------------------------+
+
++------------------+--------------------------------------+
+| Field            | Value                                |
++------------------+--------------------------------------+
+| default_pool_id  | 294e7de6-a709-4fce-80b1-21179de19bb4 |
+| name             | app-memory-daniel-ranya              |
+| operating_status | ONLINE                               |
+| protocol         | HTTP                                 |
+| protocol_port    | 8101                                 |
++------------------+--------------------------------------+
+
++------------------+--------------------------------------+
+| Field            | Value                                |
++------------------+--------------------------------------+
+| default_pool_id  | 44fac7a8-07bc-4267-9c28-85d18477e614 |
+| name             | app-io-daniel-ranya                  |
+| operating_status | ONLINE                               |
+| protocol         | HTTP                                 |
+| protocol_port    | 8102                                 |
++------------------+--------------------------------------+
+
+
+[exit 0] 2026-11-10T03:33:33Z

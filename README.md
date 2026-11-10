@@ -5,7 +5,7 @@ This repository contains the two graded assignments of the Provisioning and Oper
 | Activity | Subject | Status | Detailed record |
 | --- | --- | --- | --- |
 | **3** | Deployment of the applications on the **LSD IaaS Cloud** (OpenStack) | Complete | [`RELATORIO.md`](RELATORIO.md) |
-| **4** | **Containerization** of the applications with Docker and Docker Compose | Executed on branch `atividade4-docker`; PR pending | [`RELATORIO-ATIVIDADE4.md`](RELATORIO-ATIVIDADE4.md) |
+| **4** | **Containerization** of the applications with Docker and Docker Compose | Complete on branch `atividade4-docker`; [PR #1](https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1) open | [`RELATORIO-ATIVIDADE4.md`](RELATORIO-ATIVIDADE4.md) |
 
 The group is the same in both assignments, and so are the applications. Activity 3 built the cloud infrastructure and deployed the applications directly on the VM; Activity 4 keeps the same repository and the same VM, but changes the execution model to Docker containers.
 
@@ -190,7 +190,7 @@ The VM is created on the project's `provider` network and receives a private add
 
 # Activity 4 — Containerization of the Applications
 
-> **Status:** execution complete on branch `atividade4-docker`; pending commit, pull request, and form. The container files, the automation phases, and [`RELATORIO-ATIVIDADE4.md`](RELATORIO-ATIVIDADE4.md) live on that branch; `main` keeps the Activity 3 deployment until the pull request is merged.
+> **Status:** execution complete on branch `atividade4-docker`, pushed and under review in [pull request #1](https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1); only the submission form is pending. The container files, the automation phases, and [`RELATORIO-ATIVIDADE4.md`](RELATORIO-ATIVIDADE4.md) live on that branch; `main` keeps the Activity 3 deployment until the pull request is merged.
 
 ## Objective
 
@@ -200,12 +200,12 @@ Evolve the three applications developed in Activity 2 — already deployed on th
 
 | # | Requirement | How it is addressed |
 | --- | --- | --- |
-| 1 | Containerize the three applications from the previous activity | One Dockerfile per image (shared definition parameterized by profile), one container per application |
+| 1 | Containerize the three applications from the previous activity | One shared Dockerfile parameterized by `PROFILE`, and one container per application |
 | 2 | Keep each application's code in a new branch of the same repository and open a pull request to the main branch | Branch `atividade4-docker` in this repository; pull request to `main` |
 | 3 | Create a Docker image for each application | `poi-cpu`, `poi-memory`, `poi-io` images built from the same Dockerfile with different build arguments |
 | 4 | Publish the images on Docker Hub | Public repositories in the group's Docker Hub account, tags `1.0.0` and `latest` |
 | 5 | Write a `docker-compose.yml` that configures the three applications | [`docker-compose.yml`](docker-compose.yml) at the repository root |
-| 6 | Deploy the three applications with Docker Compose on the VM from Activity 3 | `docker compose pull` followed by `docker compose up -d` on `vm-daniel-ranya` |
+| 6 | Deploy the three applications with Docker Compose on the VM from Activity 3 | `docker compose pull` followed by `docker compose up -d --no-build` on `vm-daniel-ranya` |
 | 7 | Configure the `poi-atividades` load balancer to reach the containers | Same listeners `8100-8102` → host ports `8000-8002`; no new LB resources needed |
 | 8 | Access the three applications remotely and verify they work | `GET /health` and `GET /work?size=N` through the VIP, plus container health and logs |
 | 9 | Answer the submission form | Execution record below feeds the form |
@@ -242,7 +242,7 @@ Because the host ports remain `8000-8002` and the external ports remain `8100-81
 | --- | --- |
 | Repository | `Provisioning-Operations-Using-the-Cloud-IaaS` (same repository as Activity 3) |
 | Base branch | `main` |
-| Working branch | `atividade4-docker` (created locally; not pushed yet) |
+| Working branch | `atividade4-docker` (pushed) |
 | Pull request | [#1](https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1) — `atividade4-docker` → `main` |
 | Report | [`RELATORIO-ATIVIDADE4.md`](RELATORIO-ATIVIDADE4.md) (Portuguese, on the branch) |
 
@@ -268,13 +268,18 @@ The images are built from a single [`apps/Dockerfile`](apps/Dockerfile), with th
 
 ## Docker Compose
 
-The [`docker-compose.yml`](docker-compose.yml) file declares the three services with the published image names, the host port mapping, the mounted log volume, a restart policy, a health check, and log rotation. The service definition follows this pattern:
+The [`docker-compose.yml`](docker-compose.yml) file declares the three services with the published image names, the host port mapping, the mounted log volume, a restart policy, a health check, a bound on the container's stdout log, and the hardening block shared through the `x-hardening` anchor. The service definition follows this pattern (abridged; the real file applies the anchor to all three services):
 
 ```yaml
 services:
   cpu:
-    image: ${DOCKERHUB_USER}/poi-cpu:${IMAGE_TAG:-1.0.0}
+    image: ${DOCKERHUB_USER:-danielandersonss}/poi-cpu:${IMAGE_TAG:-1.0.0}
     pull_policy: always
+    read_only: true            # from x-hardening
+    tmpfs: [/tmp]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    stop_grace_period: 5s
     ports:
       - "8000:8000"
     volumes:
@@ -293,7 +298,7 @@ services:
         max-file: "5"
 ```
 
-Deployment uses the published images (`docker compose pull` followed by `docker compose up -d --no-build`), so the VM never needs the source code or a build toolchain: it pulls exactly the artifacts published on Docker Hub.
+Deployment uses the published images (`docker compose pull` followed by `docker compose up -d --no-build`), so the VM never needs the source code or a build toolchain: it pulls exactly the artifacts published on Docker Hub. Both variables have working defaults (`danielandersonss` and `1.0.0`), so the file also runs as-is on a clean machine with no `.env`; the VM overrides them through `/etc/poi-atividade4/docker.env` and `--env-file`.
 
 ## Deployment Steps
 
@@ -301,7 +306,7 @@ Deployment uses the published images (`docker compose pull` followed by `docker 
 2. **Build on the VDI.** Build the three images with the profile build argument and record `docker images`, image sizes, and digests.
 3. **Publish to Docker Hub.** Authenticate with a token from a file outside the repository, tag `1.0.0` and `latest`, push, and verify the public repositories.
 4. **Prepare the VM.** Install Docker Engine and the Compose plugin, and confirm that the 1 GB volume is still attached and mounted.
-5. **Cut over.** Stop and disable the three `systemd` units from Activity 3 (they hold ports `8000-8002`), then `docker compose pull` and `docker compose up -d --no-build`.
+5. **Cut over.** Pull the images first (a failed pull then aborts with the services still up), stop and disable the three `systemd` units from Activity 3 (they hold ports `8000-8002`), hand the log directories to UID `10001`, and run `docker compose up -d --no-build`.
 6. **Verify locally.** `docker compose ps`, container health, `GET /health` and `GET /work` on each host port, and logs written to the mounted volume.
 7. **Verify remotely.** The same requests through `http://150.165.85.77:8100`, `:8101`, and `:8102`, plus a failover check: stop one container, observe the load balancer member go `ERROR` and the VIP return `503`, restart it, and confirm recovery.
 8. **Snapshot.** Create a new snapshot of the VM in its containerized state (the Activity 3 snapshot remains as the previous state).
@@ -316,8 +321,9 @@ Activity 4 reuses the host → VDI → cloud pipeline built in Activity 3, so th
 | --- | --- | --- |
 | 24 | `automation/remote/200-docker-bootstrap.sh` | Installs Docker Engine and the Compose plugin on the VDI and the VM, records versions and daemon configuration |
 | 25 | `automation/remote/210-images.sh` | Builds the three images on the VDI, tags and pushes them to Docker Hub, records image IDs, sizes, and digests |
-| 26 | `automation/remote/220-compose-deploy.sh` | On the VM: stops/disables the `systemd` units, pulls the images, runs `docker compose up -d`, records `ps`, health, logs, and the volume proof |
+| 26 | `automation/remote/220-compose-deploy.sh` | On the VM: uploads the compose file, pulls the images, stops/disables the `systemd` units, fixes log ownership, runs `docker compose up -d --no-build`, and records `ps`, health, logs, restart policy, and hardening |
 | 27 | `automation/remote/230-lb-verify.sh` | Verifies the three applications through the VIP and performs the failover test |
+| 27.4 | `automation/remote/235-lb-config.sh` | Reads the load balancer configuration from OpenStack: listener, pool, health monitor, and member for each application |
 | 28 | `automation/remote/240-snapshot.sh` | Creates and verifies the snapshot of the containerized VM |
 
 The scripts are executed with `python automation/run.py remote/<phase>.sh --pull`, and the results are pulled back into `evidencias/`, `results/`, and `logs/`. `run.py` reads `docker.env` from the repository root — a gitignored file filled from `docker.env.example` — and forwards the Docker Hub user, token, and image tag to the VDI session file with mode `0600`. They are never committed and never printed in evidence: the push script receives the token through `--password-stdin`.
@@ -331,20 +337,20 @@ The scripts are executed with `python automation/run.py remote/<phase>.sh --pull
 | Branch / pull request | `atividade4-docker` / [#1](https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1) |
 | Docker Engine / Compose versions | VDI: `24.0.5` / `v2.20.2` — VM: `29.1.3` / `2.40.3` |
 | Docker Hub account | `danielandersonss` (public repositories) |
-| Images | `poi-cpu`, `poi-memory`, `poi-io` — tags `1.0.0` and `latest`, 114 MB each |
+| Images | `poi-cpu`, `poi-memory`, `poi-io` — tags `1.0.0` and `latest`, 114 MB on disk (~44 MB compressed on the Hub) |
 | VM | `vm-daniel-ranya` (`bdc0447e-fb71-48c8-9ce2-04a8c5e20ee0`), `general.small` |
 | Host ports | `8000` (CPU), `8001` (memory), `8002` (I/O) |
 | External ports | `8100`, `8101`, `8102` |
-| Application URLs | `http://150.165.85.77:8100`, `:8101`, `:8102` |
+| Application URLs | `http://150.165.85.77:8100`, `:8101`, `:8102` — open `/health` on each; the root path returns `404` by design |
 | Log volume | `vol-daniel-ranya-logs` (`2271182d-ac0c-4dd9-bcf7-cc535379f532`) at `/mnt/atividade3-logs` |
-| Snapshot after containerization | `snap-vm-daniel-ranya-atividade4` (`aa534820-acce-4597-969d-3740d3be4221`), `active`, 7.98 GB qcow2 |
+| Snapshot after containerization | `snap-vm-daniel-ranya-atividade4` (`aa534820-acce-4597-969d-3740d3be4221`), `active`, 7.98 GB qcow2 (taken before the hardening change; current container state is in `T26.3-*`) |
 | Submission form | pending |
 
 ## Deliverables — Activity 4
 
 - [x] Three applications containerized.
-- [ ] Changes committed to the `atividade4-docker` branch.
-- [ ] Pull request opened to `main`.
+- [x] Changes committed to the `atividade4-docker` branch.
+- [x] Pull request opened to `main`.
 - [x] One Docker image built for each application.
 - [x] Three images published on Docker Hub.
 - [x] `docker-compose.yml` created.
@@ -360,8 +366,9 @@ The scripts are executed with `python automation/run.py remote/<phase>.sh --pull
 - The images are **public** on Docker Hub so that the instructor and the VM can pull them without credentials.
 - The 1 GB Cinder volume from Activity 3 remains attached and is bind-mounted into the containers, keeping application data on cloud storage instead of the container's writable layer.
 - The `systemd` units from Activity 3 are stopped and disabled, not deleted: rolling back consists of `docker compose down` followed by `systemctl enable --now app-cpu app-memory app-io`.
+- Container hardening mirrors the Activity 3 units: the compose file sets `read_only: true` (only the log volume is writable), `tmpfs: /tmp`, `no-new-privileges:true`, `cap_drop: [ALL]` and `stop_grace_period: 5s` for all three services through the `x-hardening` anchor.
 - The Activity 3 snapshot remains valid. A second snapshot after Activity 4 captures the containerized state and is recommended before any further experiments.
-- Container logs are written to the mounted volume. Docker's `json-file` driver keeps a bounded copy for `docker logs`, with size and file-count limits so that logs do not grow without bound.
+- Container logs are written by the applications straight to `app.log` on the mounted volume: the compose `command` redirects stdout and stderr, so `docker logs` shows only shell-level errors, and the real log is `/mnt/atividade3-logs/<profile>/app.log`. That file is rotated by the host `logrotate` configuration from Activity 3 (`copytruncate`, daily, 7 rotations, 10 MB cap). The `json-file` driver limits bound whatever the containers write to stdout.
 
 ## Course Materials — Activity 4
 

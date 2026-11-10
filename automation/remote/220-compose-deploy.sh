@@ -67,4 +67,7 @@ cap T26.3-volume-logs "$VM_SSH 'sudo ls -l $LOG_DIR/cpu $LOG_DIR/memory $LOG_DIR
 
 cap T26.3-restart-policy "$VM_SSH 'for c in poi-atividade4-cpu-1 poi-atividade4-memory-1 poi-atividade4-io-1; do printf \"%-24s \" \$c; sudo docker inspect --format \"{{.HostConfig.RestartPolicy.Name}} / log {{.HostConfig.LogConfig.Type}} {{.HostConfig.LogConfig.Config}}\" \$c; done'"
 
+section "T26.3 — endurecimento dos containers"
+cap T26.3-hardening "$VM_SSH 'for c in poi-atividade4-cpu-1 poi-atividade4-memory-1 poi-atividade4-io-1; do printf \"%-24s \" \$c; sudo docker inspect --format \"readonly={{.HostConfig.ReadonlyRootfs}} capdrop={{.HostConfig.CapDrop}} sec={{.HostConfig.SecurityOpt}} stoptimeout={{.Config.StopTimeout}}\" \$c; done'"
+
 section "Fase 26 concluída"

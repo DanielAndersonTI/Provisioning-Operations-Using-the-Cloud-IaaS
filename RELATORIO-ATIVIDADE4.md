@@ -9,7 +9,7 @@
 | Branch | `atividade4-docker` |
 | Pull request | [#1](https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1) para `main` |
 
-> **Estado.** Execução concluída e verificada em 09/11/2026; branch `atividade4-docker` e PR #1 abertos. Cada número deste relatório tem o ID da evidência correspondente em `evidencias/`. Falta apenas a resposta do formulário de entrega.
+> **Estado.** Execução concluída e verificada em 09/11/2026 e reverificada em 10/11/2026, depois do endurecimento dos containers; branch `atividade4-docker` e PR #1 abertos. Cada número deste relatório tem o ID da evidência correspondente em `evidencias/`. Falta apenas a resposta do formulário de entrega.
 
 ## 1. Objetivo
 
@@ -17,7 +17,7 @@ Evoluir as três aplicações da Atividade 2 — já implantadas na VM da nuvem 
 
 ## 2. O que a atividade pede
 
-| # | Requisito do enunciado | Como será atendido |
+| # | Requisito do enunciado | Como foi atendido |
 | --- | --- | --- |
 | 1 | Conteinerizar as três aplicações | Um container por aplicação, a partir de uma definição de imagem parametrizada por perfil |
 | 2 | Nova branch no repositório da atividade anterior e pull request para a principal | Branch `atividade4-docker` neste repositório; PR para `main` |
@@ -27,7 +27,7 @@ Evoluir as três aplicações da Atividade 2 — já implantadas na VM da nuvem 
 | 6 | Fazer o deploy com Docker Compose na VM da Atividade 3 | `docker compose pull` + `docker compose up -d --no-build` na `vm-daniel-ranya` |
 | 7 | Configurar o `poi-atividades` para acessar os containers | Mesmos listeners `8100-8102` → portas do host `8000-8002` |
 | 8 | Acessar remotamente e verificar o funcionamento | `/health` e `/work` pela VIP, healthchecks e failover |
-| 9 | Responder o formulário | Dados consolidados na seção 12 |
+| 9 | Responder o formulário | Dados consolidados no Apêndice A |
 
 ## 3. Arquitetura da solução
 
@@ -59,7 +59,7 @@ O caminho de rede é o mesmo da Atividade 3. O que muda é o que roda dentro da 
 | Branch base | `main` |
 | Branch de trabalho | `atividade4-docker` |
 | Pull request | [#1](https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1) para `main` |
-| Commit(s) | `7d6b60f` — “Atividade 4: conteinerização das aplicações com Docker e Compose” |
+| Commit(s) | `7d6b60f` — conteinerização; `01b1ab6` — registro do commit e do PR; o endurecimento e esta revisão seguem em um commit posterior na mesma branch |
 | URL do PR | <https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1> |
 
 O repositório hospeda as três aplicações, portanto uma branch e um pull request cobrem a conteinerização das três. A `main` permanece com a implantação da Atividade 3 até o merge.
@@ -74,7 +74,7 @@ O repositório hospeda as três aplicações, portanto uma branch e um pull requ
 
 A definição é única (`apps/Dockerfile`) e recebe o perfil como argumento de build. O contexto é a raiz do repositório, o que disponibiliza `apps/server.py` e o entrypoint do perfil. A imagem roda como usuário sem privilégios, expõe apenas a porta da aplicação e declara um `HEALTHCHECK` HTTP contra `/health`.
 
-As três imagens foram construídas sobre `python:3.12-slim` a partir do mesmo contexto (15,32 kB enviados ao builder), com camadas comuns reaproveitadas entre as construções. Todas têm 114 MB:
+As três imagens foram construídas sobre `python:3.12-slim` a partir do mesmo contexto; o primeiro build enviou 15,32 kB ao builder e os dois seguintes cerca de 2 kB, porque as camadas comuns vieram do cache. Todas ocupam 114 MB no disco local; no Hub cada uma ocupa ~44 MB, porque as camadas são comprimidas no push:
 
 | Imagem | ID | Digest |
 | --- | --- | --- |
@@ -92,14 +92,15 @@ Evidências: `T25.2-*`, `T25.3-report` (IDs e digests) e `T25.3-hub` (tamanhos e
 
 ## 6. Docker Compose
 
-O `docker-compose.yml` declara os três serviços com a imagem publicada, o mapeamento de portas, o volume de logs, política de reinício, healthcheck e rotação de log. Os containers escutam sempre na porta `8000` internamente; o que muda é a porta publicada no host (`8000`, `8001`, `8002`), preservando os membros já configurados no balanceador.
+O `docker-compose.yml` declara os três serviços com a imagem publicada, o mapeamento de portas, o volume de logs, política de reinício, healthcheck, limite do log do driver e o bloco de endurecimento. Os containers escutam sempre na porta `8000` internamente; o que muda é a porta publicada no host (`8000`, `8001`, `8002`), preservando os membros já configurados no balanceador.
 
 Decisões:
 
 - **Imagens publicadas, não build na VM.** A VM só faz `pull`; não precisa de código-fonte nem de toolchain.
 - **Volume de 1 GB montado em `/var/log/poi`.** Os logs e o arquivo de trabalho do perfil I/O ficam no armazenamento em nuvem, como na Atividade 3.
 - **`systemd` desabilitado, não removido.** O rollback é `docker compose down` + `systemctl enable --now app-cpu app-memory app-io`.
-- **Rotação de log no driver `json-file`** (`max-size: 10m`, `max-file: 5`) para o `docker logs` não crescer sem limite.
+- **Endurecimento igual ao da Atividade 3.** O bloco `x-hardening` aplica aos três serviços `read_only: true` (só o volume é gravável), `tmpfs: /tmp`, `no-new-privileges:true`, `cap_drop: [ALL]` e `stop_grace_period: 5s`. É o equivalente no Docker do `NoNewPrivileges`, `PrivateTmp`, `ProtectSystem` e `TimeoutStopSec=5` das units `systemd`.
+- **Log no arquivo, não no `docker logs`.** O `command` do compose redireciona a saída da aplicação para `/var/log/poi/<perfil>/app.log`, no volume; por isso `docker logs` só mostra erro de shell. O arquivo continua rotacionado pelo `logrotate` da Atividade 3 (`copytruncate`, diário, 7 rotações, teto de 10 MB) e o `json-file` 10m × 5 só limita o que os containers escrevem em stdout.
 
 ## 7. Implantação na VM
 
@@ -110,10 +111,10 @@ Decisões:
 | Acesso | `150.165.85.77:2222` → `10.5.9.15:22` |
 | Docker Engine | `29.1.3` (pacote `docker.io` da distribuição, driver `overlayfs`) |
 | Docker Compose | `2.40.3` (pacote `docker-compose-v2` da distribuição) |
-| Diretório do compose | `/opt/atividade4/docker-compose.yml` (`0644`, sha256 `c19b3ff6…cae808`) |
+| Diretório do compose | `/opt/atividade4/docker-compose.yml` (`0644`, sha256 `bc96cf22…c62dbfcb`) |
 | Arquivo de ambiente | `/etc/poi-atividade4/docker.env` (`0600`, apenas usuário e tag) |
 | Volume | `vol-daniel-ranya-logs` (`2271182d-ac0c-4dd9-bcf7-cc535379f532`) em `/mnt/atividade3-logs` |
-| Snapshot pós-conteinerização | `snap-vm-daniel-ranya-atividade4` (`aa534820-acce-4597-969d-3740d3be4221`), `active`, 7,98 GB em qcow2 |
+| Snapshot pós-conteinerização | `snap-vm-daniel-ranya-atividade4` (`aa534820-acce-4597-969d-3740d3be4221`), `active`, 7,98 GB em qcow2 (criado antes do endurecimento; o estado atual dos containers está nas evidências `T26.3-*`) |
 
 Passos executados:
 
@@ -122,31 +123,36 @@ Passos executados:
 3. Na VM: `docker compose pull`, parada e desabilitação das units `systemd`, `docker compose up -d --no-build`.
 4. Conferência de `docker compose ps`, healthchecks, logs e escrita no volume.
 5. Snapshot da VM no estado conteinerizado.
+6. Em 10/11, o compose recebeu o endurecimento e os containers foram recriados; healthchecks, VIP e failover foram reverificados (`T26.3-hardening`, `T27.3-*`, `T27.4-*`).
 
 ## 8. Balanceador `poi-atividades`
 
-Nenhum recurso novo é criado: os listeners `8100`, `8101` e `8102` da VIP `150.165.85.77` continuam apontando para `10.5.9.15:8000`, `:8001` e `:8002`, agora atendidos pelos containers. O monitor HTTP continua consultando `/health` e esperando `200`.
+Nenhum recurso novo é criado: os listeners `8100`, `8101` e `8102` da VIP `150.165.85.77` continuam nas mesmas portas e os pools continuam apontando para `10.5.9.15:8000`, `:8001` e `:8002`, agora atendidos pelos containers. O monitor HTTP continua consultando `/health` e esperando `200`.
 
-| Listener | Porta externa | Membro | Container |
-| --- | --- | --- | --- |
-| `http-cpu-daniel-ranya` | `8100` | `10.5.9.15:8000` | `cpu` |
-| `http-memory-daniel-ranya` | `8101` | `10.5.9.15:8001` | `memory` |
-| `http-io-daniel-ranya` | `8102` | `10.5.9.15:8002` | `io` |
+| Listener | Porta externa | Pool | Membro | Container |
+| --- | --- | --- | --- | --- |
+| `app-cpu-daniel-ranya` | `8100` | `pool-app-cpu-daniel-ranya` | `10.5.9.15:8000` | `cpu` |
+| `app-memory-daniel-ranya` | `8101` | `pool-app-memory-daniel-ranya` | `10.5.9.15:8001` | `memory` |
+| `app-io-daniel-ranya` | `8102` | `pool-app-io-daniel-ranya` | `10.5.9.15:8002` | `io` |
 
 Os nomes acima correspondem aos recursos criados na Atividade 3 e confirmados na execução. Os três membros (`vm-daniel-ranya`, `10.5.9.15`, portas `8000`, `8001` e `8002`) estavam `ONLINE` no momento da verificação (evidência `T27.2-member-status`). Nenhum recurso do balanceador foi criado, alterado ou removido nesta atividade.
+
+A configuração foi lida do próprio OpenStack, não apenas inferida do resultado: `T27.4-listeners` mostra cada listener com o seu `default_pool_id`, `T27.4-pools` mostra o pool `HTTP`/`ROUND_ROBIN` e o `healthmonitor_id`, `T27.4-healthmonitors` mostra o monitor em `/health` (`delay` 5 s, `timeout` 4 s, `max_retries` 3) e `T27.4-members` mostra o membro `10.5.9.15` nas portas `8000-8002` como `ACTIVE`/`ONLINE`.
 
 ## 9. Verificação de funcionamento
 
 | Verificação | Resultado | Evidência |
 | --- | --- | --- |
 | `GET /health` em cada container | `200` com o perfil correto nas portas `8000-8002` | `T27.1-health-json` |
-| `GET /work?size=N` em cada container | `200` em 0,19 s (cpu), 0,28 s (memory) e 0,28 s (io) | `T27.1-smoke-local` |
+| `GET /work?size=N` em cada container | `200` em 0,05 s (cpu), 0,04 s (memory) e 0,22 s (io) | `T27.1-smoke-local` |
 | `GET /health` pela VIP, portas `8100-8102` | `200` em ~0,05 s nos três listeners | `T27.2-health-vip` |
-| `GET /work` pela VIP | `200` em 0,16 s / 0,083 s / 0,19 s | `T27.2-work-vip` |
+| `GET /work` pela VIP | `200` em 0,32 s / 0,33 s / 0,56 s | `T27.2-work-vip` |
 | Containers e healthchecks | três containers `Up (healthy)`; portas por `docker-proxy` | `T26.3-ps`, `T26.3-health`, `T26.3-ports` |
-| Failover: parar o container `cpu` | membro `ERROR` e VIP `503` em ~1 min; depois `ONLINE` e `200` em 0,047 s | `T27.3-stop`, `T27.3-member-degraded`, `T27.3-member-restored` |
+| Failover: parar o container `cpu` | membro `ERROR` e VIP `503` em ~53 s; depois `ONLINE` e `200` em 0,049 s | `T27.3-stop`, `T27.3-member-degraded`, `T27.3-member-restored` |
 | Logs no volume | `app.log` em `10001:10001` sob `/mnt/atividade3-logs/<perfil>/` | `T26.3-volume-logs` |
-| Política de reinício e log | `unless-stopped`; `json-file` 10m × 5 | `T26.3-restart-policy` |
+| Política de reinício e log | `unless-stopped`; log em `app.log` no volume, rotacionado pelo `logrotate` da A3; `json-file` 10m × 5 para stdout | `T26.3-restart-policy`, `T26.3-volume-logs` |
+| Endurecimento dos containers | `readonly=true`, `capdrop=[ALL]`, `no-new-privileges:true`, `StopTimeout=5` nos três | `T26.3-hardening` |
+| Configuração do balanceador | listener → pool → monitor `/health` → membro `10.5.9.15:8000-8002`, tudo `ONLINE` | `T27.4-listeners`, `T27.4-pools`, `T27.4-healthmonitors`, `T27.4-members` |
 
 ## 10. Evidências
 
@@ -156,12 +162,12 @@ O índice por tarefa está em [`docs/execucao-atividade4/INDEX.md`](docs/execuca
 | --- | --- | --- |
 | T24 — Docker na VDI e na VM | 7 pares (`T24.1-*`, `T24.2-*`) | concluída |
 | T25 — imagens e Docker Hub | 8 pares (`T25.1-*` a `T25.3-hub`) | concluída |
-| T26 — deploy com Compose | 13 pares (`T26.1-*` a `T26.3-restart-policy`) | concluída |
-| T27 — verificação e failover | 10 pares (`T27.1-*` a `T27.3-member-restored`) | concluída |
+| T26 — deploy com Compose | 14 pares (`T26.1-*` a `T26.3-hardening`) | concluída |
+| T27 — verificação, failover e balanceador | 14 pares (`T27.1-*` a `T27.4-members`) | concluída |
 | T28 — snapshot final | 8 pares (`T28.1-*`) | concluída |
 | T29 — relatório e formulário | `manifest.csv` regenerado e contagem final | concluída |
 
-Somando T24 a T28, são 46 pares de evidência (`.txt` + `.png`) só nesta atividade, além do `evidencias/manifest.csv` regenerado ao final. Os registros por tarefa estão em `docs/execucao-atividade4/`.
+Somando T24 a T28, são 51 pares de evidência (`.txt` + `.png`) só nesta atividade, além do `evidencias/manifest.csv` regenerado ao final. Os registros por tarefa estão em `docs/execucao-atividade4/`.
 
 ## 11. Dificuldades e decisões
 
@@ -187,19 +193,34 @@ O que ficou fora do escopo, deliberadamente: não há orquestrador (Kubernetes),
 
 ## Apêndice A — Dados para o formulário
 
-| Campo | Resposta |
-| --- | --- |
-| Nome completo | Daniel Anderson de Souza Silva |
-| Matrícula | (preenchida pelo autor no formulário) |
-| Grupo | daniel-ranya — Daniel Anderson de Souza Silva e Ranya Duran Greco |
-| Link do documento | `https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/blob/atividade4-docker/RELATORIO-ATIVIDADE4.md` |
-| Branch / pull request | `atividade4-docker` / PR #1 para `main` — <https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1> |
-| Imagens no Docker Hub | `danielandersonss/poi-cpu`, `danielandersonss/poi-memory`, `danielandersonss/poi-io` (tags `1.0.0` e `latest`) |
-| ID da VM | `bdc0447e-fb71-48c8-9ce2-04a8c5e20ee0` |
-| IP da VM | `10.5.9.15` |
-| Portas das aplicações | `8100`, `8101`, `8102` (SSH em `2222`) |
-| ID do volume | `2271182d-ac0c-4dd9-bcf7-cc535379f532` |
-| URLs das aplicações | `http://150.165.85.77:8100`, `:8101`, `:8102` |
+A tabela segue a ordem exata das perguntas do formulário de entrega. O formulário não pede prints, link do relatório nem link do PR: pede identificação, VM e, para cada aplicação, repositório, URL em execução e URL da imagem; no fim, o YAML do Compose.
+
+| # | Campo do formulário | Resposta |
+| --- | --- | --- |
+| 1 | E-mail | `danielanderson.silva@copin.ufcg.edu.br` |
+| 2 | Nome completo | Daniel Anderson de Souza Silva |
+| 3 | Matrícula | (preenchida pelo autor no formulário) |
+| 4 | Grupo | daniel-ranya — Daniel Anderson de Souza Silva e Ranya Duran Greco |
+| 5 | ID da VM criada | `bdc0447e-fb71-48c8-9ce2-04a8c5e20ee0` |
+| 6 | IP da VM criada | `10.5.9.15` |
+| 7 | Repositório da aplicação 1 conteinerizada | <https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/tree/atividade4-docker/apps/cpu> |
+| 8 | URL da aplicação 1 em execução | <http://150.165.85.77:8100/health> |
+| 9 | URL da imagem publicada da aplicação 1 | <https://hub.docker.com/r/danielandersonss/poi-cpu> |
+| 10 | Repositório da aplicação 2 conteinerizada | <https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/tree/atividade4-docker/apps/memory> |
+| 11 | URL da aplicação 2 em execução | <http://150.165.85.77:8101/health> |
+| 12 | URL da imagem publicada da aplicação 2 | <https://hub.docker.com/r/danielandersonss/poi-memory> |
+| 13 | Repositório da aplicação 3 conteinerizada | <https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/tree/atividade4-docker/apps/io> |
+| 14 | URL da aplicação 3 em execução | <http://150.165.85.77:8102/health> |
+| 15 | URL da imagem publicada da aplicação 3 | <https://hub.docker.com/r/danielandersonss/poi-io> |
+| 16 | URL do arquivo yaml do docker compose | <https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/blob/atividade4-docker/docker-compose.yml> |
+
+Cada integrante responde o formulário com a própria matrícula; os outros campos são iguais para o grupo.
+
+As URLs das linhas 8, 11 e 14 terminam em `/health` de propósito. A raiz (`/`) das aplicações devolve `404` com a mensagem `Use /health or /work?size=N`, e quem abrir o link veria um erro; `GET /health` devolve `200` com o perfil (`cpu`, `memory` ou `io`), provando de imediato que o container certo está respondendo pelo listener. Os endpoints completos são `/health`, `/work?size=N` e `/metrics`.
+
+O formulário pede "repositório da aplicação" no singular, três vezes. As três aplicações vivem no mesmo repositório, então cada linha aponta para a pasta da aplicação dentro da branch `atividade4-docker`; a raiz do repositório é <https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/tree/atividade4-docker>. O Docker Hub mostra apenas o texto do *Overview*, não arquivos do repositório: o `docker-compose.yml` está no link da linha 16.
+
+Dados complementares, úteis se o formulário ou o professor pedirem: portas externas `8100`, `8101` e `8102` (SSH em `2222`); volume `2271182d-ac0c-4dd9-bcf7-cc535379f532` em `/mnt/atividade3-logs`; branch `atividade4-docker` com PR #1 para `main` (<https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1>); relatório <https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/blob/atividade4-docker/RELATORIO-ATIVIDADE4.md>.
 
 ## Apêndice B — Comandos principais
 

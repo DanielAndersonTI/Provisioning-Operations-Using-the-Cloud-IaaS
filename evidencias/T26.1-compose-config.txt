@@ -1,9 +1,11 @@
 $ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'cd /opt/atividade4 && sudo docker compose --env-file /etc/poi-atividade4/docker.env -f /opt/atividade4/docker-compose.yml config'
-# host=osboxes user=osboxes utc=2026-11-10T02:04:11Z
+# host=osboxes user=osboxes utc=2026-11-10T03:24:17Z
 
 name: poi-atividade4
 services:
   cpu:
+    cap_drop:
+      - ALL
     command:
       - sh
       - -c
@@ -32,7 +34,13 @@ services:
         published: "8000"
         protocol: tcp
     pull_policy: always
+    read_only: true
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 5s
+    tmpfs:
+      - /tmp
     volumes:
       - type: bind
         source: /mnt/atividade3-logs
@@ -40,6 +48,8 @@ services:
         bind:
           create_host_path: true
   io:
+    cap_drop:
+      - ALL
     command:
       - sh
       - -c
@@ -70,7 +80,13 @@ services:
         published: "8002"
         protocol: tcp
     pull_policy: always
+    read_only: true
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 5s
+    tmpfs:
+      - /tmp
     volumes:
       - type: bind
         source: /mnt/atividade3-logs
@@ -78,6 +94,8 @@ services:
         bind:
           create_host_path: true
   memory:
+    cap_drop:
+      - ALL
     command:
       - sh
       - -c
@@ -106,7 +124,13 @@ services:
         published: "8001"
         protocol: tcp
     pull_policy: always
+    read_only: true
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 5s
+    tmpfs:
+      - /tmp
     volumes:
       - type: bind
         source: /mnt/atividade3-logs
@@ -116,5 +140,14 @@ services:
 networks:
   default:
     name: poi-atividade4_default
+x-hardening:
+  cap_drop:
+    - ALL
+  read_only: true
+  security_opt:
+    - no-new-privileges:true
+  stop_grace_period: 5s
+  tmpfs:
+    - /tmp
 
-[exit 0] 2026-11-10T02:04:12Z
+[exit 0] 2026-11-10T03:24:18Z

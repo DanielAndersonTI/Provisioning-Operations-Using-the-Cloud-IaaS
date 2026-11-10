@@ -1,30 +1,28 @@
 $ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'cd /opt/atividade4 && sudo docker compose --env-file /etc/poi-atividade4/docker.env -f /opt/atividade4/docker-compose.yml up -d --no-build; echo; sudo docker compose --env-file /etc/poi-atividade4/docker.env -f /opt/atividade4/docker-compose.yml ps'
-# host=osboxes user=osboxes utc=2026-11-10T02:04:59Z
+# host=osboxes user=osboxes utc=2026-11-10T03:24:47Z
 
- cpu Pulling 
  memory Pulling 
  io Pulling 
- io Pulled 
+ cpu Pulling 
  memory Pulled 
  cpu Pulled 
- Network poi-atividade4_default  Creating
- Network poi-atividade4_default  Created
- Container poi-atividade4-memory-1  Creating
- Container poi-atividade4-io-1  Creating
- Container poi-atividade4-cpu-1  Creating
- Container poi-atividade4-cpu-1  Created
- Container poi-atividade4-io-1  Created
- Container poi-atividade4-memory-1  Created
- Container poi-atividade4-cpu-1  Starting
+ io Pulled 
+ Container poi-atividade4-cpu-1  Recreate
+ Container poi-atividade4-memory-1  Recreate
+ Container poi-atividade4-io-1  Recreate
+ Container poi-atividade4-memory-1  Recreated
+ Container poi-atividade4-cpu-1  Recreated
+ Container poi-atividade4-io-1  Recreated
  Container poi-atividade4-memory-1  Starting
  Container poi-atividade4-io-1  Starting
- Container poi-atividade4-io-1  Started
- Container poi-atividade4-cpu-1  Started
+ Container poi-atividade4-cpu-1  Starting
  Container poi-atividade4-memory-1  Started
+ Container poi-atividade4-cpu-1  Started
+ Container poi-atividade4-io-1  Started
 
-NAME                      IMAGE                               COMMAND                  SERVICE   CREATED         STATUS                           PORTS
-poi-atividade4-cpu-1      danielandersonss/poi-cpu:1.0.0      "sh -c 'exec python …"   cpu       2 seconds ago   Up 1 second (health: starting)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
-poi-atividade4-io-1       danielandersonss/poi-io:1.0.0       "sh -c 'exec python …"   io        2 seconds ago   Up 1 second (health: starting)   0.0.0.0:8002->8000/tcp, [::]:8002->8000/tcp
-poi-atividade4-memory-1   danielandersonss/poi-memory:1.0.0   "sh -c 'exec python …"   memory    2 seconds ago   Up 1 second (health: starting)   0.0.0.0:8001->8000/tcp, [::]:8001->8000/tcp
+NAME                      IMAGE                               COMMAND                  SERVICE   CREATED          STATUS                           PORTS
+poi-atividade4-cpu-1      danielandersonss/poi-cpu:1.0.0      "sh -c 'exec python …"   cpu       12 seconds ago   Up 1 second (health: starting)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+poi-atividade4-io-1       danielandersonss/poi-io:1.0.0       "sh -c 'exec python …"   io        12 seconds ago   Up 1 second (health: starting)   0.0.0.0:8002->8000/tcp, [::]:8002->8000/tcp
+poi-atividade4-memory-1   danielandersonss/poi-memory:1.0.0   "sh -c 'exec python …"   memory    12 seconds ago   Up 1 second (health: starting)   0.0.0.0:8001->8000/tcp, [::]:8001->8000/tcp
 
-[exit 0] 2026-11-10T02:05:04Z
+[exit 0] 2026-11-10T03:25:02Z
