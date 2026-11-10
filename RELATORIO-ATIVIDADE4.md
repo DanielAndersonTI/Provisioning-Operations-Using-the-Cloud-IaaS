@@ -9,7 +9,7 @@
 | Branch | `atividade4-docker` |
 | Pull request | [#1](https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1) para `main` |
 
-> **Estado.** Execução concluída e verificada em 09/11/2026 e reverificada em 10/11/2026, depois do endurecimento dos containers; branch `atividade4-docker` e PR #1 abertos. Cada número deste relatório tem o ID da evidência correspondente em `evidencias/`. Falta apenas a resposta do formulário de entrega.
+> **Estado.** Execução concluída e verificada em 09/11/2026 e reverificada em 10/11/2026, depois do endurecimento dos containers; branch `atividade4-docker` e PR #1 abertos. Os resultados das verificações citam o ID da evidência correspondente em `evidencias/`. Falta apenas a resposta do formulário de entrega.
 
 ## 1. Objetivo
 
@@ -181,7 +181,7 @@ Somando T24 a T28, são 51 pares de evidência (`.txt` + `.png`) só nesta ativi
 
 **O snapshot demorou mais que a janela da fase.** `openstack server image create` retorna com status `queued` e o Glance leva vários minutos para gravar o disco de 19 GB em qcow2. A fase 28 espera 4 minutos; como o status ainda era `saving`, uma fase de continuação (241) retomou a espera sem criar nada de novo.
 
-**A VM tem 16 GB livres.** Foi o motivo de não construir imagens nela: o deploy só faz `pull` das três imagens de 44 MB comprimidas, e os diretórios de log continuam no volume Cinder, não no disco raiz.
+**A VM tinha 16 GB livres** (`T24.2-vm-versions`). Foi o motivo de não construir imagens nela: o deploy só faz `pull` das três imagens de 44 MB comprimidas, e os diretórios de log continuam no volume Cinder, não no disco raiz.
 
 ## 12. Conclusão
 
@@ -242,3 +242,12 @@ sudo docker compose --env-file /etc/poi-atividade4/docker.env pull
 sudo docker compose --env-file /etc/poi-atividade4/docker.env up -d --no-build
 sudo docker compose --env-file /etc/poi-atividade4/docker.env ps
 ```
+
+## Referências
+
+- DOCKER INC. **Compose file reference**. Disponível em: <https://docs.docker.com/reference/compose-file/>. Acesso em: 10 nov. 2026.
+- DOCKER INC. **Docker Hub: repositórios e informações do repositório**. Disponível em: <https://docs.docker.com/docker-hub/repos/manage/information/>. Acesso em: 10 nov. 2026.
+- DOCKER INC. **Docker Hub release notes**. Disponível em: <https://docs.docker.com/docker-hub/release-notes/>. Acesso em: 10 nov. 2026.
+- DOCKER INC. **Dockerfile reference**. Disponível em: <https://docs.docker.com/reference/dockerfile/>. Acesso em: 10 nov. 2026.
+- OPENSTACK FOUNDATION. **Octavia: Basic Cookbook**. Disponível em: <https://docs.openstack.org/octavia/latest/user/guides/basic-cookbook.html>. Acesso em: 10 nov. 2026.
+- OPENSTACK FOUNDATION. **OpenStack Command-Line Interface Reference**. Disponível em: <https://docs.openstack.org/python-openstackclient/latest/>. Acesso em: 10 nov. 2026.
