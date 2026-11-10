@@ -7,9 +7,9 @@
 | Entrega | 11/11/2026 |
 | Repositório | `Provisioning-Operations-Using-the-Cloud-IaaS` |
 | Branch | `atividade4-docker` |
-| Pull request | a abrir para `main` |
+| Pull request | [#1](https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1) para `main` |
 
-> **Estado.** Execução concluída e verificada em 09/11/2026. Cada número deste relatório tem o ID da evidência correspondente em `evidencias/`. Ficam pendentes apenas as ações do autor: commit manual na branch, abertura do pull request para a `main` e resposta do formulário de entrega.
+> **Estado.** Execução concluída e verificada em 09/11/2026; branch `atividade4-docker` e PR #1 abertos. Cada número deste relatório tem o ID da evidência correspondente em `evidencias/`. Falta apenas a resposta do formulário de entrega.
 
 ## 1. Objetivo
 
@@ -58,9 +58,9 @@ O caminho de rede é o mesmo da Atividade 3. O que muda é o que roda dentro da 
 | Repositório | `Provisioning-Operations-Using-the-Cloud-IaaS` |
 | Branch base | `main` |
 | Branch de trabalho | `atividade4-docker` |
-| Pull request | a abrir para `main` |
-| Commit(s) | preenchido no commit manual do autor |
-| URL do PR | preenchido após a abertura do PR |
+| Pull request | [#1](https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1) para `main` |
+| Commit(s) | `7d6b60f` — “Atividade 4: conteinerização das aplicações com Docker e Compose” |
+| URL do PR | <https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1> |
 
 O repositório hospeda as três aplicações, portanto uma branch e um pull request cobrem a conteinerização das três. A `main` permanece com a implantação da Atividade 3 até o merge.
 
@@ -193,7 +193,7 @@ O que ficou fora do escopo, deliberadamente: não há orquestrador (Kubernetes),
 | Matrícula | (preenchida pelo autor no formulário) |
 | Grupo | daniel-ranya — Daniel Anderson de Souza Silva e Ranya Duran Greco |
 | Link do documento | `https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/blob/atividade4-docker/RELATORIO-ATIVIDADE4.md` |
-| Branch / pull request | `atividade4-docker` / PR para `main` (URL após a abertura) |
+| Branch / pull request | `atividade4-docker` / PR #1 para `main` — <https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1> |
 | Imagens no Docker Hub | `danielandersonss/poi-cpu`, `danielandersonss/poi-memory`, `danielandersonss/poi-io` (tags `1.0.0` e `latest`) |
 | ID da VM | `bdc0447e-fb71-48c8-9ce2-04a8c5e20ee0` |
 | IP da VM | `10.5.9.15` |

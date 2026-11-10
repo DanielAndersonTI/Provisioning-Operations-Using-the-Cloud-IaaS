@@ -243,7 +243,7 @@ Because the host ports remain `8000-8002` and the external ports remain `8100-81
 | Repository | `Provisioning-Operations-Using-the-Cloud-IaaS` (same repository as Activity 3) |
 | Base branch | `main` |
 | Working branch | `atividade4-docker` (created locally; not pushed yet) |
-| Pull request | `atividade4-docker` → `main`, describing the images and the Compose deployment (to be opened) |
+| Pull request | [#1](https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1) — `atividade4-docker` → `main` |
 | Report | [`RELATORIO-ATIVIDADE4.md`](RELATORIO-ATIVIDADE4.md) (Portuguese, on the branch) |
 
 The repository hosts all three applications, so one branch and one pull request cover the containerization of the three. The changes are additive: the Activity 3 deployment files remain in the repository, and the container files are added alongside them.
@@ -328,7 +328,7 @@ The scripts are executed with `python automation/run.py remote/<phase>.sh --pull
 | --- | --- |
 | Group | Daniel Anderson de Souza Silva · Ranya Duran Greco |
 | Repository | `Provisioning-Operations-Using-the-Cloud-IaaS` |
-| Branch / pull request | `atividade4-docker` (created) / to be opened |
+| Branch / pull request | `atividade4-docker` / [#1](https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS/pull/1) |
 | Docker Engine / Compose versions | VDI: `24.0.5` / `v2.20.2` — VM: `29.1.3` / `2.40.3` |
 | Docker Hub account | `danielandersonss` (public repositories) |
 | Images | `poi-cpu`, `poi-memory`, `poi-io` — tags `1.0.0` and `latest`, 114 MB each |
