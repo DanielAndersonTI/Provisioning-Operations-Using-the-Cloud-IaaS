@@ -1,0 +1,14 @@
+$ python3 /home/osboxes/atividade3/payload4/hub-check.py danielandersonss 1.0.0
+# host=osboxes user=osboxes utc=2026-11-10T02:02:54Z
+
+== poi-cpu
+   latest       44294756 bytes  2026-11-10T02:02:20.293903Z
+   1.0.0        44294756 bytes  2026-11-10T02:02:16.026451Z
+== poi-memory
+   latest       44294458 bytes  2026-11-10T02:02:36.712671Z
+   1.0.0        44294458 bytes  2026-11-10T02:02:32.351972Z
+== poi-io
+   latest       44294427 bytes  2026-11-10T02:02:53.25579Z
+   1.0.0        44294427 bytes  2026-11-10T02:02:48.767486Z
+
+[exit 0] 2026-11-10T02:02:56Z

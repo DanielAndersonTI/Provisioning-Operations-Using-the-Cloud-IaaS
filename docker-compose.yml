@@ -1,0 +1,89 @@
+# Atividade 4 — deploy das três aplicações conteinerizadas.
+#
+# Uso na VM (as imagens vêm do Docker Hub, não há build aqui):
+#   docker compose pull
+#   docker compose up -d --no-build
+#
+# Variáveis lidas do arquivo .env ao lado deste arquivo (não versionado):
+#   DOCKERHUB_USER  usuário/conta do Docker Hub
+#   IMAGE_TAG       tag publicada (padrão: 1.0.0)
+#
+# Os containers escutam sempre na porta 8000 internamente; a porta do host é
+# que muda (8000/8001/8002), preservando os membros já configurados no
+# balanceador poi-atividades (VIP 150.165.85.77:8100-8102).
+name: poi-atividade4
+
+services:
+  cpu:
+    image: ${DOCKERHUB_USER}/poi-cpu:${IMAGE_TAG:-1.0.0}
+    pull_policy: always
+    command:
+      - sh
+      - -c
+      - exec python /opt/poi/apps/run/server.py --port 8000 >> /var/log/poi/cpu/app.log 2>&1
+    ports:
+      - "8000:8000"
+    volumes:
+      - /mnt/atividade3-logs:/var/log/poi
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  memory:
+    image: ${DOCKERHUB_USER}/poi-memory:${IMAGE_TAG:-1.0.0}
+    pull_policy: always
+    command:
+      - sh
+      - -c
+      - exec python /opt/poi/apps/run/server.py --port 8000 >> /var/log/poi/memory/app.log 2>&1
+    ports:
+      - "8001:8000"
+    volumes:
+      - /mnt/atividade3-logs:/var/log/poi
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  io:
+    image: ${DOCKERHUB_USER}/poi-io:${IMAGE_TAG:-1.0.0}
+    pull_policy: always
+    environment:
+      A3_WORK_DIR: /var/log/poi/io
+    command:
+      - sh
+      - -c
+      - exec python /opt/poi/apps/run/server.py --port 8000 >> /var/log/poi/io/app.log 2>&1
+    ports:
+      - "8002:8000"
+    volumes:
+      - /mnt/atividade3-logs:/var/log/poi
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"

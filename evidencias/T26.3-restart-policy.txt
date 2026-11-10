@@ -1,0 +1,8 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'for c in poi-atividade4-cpu-1 poi-atividade4-memory-1 poi-atividade4-io-1; do printf "%-24s " $c; sudo docker inspect --format "{{.HostConfig.RestartPolicy.Name}} / log {{.HostConfig.LogConfig.Type}} {{.HostConfig.LogConfig.Config}}" $c; done'
+# host=osboxes user=osboxes utc=2026-11-10T02:05:31Z
+
+poi-atividade4-cpu-1     unless-stopped / log json-file map[max-file:5 max-size:10m]
+poi-atividade4-memory-1  unless-stopped / log json-file map[max-file:5 max-size:10m]
+poi-atividade4-io-1      unless-stopped / log json-file map[max-file:5 max-size:10m]
+
+[exit 0] 2026-11-10T02:05:32Z

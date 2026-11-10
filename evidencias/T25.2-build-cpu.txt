@@ -1,0 +1,69 @@
+$ cd /home/osboxes/atividade3 && sg docker -c 'docker build --build-arg PROFILE=cpu -f apps/Dockerfile -t danielandersonss/poi-cpu:1.0.0 .'
+# host=osboxes user=osboxes utc=2026-11-10T02:01:37Z
+
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.78kB done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 432B done
+#2 DONE 0.0s
+
+#3 resolve image config for docker.io/docker/dockerfile:1
+#3 ...
+
+#4 [auth] docker/dockerfile:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 resolve image config for docker.io/docker/dockerfile:1
+#3 DONE 1.2s
+
+#5 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#5 CACHED
+
+#6 [internal] load build definition from Dockerfile
+#6 DONE 0.0s
+
+#7 [internal] load metadata for docker.io/library/python:3.12-slim
+#7 ...
+
+#8 [auth] library/python:pull token for registry-1.docker.io
+#8 DONE 0.0s
+
+#7 [internal] load metadata for docker.io/library/python:3.12-slim
+#7 DONE 1.0s
+
+#9 [internal] load .dockerignore
+#9 DONE 0.0s
+
+#10 [1/6] FROM docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#10 DONE 0.0s
+
+#11 [internal] load build context
+#11 transferring context: 15.32kB done
+#11 DONE 0.0s
+
+#12 [3/6] WORKDIR /opt/poi
+#12 CACHED
+
+#13 [4/6] COPY apps/server.py /opt/poi/apps/server.py
+#13 CACHED
+
+#14 [5/6] COPY apps/cpu/server.py /opt/poi/apps/run/server.py
+#14 CACHED
+
+#15 [2/6] RUN groupadd --gid "10001" appsvc  && useradd --uid "10001" --gid "10001" --create-home       --shell /usr/sbin/nologin appsvc
+#15 CACHED
+
+#16 [6/6] RUN mkdir -p /var/log/poi  && chown -R appsvc:appsvc /opt/poi /var/log/poi
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 writing image sha256:443fa9abcd544daace935ab2d60b39eab8ff58d01265805e18f3367bd38cfa3e done
+#17 naming to docker.io/danielandersonss/poi-cpu:1.0.0 done
+#17 DONE 0.0s
+
+[exit 0] 2026-11-10T02:01:40Z

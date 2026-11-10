@@ -1,0 +1,9 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'a3-smoke'
+# host=osboxes user=osboxes utc=2026-11-10T02:06:33Z
+
+PERFIL   PORTA  HEALTH  WORK      TEMPO_S   TAMANHO  RESPOSTA
+cpu      8000   200     200      0.193536        10  {"profile": "cpu", "duration_seconds": 0.183228, "result": {"sha256": "67fd7594c85ac40ff41
+memory   8001   200     200      0.281070        32  {"profile": "memory", "duration_seconds": 0.27569, "result": {"allocated_mib": 32, "checks
+io       8002   200     200      0.280139      1024  {"profile": "io", "duration_seconds": 0.269912, "result": {"bytes_read": 1048576, "bytes_w
+
+[exit 0] 2026-11-10T02:06:35Z

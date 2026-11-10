@@ -1,0 +1,48 @@
+# syntax=docker/dockerfile:1
+#
+# One image definition for the three applications. The workload profile is a
+# build argument, so `--build-arg PROFILE=cpu|memory|io` produces one image per
+# application from the same source tree.
+#
+# Build from the repository root:
+#   docker build --build-arg PROFILE=cpu -t USER/poi-cpu:1.0.0 .
+#
+FROM python:3.12-slim
+
+ARG PROFILE
+ARG APP_UID=10001
+ARG APP_GID=10001
+
+LABEL org.opencontainers.image.title="poi-${PROFILE}" \
+      org.opencontainers.image.description="Provisioning and Operations - ${PROFILE}-bound application" \
+      org.opencontainers.image.source="https://github.com/DanielAndersonTI/Provisioning-Operations-Using-the-Cloud-IaaS"
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+# The application runs as an unprivileged user. The UID/GID are build
+# arguments so the container user can match the owner of the mounted log
+# volume on the VM.
+RUN groupadd --gid "${APP_GID}" appsvc \
+ && useradd --uid "${APP_UID}" --gid "${APP_GID}" --create-home \
+      --shell /usr/sbin/nologin appsvc
+
+WORKDIR /opt/poi
+
+# The profile entry point loads ../server.py by path. Keeping the same relative
+# layout as the repository (apps/server.py + apps/<profile>/server.py) means the
+# application code needs no changes for the container.
+COPY apps/server.py /opt/poi/apps/server.py
+COPY apps/${PROFILE}/server.py /opt/poi/apps/run/server.py
+
+RUN mkdir -p /var/log/poi \
+ && chown -R appsvc:appsvc /opt/poi /var/log/poi
+
+USER appsvc
+
+EXPOSE 8000
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"
+
+CMD ["python", "/opt/poi/apps/run/server.py", "--port", "8000"]

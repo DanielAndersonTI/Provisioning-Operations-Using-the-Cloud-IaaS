@@ -38,12 +38,42 @@ PULL_DIRS = ["evidencias", "results", "logs"]
 # used by the experiments.
 PAYLOAD_DIRS = ["apps", "scripts"]
 
+# Files at the repository root that the Activity 4 phases read from $BASE: the
+# Docker build context needs the .dockerignore, and phase 26 uploads the compose
+# file to the VM exactly as it is in the repository.
+PAYLOAD_FILES = [".dockerignore", "docker-compose.yml"]
+
+# Docker Hub credentials live in `docker.env` at the repository root (gitignored)
+# and are forwarded to the VDI session file, never to the console or to evidence.
+DOCKER_ENV_KEYS = ("DOCKERHUB_USER", "DOCKERHUB_TOKEN", "IMAGE_TAG")
+
 
 def env(name, default=None, required=False):
     value = os.environ.get(name, default)
     if required and not value:
         sys.exit(f"missing environment variable: {name}")
     return value
+
+
+def load_docker_env():
+    """Docker Hub credentials from the environment, then from `docker.env`.
+
+    The file lives at the repository root, is listed in .gitignore, and exists
+    only on the operator's machine. Nothing here is printed.
+    """
+    values = {}
+    path = REPO / "docker.env"
+    if path.is_file():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, _, value = line.partition("=")
+            values[key.strip()] = value.strip().strip("'\"")
+    for key in DOCKER_ENV_KEYS:
+        if os.environ.get(key):
+            values[key] = os.environ[key]
+    return values
 
 
 def connect():
@@ -177,26 +207,37 @@ def main():
             if source.is_dir():
                 sftp_makedirs(sftp, f"{root}/{name}")
                 upload_tree(sftp, source, f"{root}/{name}")
+        for name in PAYLOAD_FILES:
+            source = REPO / name
+            if source.is_file():
+                sftp.put(str(source), f"{root}/{name}")
         sftp_makedirs(sftp, root + "/evidencias")
         sftp_makedirs(sftp, root + "/results")
         sftp_makedirs(sftp, root + "/logs")
 
     # Credentials for the cloud account, used by the phases that talk to
     # OpenStack. Kept on the guest with 0600 and out of the repository.
-    cloud_env = "\n".join(
-        [
-            f"export CLOUD_USER='{env('CLOUD_USER', required=True)}'",
-            f"export CLOUD_PASS='{env('CLOUD_PASS', required=True)}'",
-            f"export CLOUD_PROJECT='{env('CLOUD_PROJECT', 'provisionamento')}'",
-            f"export CLOUD_AUTH_URL='{env('CLOUD_AUTH_URL', 'https://cloud.lsd.ufcg.edu.br:5000/v3')}'",
-            f"export CLOUD_DOMAIN='{env('CLOUD_DOMAIN', 'Default')}'",
-            f"export CLOUD_PROJECT_DOMAIN='{env('CLOUD_PROJECT_DOMAIN', env('CLOUD_DOMAIN', 'Default'))}'",
-            "export CLOUD_REGION='RegionOne'",
-            f"export SUDO_PASS='{env('VDI_PASS', required=True)}'",
-            "",
-        ]
-    )
-    write_remote_file(sftp, f"/home/{user}/.atividade3/session.env", cloud_env)
+    cloud_env_lines = [
+        f"export CLOUD_USER='{env('CLOUD_USER', required=True)}'",
+        f"export CLOUD_PASS='{env('CLOUD_PASS', required=True)}'",
+        f"export CLOUD_PROJECT='{env('CLOUD_PROJECT', 'provisionamento')}'",
+        f"export CLOUD_AUTH_URL='{env('CLOUD_AUTH_URL', 'https://cloud.lsd.ufcg.edu.br:5000/v3')}'",
+        f"export CLOUD_DOMAIN='{env('CLOUD_DOMAIN', 'Default')}'",
+        f"export CLOUD_PROJECT_DOMAIN='{env('CLOUD_PROJECT_DOMAIN', env('CLOUD_DOMAIN', 'Default'))}'",
+        "export CLOUD_REGION='RegionOne'",
+        f"export SUDO_PASS='{env('VDI_PASS', required=True)}'",
+    ]
+
+    # Activity 4: Docker Hub user, token and image tag, when the operator has
+    # filled docker.env. Omitted entirely otherwise, so phases 24 and 26 can
+    # still run before the account exists.
+    docker_env = load_docker_env()
+    for key in DOCKER_ENV_KEYS:
+        value = docker_env.get(key)
+        if value:
+            cloud_env_lines.append(f"export {key}='{value}'")
+
+    write_remote_file(sftp, f"/home/{user}/.atividade3/session.env", "\n".join(cloud_env_lines) + "\n")
 
     remote_script = posixpath.join(root, "automation", posixpath.basename(args.script))
     prefix = " ".join(args.env)

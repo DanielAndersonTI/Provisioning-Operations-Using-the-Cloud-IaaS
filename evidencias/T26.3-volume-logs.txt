@@ -1,0 +1,52 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo ls -l /mnt/atividade3-logs/cpu /mnt/atividade3-logs/memory /mnt/atividade3-logs/io; echo; sudo tail -n 3 /mnt/atividade3-logs/cpu/app.log /mnt/atividade3-logs/memory/app.log /mnt/atividade3-logs/io/app.log'
+# host=osboxes user=osboxes utc=2026-11-10T02:05:29Z
+
+/mnt/atividade3-logs/cpu:
+total 204
+-rw-r--r-- 1 10001 10001  18683 Nov 10 02:05 app.log
+-rw-r--r-- 1 10001 10001 145619 Nov 10 00:00 app.log.1
+-rw-r--r-- 1 10001 10001   5191 Nov  9 00:00 app.log.2.gz
+-rw-r--r-- 1 10001 10001   5597 Nov  8 00:00 app.log.3.gz
+-rw-r--r-- 1 10001 10001   4300 Nov  7 00:00 app.log.4.gz
+-rw-r--r-- 1 10001 10001   5354 Nov  6 00:00 app.log.5.gz
+-rw-r--r-- 1 10001 10001   3211 Nov  5 00:00 app.log.6.gz
+-rw-r--r-- 1 10001 10001   1258 Nov  4 00:00 app.log.7.gz
+
+/mnt/atividade3-logs/io:
+total 508
+-rw-r--r-- 1 10001 10001   2259 Nov 10 02:05 app.log
+-rw-r--r-- 1 10001 10001 476262 Nov 10 00:00 app.log.1
+-rw-r--r-- 1 10001 10001   5250 Nov  9 00:00 app.log.2.gz
+-rw-r--r-- 1 10001 10001   5414 Nov  8 00:00 app.log.3.gz
+-rw-r--r-- 1 10001 10001   2958 Nov  7 00:00 app.log.4.gz
+-rw-r--r-- 1 10001 10001   5438 Nov  6 00:00 app.log.5.gz
+-rw-r--r-- 1 10001 10001   3472 Nov  5 00:00 app.log.6.gz
+-rw-r--r-- 1 10001 10001   2640 Nov  4 00:00 app.log.7.gz
+
+/mnt/atividade3-logs/memory:
+total 524
+-rw-r--r-- 1 10001 10001  15401 Nov 10 02:05 app.log
+-rw-r--r-- 1 10001 10001 489400 Nov 10 00:00 app.log.1
+-rw-r--r-- 1 10001 10001   1988 Nov  9 00:00 app.log.2.gz
+-rw-r--r-- 1 10001 10001   2754 Nov  8 00:00 app.log.3.gz
+-rw-r--r-- 1 10001 10001   2957 Nov  7 00:00 app.log.4.gz
+-rw-r--r-- 1 10001 10001   4138 Nov  6 00:00 app.log.5.gz
+-rw-r--r-- 1 10001 10001   3463 Nov  5 00:00 app.log.6.gz
+-rw-r--r-- 1 10001 10001   3066 Nov  4 00:00 app.log.7.gz
+
+==> /mnt/atividade3-logs/cpu/app.log <==
+ConnectionResetError: [Errno 104] Connection reset by peer
+----------------------------------------
+cpu application listening on port 8000 (max 32 concurrent work units)
+
+==> /mnt/atividade3-logs/memory/app.log <==
+ConnectionResetError: [Errno 104] Connection reset by peer
+----------------------------------------
+memory application listening on port 8000 (max 4 concurrent work units)
+
+==> /mnt/atividade3-logs/io/app.log <==
+ConnectionResetError: [Errno 104] Connection reset by peer
+----------------------------------------
+io application listening on port 8000 (max 16 concurrent work units)
+
+[exit 0] 2026-11-10T02:05:30Z

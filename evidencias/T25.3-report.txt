@@ -1,0 +1,9 @@
+$ sg docker -c "bash /home/osboxes/atividade3/payload4/image-report.sh" | tee /home/osboxes/atividade3/results/docker-images-1.0.0.txt
+# host=osboxes user=osboxes utc=2026-11-10T02:02:53Z
+
+PERFIL     TAG        ID             TAMANHO    DIGEST
+poi-cpu    1.0.0      443fa9abcd54   114M       danielandersonss/poi-cpu@sha256:7279dc1e69d44e4ae1d8a257831b2ac74b8f4f0661d1e4b142d547f0f3572097
+poi-memory 1.0.0      f50ee3166072   114M       danielandersonss/poi-memory@sha256:859c282e77a398228c9f1d4e2f9a5fdb3e8656b0ba5b78891359fcf4722a427e
+poi-io     1.0.0      f019ca3425f6   114M       danielandersonss/poi-io@sha256:44324001836800a8fa7b0fb26a3cb8c73927f97584153256491d222007a199d6
+
+[exit 0] 2026-11-10T02:02:54Z

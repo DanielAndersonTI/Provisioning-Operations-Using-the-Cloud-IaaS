@@ -1,0 +1,7 @@
+$ sudo_run usermod -aG docker osboxes; getent group docker; sudo_run docker info --format 'servidor {{.ServerVersion}}'
+# host=osboxes user=osboxes utc=2026-11-10T01:52:36Z
+
+docker:x:999:osboxes
+servidor 24.0.5
+
+[exit 0] 2026-11-10T01:52:36Z

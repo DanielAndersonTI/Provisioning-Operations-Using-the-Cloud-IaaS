@@ -1,0 +1,10 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo install -d -o 10001 -g 10001 -m 0750 /mnt/atividade3-logs/cpu /mnt/atividade3-logs/memory /mnt/atividade3-logs/io; sudo chown -R 10001:10001 /mnt/atividade3-logs/cpu /mnt/atividade3-logs/memory /mnt/atividade3-logs/io; ls -ldn /mnt/atividade3-logs /mnt/atividade3-logs/cpu /mnt/atividade3-logs/memory /mnt/atividade3-logs/io; df -h /mnt/atividade3-logs | tail -1'
+# host=osboxes user=osboxes utc=2026-11-10T02:04:58Z
+
+drwxr-xr-x 7     0     0 4096 Oct 29 15:48 /mnt/atividade3-logs
+drwxr-x--- 2 10001 10001 4096 Nov 10 00:00 /mnt/atividade3-logs/cpu
+drwxr-x--- 2 10001 10001 4096 Nov 10 00:00 /mnt/atividade3-logs/io
+drwxr-x--- 2 10001 10001 4096 Nov 10 00:00 /mnt/atividade3-logs/memory
+/dev/vdb        974M  1.3M  946M   1% /mnt/atividade3-logs
+
+[exit 0] 2026-11-10T02:04:59Z

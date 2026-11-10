@@ -1,0 +1,10 @@
+$ sg docker -c 'docker version --format "cliente {{.Client.Version}} / servidor {{.Server.Version}}"'; sg docker -c 'docker compose version'; sg docker -c 'docker info --format "driver={{.Driver}} root={{.DockerRootDir}}"'; echo; df -h /var/lib/docker | tail -1
+# host=osboxes user=osboxes utc=2026-11-10T01:52:37Z
+
+cliente 24.0.5 / servidor 24.0.5
+Docker Compose version v2.20.2
+driver=overlay2 root=/var/lib/docker
+
+/dev/sda2       232G   11G  210G   5% /
+
+[exit 0] 2026-11-10T01:52:37Z

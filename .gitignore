@@ -6,6 +6,7 @@ clouds.yaml
 session.env
 vdi.env
 .env
+docker.env
 
 # Estado local da automação
 __pycache__/

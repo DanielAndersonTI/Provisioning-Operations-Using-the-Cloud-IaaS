@@ -1,0 +1,9 @@
+$ sudo_run bash /home/osboxes/atividade3/payload4/install-docker.sh
+# host=osboxes user=osboxes utc=2026-11-10T01:52:32Z
+
+== docker e plugin Compose já instalados
+Synchronizing state of docker.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install enable docker
+== usuário osboxes adicionado ao grupo docker
+
+[exit 0] 2026-11-10T01:52:36Z

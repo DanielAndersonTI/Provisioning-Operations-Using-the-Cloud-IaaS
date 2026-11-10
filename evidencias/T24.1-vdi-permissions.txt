@@ -1,0 +1,8 @@
+$ id; getent group docker; sg docker -c 'docker ps'
+# host=osboxes user=osboxes utc=2026-11-10T01:52:37Z
+
+uid=1000(osboxes) gid=1000(osboxes) groups=1000(osboxes),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),110(lxd)
+docker:x:999:osboxes
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+[exit 0] 2026-11-10T01:52:37Z

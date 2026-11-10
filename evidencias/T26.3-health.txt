@@ -1,0 +1,8 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'for c in poi-atividade4-cpu-1 poi-atividade4-memory-1 poi-atividade4-io-1; do printf "%-24s " $c; sudo docker inspect --format "{{if .State.Health}}{{.State.Health.Status}}{{else}}sem healthcheck{{end}}" $c; done'
+# host=osboxes user=osboxes utc=2026-11-10T02:05:27Z
+
+poi-atividade4-cpu-1     healthy
+poi-atividade4-memory-1  healthy
+poi-atividade4-io-1      healthy
+
+[exit 0] 2026-11-10T02:05:28Z

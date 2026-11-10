@@ -1,0 +1,22 @@
+$ sg docker -c "bash /home/osboxes/atividade3/payload4/push-images.sh"
+# host=osboxes user=osboxes utc=2026-11-10T02:01:46Z
+
+WARNING! Your password will be stored unencrypted in /home/osboxes/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+== push poi-cpu:1.0.0
+docker.io/danielandersonss/poi-cpu:1.0.0
+== push poi-cpu:latest
+docker.io/danielandersonss/poi-cpu:latest
+== push poi-memory:1.0.0
+docker.io/danielandersonss/poi-memory:1.0.0
+== push poi-memory:latest
+docker.io/danielandersonss/poi-memory:latest
+== push poi-io:1.0.0
+docker.io/danielandersonss/poi-io:1.0.0
+== push poi-io:latest
+docker.io/danielandersonss/poi-io:latest
+
+[exit 0] 2026-11-10T02:02:53Z

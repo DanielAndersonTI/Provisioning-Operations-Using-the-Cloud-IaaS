@@ -1,0 +1,9 @@
+$ sg docker -c 'docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.Size}}"' | grep -E 'poi-(cpu|memory|io)'
+# host=osboxes user=osboxes utc=2026-11-10T02:01:45Z
+
+danielandersonss/poi-io       1.0.0     f019ca3425f6   120MB
+danielandersonss/poi-memory   1.0.0     f50ee3166072   120MB
+danielandersonss/poi-cpu      1.0.0     443fa9abcd54   120MB
+danielandersonss/poi-cpu      latest    443fa9abcd54   120MB
+
+[exit 0] 2026-11-10T02:01:46Z

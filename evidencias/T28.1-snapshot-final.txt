@@ -1,0 +1,47 @@
+$ openstack image show snap-vm-daniel-ranya-atividade4 -f yaml
+# host=osboxes user=osboxes utc=2026-11-10T02:23:54Z
+
+checksum: df11567104bf0f9f1c16849e345229a4
+container_format: bare
+created_at: '2026-11-10T02:10:30Z'
+disk_format: qcow2
+file: /v2/images/aa534820-acce-4597-969d-3740d3be4221/file
+id: aa534820-acce-4597-969d-3740d3be4221
+min_disk: 20
+min_ram: 0
+name: snap-vm-daniel-ranya-atividade4
+owner: 2c593796f29e4b829b1b523775e2fa26
+properties:
+  base_image_ref: 8ac7c385-d5d2-488a-82a4-4e1b57ffa6b1
+  boot_roles: member,load-balancer_member,reader
+  hw_cdrom_bus: ide
+  hw_disk_bus: virtio
+  hw_input_bus: usb
+  hw_machine_type: pc
+  hw_pointer_model: usbtablet
+  hw_video_model: virtio
+  hw_vif_model: virtio
+  image_location: snapshot
+  image_state: available
+  image_type: snapshot
+  instance_uuid: bdc0447e-fb71-48c8-9ce2-04a8c5e20ee0
+  os_hash_algo: sha512
+  os_hash_value: 80f8951a30d3e38387597bf8b8e88e81c9792e632aa8c92cc664697b50b75c358d6f5322bbacbf812bd4f7990c0c821407aa2c2fd2093222243a9b2ee2f045b3
+  os_hidden: false
+  owner_project_name: Provisionamento
+  owner_specified.openstack.md5: ''
+  owner_specified.openstack.object: images/ubuntu-24.04
+  owner_specified.openstack.sha256: ''
+  owner_user_name: daniel.silva
+  stores: rbd
+  user_id: 513f6d047f5484db0cbe6249197b982190710711f5e7bbbb875795808525d030
+protected: false
+schema: /v2/schemas/image
+size: 7980580864
+status: active
+tags: []
+updated_at: '2026-11-10T02:25:33Z'
+virtual_size: 21474836480
+visibility: private
+
+[exit 0] 2026-11-10T02:24:09Z
