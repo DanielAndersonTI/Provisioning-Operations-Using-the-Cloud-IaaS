@@ -1,0 +1,35 @@
+$ for p in pool-app-cpu-daniel-ranya pool-app-memory-daniel-ranya pool-app-io-daniel-ranya; do openstack loadbalancer pool show $p -c name -c protocol -c lb_algorithm -c healthmonitor_id -c operating_status; echo; done
+# host=osboxes user=osboxes utc=2026-11-10T03:33:34Z
+
++------------------+--------------------------------------+
+| Field            | Value                                |
++------------------+--------------------------------------+
+| healthmonitor_id | ddd7e407-c5a4-4f23-8a23-16adb8a79342 |
+| lb_algorithm     | ROUND_ROBIN                          |
+| name             | pool-app-cpu-daniel-ranya            |
+| operating_status | ONLINE                               |
+| protocol         | HTTP                                 |
++------------------+--------------------------------------+
+
++------------------+--------------------------------------+
+| Field            | Value                                |
++------------------+--------------------------------------+
+| healthmonitor_id | 1e05c7b7-879c-4826-86d8-c8646d40a585 |
+| lb_algorithm     | ROUND_ROBIN                          |
+| name             | pool-app-memory-daniel-ranya         |
+| operating_status | ONLINE                               |
+| protocol         | HTTP                                 |
++------------------+--------------------------------------+
+
++------------------+--------------------------------------+
+| Field            | Value                                |
++------------------+--------------------------------------+
+| healthmonitor_id | 3178cffa-1f87-4c4f-8320-b50bdf891759 |
+| lb_algorithm     | ROUND_ROBIN                          |
+| name             | pool-app-io-daniel-ranya             |
+| operating_status | ONLINE                               |
+| protocol         | HTTP                                 |
++------------------+--------------------------------------+
+
+
+[exit 0] 2026-11-10T03:34:03Z

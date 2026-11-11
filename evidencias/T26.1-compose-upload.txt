@@ -1,0 +1,9 @@
+$ sha256sum /home/osboxes/atividade3/docker-compose.yml; echo; cat /home/osboxes/atividade3/docker-compose.yml | ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'sudo install -d -m 0755 /opt/atividade4; sudo tee /opt/atividade4/docker-compose.yml >/dev/null; sudo chmod 0644 /opt/atividade4/docker-compose.yml; sha256sum /opt/atividade4/docker-compose.yml; ls -l /opt/atividade4/docker-compose.yml'
+# host=osboxes user=osboxes utc=2026-11-10T03:24:13Z
+
+bc96cf22c471cf17ea72f2995d59e1b0e79caaaeb5609a7999998633c62dbfcb  /home/osboxes/atividade3/docker-compose.yml
+
+bc96cf22c471cf17ea72f2995d59e1b0e79caaaeb5609a7999998633c62dbfcb  /opt/atividade4/docker-compose.yml
+-rw-r--r-- 1 root root 3397 Nov 10 03:39 /opt/atividade4/docker-compose.yml
+
+[exit 0] 2026-11-10T03:24:15Z

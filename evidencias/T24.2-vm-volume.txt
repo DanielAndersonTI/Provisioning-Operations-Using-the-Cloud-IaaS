@@ -1,0 +1,20 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'df -h /mnt/atividade3-logs | tail -1; mount | grep atividade3-logs || true; ls -la /mnt/atividade3-logs; systemctl is-active app-cpu app-memory app-io'
+# host=osboxes user=osboxes utc=2026-11-10T01:53:56Z
+
+/dev/vdb        974M  1.3M  946M   1% /mnt/atividade3-logs
+/dev/vdb on /mnt/atividade3-logs type ext4 (rw,relatime)
+total 48
+drwxr-xr-x 7 root   root    4096 Oct 29 15:48 .
+drwxr-xr-x 3 root   root    4096 Oct 29 03:25 ..
+drwxr-x--- 2 appsvc appsvc  4096 Nov 10 00:00 cpu
+drwxr-x--- 2 appsvc appsvc  4096 Nov 10 00:00 io
+drwx------ 2 root   root   16384 Oct 29 03:28 lost+found
+-rw-r--r-- 1 root   root      21 Oct 29 03:36 marca-antes-do-reboot.txt
+drwxr-x--- 2 appsvc appsvc  4096 Nov 10 00:00 memory
+drwxr-x--- 2 appsvc appsvc  4096 Oct 29 15:48 scratch
+-rw-r--r-- 1 root   root      10 Oct 29 03:28 teste.txt
+active
+active
+active
+
+[exit 0] 2026-11-10T01:53:57Z

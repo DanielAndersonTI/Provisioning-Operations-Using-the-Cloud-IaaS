@@ -1,0 +1,14 @@
+$ openstack image show snap-vm-daniel-ranya-atividade4 -c id -c name -c status -c size -c disk_format -c min_disk
+# host=osboxes user=osboxes utc=2026-11-10T02:17:12Z
+
++-------------+--------------------------------------+
+| Field       | Value                                |
++-------------+--------------------------------------+
+| disk_format | qcow2                                |
+| id          | aa534820-acce-4597-969d-3740d3be4221 |
+| min_disk    | 20                                   |
+| name        | snap-vm-daniel-ranya-atividade4      |
+| status      | saving                               |
++-------------+--------------------------------------+
+
+[exit 0] 2026-11-10T02:17:16Z

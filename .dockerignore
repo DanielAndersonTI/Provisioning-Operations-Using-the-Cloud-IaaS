@@ -1,0 +1,25 @@
+# O contexto de build é a raiz do repositório. A imagem só precisa de
+# apps/server.py e apps/<profile>/server.py; todo o resto fica de fora para
+# manter a imagem pequena e o build rápido.
+.git
+.github
+.gitignore
+.dockerignore
+docker.env
+.env
+.venv
+__pycache__
+**/__pycache__
+*.pyc
+
+docs
+evidencias
+results
+logs
+automation
+scripts
+
+*.md
+*.pptx
+logs-run-*.txt
+Atividade-4-Conteinerizacao-de-aplicacoes

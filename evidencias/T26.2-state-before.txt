@@ -1,0 +1,18 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'systemctl is-enabled app-cpu app-memory app-io; systemctl is-active app-cpu app-memory app-io; echo; sudo ss -ltnp | grep -E ":800[012]" || true'
+# host=osboxes user=osboxes utc=2026-11-10T03:24:28Z
+
+disabled
+disabled
+disabled
+inactive
+inactive
+inactive
+
+LISTEN 0      4096         0.0.0.0:8000       0.0.0.0:*    users:(("docker-proxy",pid=1029552,fd=7))                
+LISTEN 0      4096         0.0.0.0:8001       0.0.0.0:*    users:(("docker-proxy",pid=1027880,fd=7))                
+LISTEN 0      4096         0.0.0.0:8002       0.0.0.0:*    users:(("docker-proxy",pid=1027829,fd=7))                
+LISTEN 0      4096            [::]:8000          [::]:*    users:(("docker-proxy",pid=1029556,fd=7))                
+LISTEN 0      4096            [::]:8001          [::]:*    users:(("docker-proxy",pid=1027884,fd=7))                
+LISTEN 0      4096            [::]:8002          [::]:*    users:(("docker-proxy",pid=1027833,fd=7))                
+
+[exit 0] 2026-11-10T03:24:29Z

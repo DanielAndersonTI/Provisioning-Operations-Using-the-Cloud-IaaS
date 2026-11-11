@@ -1,0 +1,41 @@
+$ for p in pool-app-cpu-daniel-ranya pool-app-memory-daniel-ranya pool-app-io-daniel-ranya; do id=$(openstack loadbalancer pool show $p -c healthmonitor_id -f value -c healthmonitor_id); openstack loadbalancer healthmonitor show $id -c name -c type -c url_path -c delay -c timeout -c max_retries -c operating_status; echo; done
+# host=osboxes user=osboxes utc=2026-11-10T03:34:04Z
+
++------------------+-------------------------+
+| Field            | Value                   |
++------------------+-------------------------+
+| name             | hm-app-cpu-daniel-ranya |
+| delay            | 5                       |
+| max_retries      | 3                       |
+| timeout          | 4                       |
+| url_path         | /health                 |
+| type             | HTTP                    |
+| operating_status | ONLINE                  |
++------------------+-------------------------+
+
++------------------+----------------------------+
+| Field            | Value                      |
++------------------+----------------------------+
+| name             | hm-app-memory-daniel-ranya |
+| delay            | 5                          |
+| max_retries      | 3                          |
+| timeout          | 4                          |
+| url_path         | /health                    |
+| type             | HTTP                       |
+| operating_status | ONLINE                     |
++------------------+----------------------------+
+
++------------------+------------------------+
+| Field            | Value                  |
++------------------+------------------------+
+| name             | hm-app-io-daniel-ranya |
+| delay            | 5                      |
+| max_retries      | 3                      |
+| timeout          | 4                      |
+| url_path         | /health                |
+| type             | HTTP                   |
+| operating_status | ONLINE                 |
++------------------+------------------------+
+
+
+[exit 0] 2026-11-10T03:35:17Z

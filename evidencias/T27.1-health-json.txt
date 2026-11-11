@@ -1,0 +1,8 @@
+$ ssh -i /home/osboxes/.ssh/atividade3-daniel-ranya -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -o LogLevel=ERROR ubuntu@150.165.85.77 'for p in 8000 8001 8002; do printf "porta %s: " $p; curl -sS -m 10 http://127.0.0.1:$p/health; echo; done'
+# host=osboxes user=osboxes utc=2026-11-10T03:26:48Z
+
+porta 8000: {"status": "ok", "profile": "cpu"}
+porta 8001: {"status": "ok", "profile": "memory"}
+porta 8002: {"status": "ok", "profile": "io"}
+
+[exit 0] 2026-11-10T03:26:48Z
