@@ -226,9 +226,10 @@ Dados complementares, úteis se o formulário ou o professor pedirem: portas ext
 
 ```bash
 # build (na VDI, a partir da raiz do repositório)
-docker build --build-arg PROFILE=cpu    -t "$DOCKERHUB_USER/poi-cpu:1.0.0"    .
-docker build --build-arg PROFILE=memory -t "$DOCKERHUB_USER/poi-memory:1.0.0" .
-docker build --build-arg PROFILE=io     -t "$DOCKERHUB_USER/poi-io:1.0.0"     .
+docker build -f apps/Dockerfile --build-arg PROFILE=cpu    -t "$DOCKERHUB_USER/poi-cpu:1.0.0"    .
+docker build -f apps/Dockerfile --build-arg PROFILE=memory -t "$DOCKERHUB_USER/poi-memory:1.0.0" .
+docker build -f apps/Dockerfile --build-arg PROFILE=io     -t "$DOCKERHUB_USER/poi-io:1.0.0"     .
+
 
 # publicação (o token vem do docker.env e entra por --password-stdin)
 printf '%s' "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USER" --password-stdin
